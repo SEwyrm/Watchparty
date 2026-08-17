@@ -2,402 +2,347 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1,
-               maximum-scale=1,
-               user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#080808">
 
-<title>WEVER</title>
+<title>WatchTogether</title>
 
-<!-- PeerJS : permet aux appareils de communiquer directement -->
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
 }
 
-body {
-    background: #080808;
-    color: #fff;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-    min-height: 100vh;
+body{
+    background:#080808;
+    color:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    min-height:100vh;
 }
 
-button,
-input {
-    font: inherit;
+button,input{
+    font:inherit;
 }
 
-button {
-    cursor: pointer;
-    border: 0;
+button{
+    border:0;
+    cursor:pointer;
 }
 
-.app {
-    width: 100%;
-    max-width: 1100px;
-    margin: auto;
-    padding: 18px;
+.app{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    padding:18px;
 }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 22px;
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
 }
 
-.logo {
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.logo{
+    font-size:25px;
+    font-weight:800;
 }
 
-.logo span {
-    color: #ff1744;
+.logo span{
+    color:#ff1744;
 }
 
-.status {
-    font-size: 13px;
-    color: #aaa;
+.status{
+    color:#aaa;
+    font-size:13px;
 }
 
-.card {
-    background: #131313;
-    border: 1px solid #252525;
-    border-radius: 17px;
-    padding: 18px;
-    margin-bottom: 18px;
+.card{
+    background:#131313;
+    border:1px solid #252525;
+    border-radius:17px;
+    padding:18px;
+    margin-bottom:18px;
 }
 
-h1 {
-    font-size: 27px;
-    margin-bottom: 8px;
+h1{
+    font-size:27px;
+    margin-bottom:8px;
 }
 
-h2 {
-    font-size: 19px;
-    margin-bottom: 13px;
+h2{
+    font-size:19px;
+    margin-bottom:13px;
 }
 
-.subtitle {
-    color: #999;
-    line-height: 1.5;
-    margin-bottom: 20px;
+.subtitle{
+    color:#999;
+    line-height:1.5;
+    margin-bottom:20px;
 }
 
-input {
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    border-radius: 11px;
-    border: 1px solid #333;
-    background: #0b0b0b;
-    color: white;
-    outline: none;
+input{
+    width:100%;
+    height:50px;
+    padding:0 15px;
+    border-radius:11px;
+    border:1px solid #333;
+    background:#0b0b0b;
+    color:#fff;
+    outline:none;
 }
 
-input:focus {
-    border-color: #ff1744;
+input:focus{
+    border-color:#ff1744;
 }
 
-button {
-    min-height: 48px;
-    padding: 0 18px;
-    border-radius: 11px;
-    background: #ff1744;
-    color: white;
-    font-weight: 700;
+button{
+    min-height:48px;
+    padding:0 18px;
+    border-radius:11px;
+    background:#ff1744;
+    color:#fff;
+    font-weight:700;
 }
 
-button:active {
-    transform: scale(.97);
+button.secondary{
+    background:#292929;
 }
 
-button.secondary {
-    background: #292929;
+.full{
+    width:100%;
 }
 
-button:disabled {
-    opacity: .45;
-    cursor: default;
+.form{
+    display:flex;
+    gap:10px;
 }
 
-.full {
-    width: 100%;
+.form input{
+    flex:1;
 }
 
-.hidden {
-    display: none !important;
+.hidden{
+    display:none!important;
 }
 
-.form {
-    display: flex;
-    gap: 10px;
+/* ACCUEIL */
+
+.home-icon{
+    font-size:50px;
+    margin-bottom:15px;
 }
 
-.form input {
-    flex: 1;
+/* SALLE */
+
+.room-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
 }
 
-/* HOME */
-
-.home-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
+.room-code{
+    display:inline-flex;
+    background:#202020;
+    border-radius:9px;
+    padding:9px 12px;
+    font-family:monospace;
+    font-size:16px;
+    letter-spacing:1px;
 }
 
-/* ROOM */
-
-.room-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
+.people{
+    color:#aaa;
+    font-size:14px;
 }
 
-.room-code {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #202020;
-    border-radius: 9px;
-    padding: 9px 12px;
-    font-family: monospace;
-    font-size: 16px;
-    letter-spacing: 1px;
+.share-row{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
 }
 
-.people {
-    color: #aaa;
-    font-size: 14px;
-}
-
-.share-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-}
-
-.share-row input {
-    flex: 1;
+.share-row input{
+    flex:1;
 }
 
 /* VIDEO */
 
-.video-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #000;
-    border-radius: 14px;
-    overflow: hidden;
+.video-wrapper{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:#000;
+    border-radius:14px;
+    overflow:hidden;
 }
 
-#player {
-    width: 100%;
-    height: 100%;
+#player{
+    width:100%;
+    height:100%;
 }
 
-.video-empty {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #777;
-    padding: 25px;
-    background: #050505;
-    z-index: 5;
+.video-empty{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#777;
+    background:#050505;
 }
 
-.host-label {
-    display: inline-block;
-    margin-top: 12px;
-    color: #aaa;
-    font-size: 13px;
+.host-label{
+    display:block;
+    margin-top:12px;
+    color:#aaa;
+    font-size:13px;
 }
 
-.control-info {
-    margin-top: 13px;
-    padding: 11px 13px;
-    border-radius: 10px;
-    background: #1c1517;
-    color: #ffb9c4;
-    font-size: 13px;
-    line-height: 1.4;
+.control-info{
+    margin-top:12px;
+    padding:11px 13px;
+    border-radius:10px;
+    background:#1c1517;
+    color:#ffb9c4;
+    font-size:13px;
+    line-height:1.4;
 }
 
-/* USERS */
-
-.user-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+.sync-controls{
+    display:flex;
+    gap:10px;
+    margin-top:13px;
 }
 
-.user {
-    background: #202020;
-    border-radius: 999px;
-    padding: 8px 12px;
-    font-size: 13px;
+.sync-controls button{
+    flex:1;
+}
+
+.sync-status{
+    margin-top:10px;
+    padding:10px;
+    border-radius:10px;
+    background:#191919;
+    color:#aaa;
+    font-size:13px;
+    text-align:center;
 }
 
 /* CHAT */
 
-.chat {
-    height: 240px;
-    overflow-y: auto;
-    background: #090909;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 10px;
+.chat-card{
+    margin-top:0;
 }
 
-.message {
-    margin-bottom: 9px;
-    padding: 9px 11px;
-    border-radius: 10px;
-    background: #1a1a1a;
-    word-break: break-word;
-    line-height: 1.35;
+.chat{
+    height:240px;
+    overflow-y:auto;
+    background:#090909;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:10px;
 }
 
-.message .name {
-    font-weight: 700;
-    color: #ff4265;
+.message{
+    margin-bottom:9px;
+    padding:9px 11px;
+    border-radius:10px;
+    background:#1a1a1a;
+    word-break:break-word;
+    line-height:1.35;
 }
 
-.message.me {
-    background: #25151a;
+.message.me{
+    background:#25151a;
 }
 
-/* PSEUDO */
-
-.pseudo-box {
-    margin-top: 15px;
-    padding: 14px;
-    background: #0d0d0d;
-    border: 1px solid #292929;
-    border-radius: 12px;
+.message .name{
+    font-weight:700;
+    color:#ff4265;
 }
 
-.pseudo-box p {
-    color: #999;
-    font-size: 13px;
-    margin-bottom: 10px;
+/* USERS */
+
+.user-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
 }
 
-.pseudo-row {
-    display: flex;
-    gap: 10px;
-}
-
-.pseudo-row input {
-    flex: 1;
-}
-
-.pseudo-row button {
-    min-width: 100px;
+.user{
+    background:#202020;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:13px;
 }
 
 /* TOAST */
 
-#toast {
-    position: fixed;
-    left: 50%;
-    bottom: 25px;
-    transform:
-        translateX(-50%)
-        translateY(20px);
-
-    background: #222;
-    border: 1px solid #333;
-    color: white;
-    padding: 12px 17px;
-    border-radius: 12px;
-
-    opacity: 0;
-    pointer-events: none;
-
-    transition: .25s;
-
-    z-index: 9999;
-
-    max-width: 90%;
-    text-align: center;
+#toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%) translateY(20px);
+    background:#222;
+    border:1px solid #333;
+    color:white;
+    padding:12px 17px;
+    border-radius:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:9999;
+    max-width:90%;
+    text-align:center;
 }
 
-#toast.show {
-    opacity: 1;
-    transform:
-        translateX(-50%)
-        translateY(0);
+#toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
 }
 
 /* MOBILE */
 
-@media (max-width: 650px) {
+@media(max-width:650px){
 
-    .app {
-        padding: 12px;
+    .app{
+        padding:12px;
     }
 
-    header {
-        margin-bottom: 15px;
+    .logo{
+        font-size:21px;
     }
 
-    .logo {
-        font-size: 21px;
+    .card{
+        padding:14px;
+        border-radius:14px;
     }
 
-    .card {
-        padding: 14px;
-        border-radius: 14px;
-    }
-
-    h1 {
-        font-size: 23px;
+    h1{
+        font-size:23px;
     }
 
     .form,
     .share-row,
-    .pseudo-row {
-        flex-direction: column;
+    .sync-controls{
+        flex-direction:column;
     }
 
     .form button,
     .share-row button,
-    .pseudo-row button {
-        width: 100%;
-    }
-
-    .room-top {
-        align-items: flex-start;
-    }
-
-    .status {
-        font-size: 12px;
+    .sync-controls button{
+        width:100%;
     }
 }
-
 </style>
 </head>
 
@@ -408,305 +353,309 @@ button:disabled {
 <header>
 
     <div class="logo">
-        WE<span>VER</span>
+        Watch<span>Together</span>
     </div>
 
     <div
         class="status"
-        id="status"
-    >
+        id="status">
         ⚪ Hors ligne
     </div>
 
 </header>
 
 
-<!-- =========================================================
+<!-- =========================
      ACCUEIL
-========================================================= -->
+========================= -->
 
 <section id="home">
 
-    <div class="card">
+<div class="card">
 
-        <div class="home-icon">
-            🎬
-        </div>
+    <div class="home-icon">🎬</div>
 
-        <h1>
-            Regarde ensemble
-        </h1>
+    <h1>Regarde ensemble</h1>
 
-        <p class="subtitle">
-            Crée une salle privée, ajoute une vidéo YouTube
-            et invite tes amis avec un simple lien.
-        </p>
+    <p class="subtitle">
+        Crée une salle privée, ajoute une vidéo YouTube
+        et invite tes amis avec un simple lien.
+    </p>
 
+    <h2>Ton pseudo</h2>
 
-        <h2>
-            Ton pseudo
-        </h2>
+    <input
+        id="hostName"
+        maxlength="20"
+        placeholder="Choisis ton pseudo"
+        autocomplete="off">
 
-        <input
-            id="hostName"
-            maxlength="20"
-            placeholder="Choisis ton pseudo"
-            autocomplete="off"
-        >
+    <br><br>
 
-        <br><br>
+    <h2>Lien YouTube</h2>
 
+    <input
+        id="initialVideo"
+        placeholder="https://www.youtube.com/watch?v=..."
+        autocomplete="off">
 
-        <h2>
-            Lien YouTube
-        </h2>
+    <br>
 
-        <input
-            id="initialVideo"
-            placeholder="https://www.youtube.com/watch?v=..."
-            autocomplete="off"
-        >
+    <button
+        class="full"
+        onclick="createRoom()">
 
-        <br>
+        🚀 Créer ma salle
 
-        <button
-            class="full"
-            onclick="createRoom()"
-        >
-            🚀 Créer ma salle
-        </button>
+    </button>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- =========================================================
+<!-- =========================
      SALLE
-========================================================= -->
+========================= -->
 
 <section
     id="room"
-    class="hidden"
->
+    class="hidden">
 
 
-    <!-- INFORMATIONS SALLE -->
+<!-- INFOS SALLE -->
 
-    <div class="card">
+<div class="card">
 
-        <div class="room-top">
+    <div class="room-top">
 
-            <div>
+        <div>
 
-                <div
-                    style="
-                    color:#999;
-                    font-size:13px;
-                    margin-bottom:6px;
-                    "
-                >
-                    Salle privée
-                </div>
+            <div
+                style="color:#999;font-size:13px;margin-bottom:6px;">
 
-                <div
-                    class="room-code"
-                    id="roomCode"
-                >
-                    ------
-                </div>
+                Salle privée
 
             </div>
 
-
             <div
-                class="people"
-                id="peopleCount"
-            >
-                👤 1 personne
+                class="room-code"
+                id="roomCode">
+
+                ------
+
             </div>
 
         </div>
 
+        <div
+            class="people"
+            id="peopleCount">
 
-        <div class="share-row">
-
-            <input
-                id="shareLink"
-                readonly
-            >
-
-            <button
-                onclick="shareRoom()"
-            >
-                🔗 Partager
-            </button>
+            👤 1 personne
 
         </div>
 
     </div>
 
-
-    <!-- =====================================================
-         VIDEO
-    ====================================================== -->
-
-    <div class="card">
-
-        <div class="video-wrapper">
-
-            <div id="player"></div>
-
-            <div
-                id="videoEmpty"
-                class="video-empty"
-            >
-                🎬
-                <br><br>
-                Aucune vidéo chargée
-            </div>
-
-        </div>
-
-
-        <div
-            id="hostControls"
-            class="hidden"
-        >
-
-            <span class="host-label">
-                👑 Tu es l'hôte.
-                Les contrôles de la vidéo sont synchronisés
-                avec tout le monde.
-            </span>
-
-        </div>
-
-
-        <div
-            id="guestInfo"
-            class="control-info hidden"
-        >
-            👀 Tu regardes la vidéo de l'hôte.
-            <br>
-            La lecture, la pause et la position sont
-            synchronisées automatiquement.
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         CHANGER VIDEO
-    ====================================================== -->
-
-    <div
-        class="card"
-        id="videoControls"
-    >
-
-        <h2>
-            🎥 Changer de vidéo
-        </h2>
+    <div class="share-row">
 
         <input
-            id="newVideo"
-            placeholder="Colle un lien YouTube..."
-            autocomplete="off"
-        >
+            id="shareLink"
+            readonly>
 
-        <br>
+        <button onclick="shareRoom()">
 
-        <button
-            class="full"
-            onclick="changeVideo()"
-        >
-            ▶️ Charger la vidéo
+            🔗 Partager
+
         </button>
 
     </div>
 
+</div>
 
-    <!-- =====================================================
-         PSEUDO
-    ====================================================== -->
 
-    <div class="card">
+<!-- =========================
+     VIDEO
+========================= -->
 
-        <h2>
-            👤 Mon pseudo
-        </h2>
+<div class="card">
 
-        <div class="pseudo-row">
+    <div class="video-wrapper">
 
-            <input
-                id="myPseudo"
-                maxlength="20"
-                placeholder="Ton pseudo"
-            >
+        <div id="player"></div>
 
-            <button
-                onclick="changePseudo()"
-            >
-                Modifier
-            </button>
+        <div
+            id="videoEmpty"
+            class="video-empty">
+
+            🎬<br><br>
+            Aucune vidéo chargée
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         UTILISATEURS
-    ====================================================== -->
+    <!-- HOTE -->
 
-    <div class="card">
+    <div
+        id="hostControls"
+        class="hidden">
 
-        <h2>
-            👥 Dans la salle
-        </h2>
+        <span class="host-label">
 
-        <div
-            id="userList"
-            class="user-list"
-        ></div>
+            👑 Tu es l'hôte — tes contrôles sont synchronisés.
 
-    </div>
+        </span>
 
-
-    <!-- =====================================================
-         CHAT
-    ====================================================== -->
-
-    <div class="card">
-
-        <h2>
-            💬 Discussion
-        </h2>
-
-        <div
-            id="chat"
-            class="chat"
-        ></div>
-
-        <div class="form">
-
-            <input
-                id="chatInput"
-                placeholder="Écris un message..."
-                maxlength="300"
-                autocomplete="off"
-            >
+        <div class="sync-controls">
 
             <button
-                onclick="sendChat()"
-            >
-                Envoyer
+                class="secondary"
+                onclick="pauseEveryone()">
+
+                ⏸️ Pause tout le monde
+
+            </button>
+
+            <button
+                onclick="playEveryone()">
+
+                ▶️ Reprendre tout le monde
+
             </button>
 
         </div>
 
+        <div
+            id="syncStatus"
+            class="sync-status">
+
+            🟢 Synchronisation active
+
+        </div>
+
     </div>
+
+
+    <!-- INVITE -->
+
+    <div
+        id="guestInfo"
+        class="control-info hidden">
+
+        👀 Tu regardes la vidéo de l'hôte.
+        <br>
+        La lecture, la pause et la position sont synchronisées automatiquement.
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CHAT JUSTE SOUS VIDEO
+========================= -->
+
+<div class="card chat-card">
+
+    <h2>💬 Discussion</h2>
+
+    <div
+        id="chat"
+        class="chat">
+    </div>
+
+    <div class="form">
+
+        <input
+            id="chatInput"
+            placeholder="Écris un message..."
+            maxlength="300"
+            autocomplete="off">
+
+        <button onclick="sendChat()">
+
+            Envoyer
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     INVITES / PARTICIPANTS
+========================= -->
+
+<div class="card">
+
+    <h2>👥 Dans la salle</h2>
+
+    <div
+        id="userList"
+        class="user-list">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CHANGER DE VIDEO
+========================= -->
+
+<div
+    class="card"
+    id="videoControls">
+
+    <h2>🎥 Changer de vidéo</h2>
+
+    <input
+        id="newVideo"
+        placeholder="Colle un lien YouTube..."
+        autocomplete="off">
+
+    <br>
+
+    <button
+        class="full"
+        onclick="changeVideo()">
+
+        ▶️ Charger la vidéo pour tout le monde
+
+    </button>
+
+</div>
+
+
+<!-- =========================
+     LIEN VIDEO
+========================= -->
+
+<div class="card">
+
+    <h2>🔗 Inviter quelqu'un</h2>
+
+    <p
+        style="color:#999;font-size:13px;line-height:1.5;margin-bottom:12px;">
+
+        Envoie simplement le lien de cette salle à tes amis.
+        Ils choisissent leur propre pseudo en entrant.
+
+    </p>
+
+    <button
+        class="full"
+        onclick="copyRoomLink()">
+
+        📋 Copier le lien de la salle
+
+    </button>
+
+</div>
+
 
 </section>
 
@@ -718,21 +667,21 @@ button:disabled {
 
 <script>
 
-/* ============================================================
-   CONFIGURATION
-============================================================ */
+/* =========================================================
+   VARIABLES
+========================================================= */
 
-const PEER_PREFIX = "wever-";
+const PEER_PREFIX = "wt-";
 
 let peer = null;
+
+let isHost = false;
 
 let roomId = null;
 
 let myId = null;
 
 let myName = "";
-
-let isHost = false;
 
 let hostConnection = null;
 
@@ -746,34 +695,18 @@ let player = null;
 
 let playerReady = false;
 
-
-/*
-    Empêche qu'un événement reçu de l'hôte
-    soit renvoyé immédiatement.
-*/
-
 let applyingRemoteState = false;
 
+let syncTimer = null;
 
-/*
-    Évite les doubles événements.
-*/
+let lastHostTime = 0;
 
-let lastSentState = null;
-
-let lastSentTime = 0;
+let lastHostState = 2;
 
 
-/*
-    Timer de synchronisation.
-*/
-
-let syncInterval = null;
-
-
-/* ============================================================
+/* =========================================================
    ELEMENTS
-============================================================ */
+========================================================= */
 
 const home =
     document.getElementById("home");
@@ -788,13 +721,13 @@ const toastElement =
     document.getElementById("toast");
 
 
-/* ============================================================
+/* =========================================================
    TOAST
-============================================================ */
+========================================================= */
 
 let toastTimeout;
 
-function toast(message) {
+function toast(message){
 
     clearTimeout(toastTimeout);
 
@@ -819,11 +752,11 @@ function toast(message) {
 }
 
 
-/* ============================================================
+/* =========================================================
    STATUS
-============================================================ */
+========================================================= */
 
-function setStatus(text) {
+function setStatus(text){
 
     statusElement.textContent =
         text;
@@ -831,22 +764,22 @@ function setStatus(text) {
 }
 
 
-/* ============================================================
+/* =========================================================
    ROOM ID
-============================================================ */
+========================================================= */
 
-function generateRoomId() {
+function generateRoomId(){
 
     const chars =
         "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
     let result = "";
 
-    for (
+    for(
         let i = 0;
         i < 6;
         i++
-    ) {
+    ){
 
         result +=
             chars[
@@ -862,135 +795,107 @@ function generateRoomId() {
 }
 
 
-/* ============================================================
+/* =========================================================
    YOUTUBE ID
-============================================================ */
+========================================================= */
 
-function getYouTubeId(value) {
+function getYouTubeId(value){
 
-    if (!value) {
-        return null;
-    }
+    if(!value) return null;
 
     value =
         value.trim();
 
-    try {
+    try{
 
         const url =
             new URL(value);
 
         const host =
             url.hostname
-                .replace("www.", "")
-                .replace("m.", "");
+                .replace("www.","")
+                .replace("m.","");
 
-
-        /* youtu.be */
-
-        if (
+        if(
             host === "youtu.be"
-        ) {
+        ){
 
-            return (
-                url.pathname
-                    .split("/")
-                    .filter(Boolean)[0]
-                || null
-            );
+            return url.pathname
+                .split("/")
+                .filter(Boolean)[0]
+                || null;
 
         }
 
-
-        /* youtube.com */
-
-        if (
+        if(
             host === "youtube.com" ||
             host === "youtube-nocookie.com"
-        ) {
+        ){
 
-            /* watch?v= */
-
-            if (
+            if(
                 url.pathname ===
                 "/watch"
-            ) {
+            ){
 
-                return url.searchParams.get(
-                    "v"
-                );
+                return url.searchParams
+                    .get("v");
 
             }
 
-
-            /* shorts */
-
-            if (
+            if(
                 url.pathname.startsWith(
                     "/shorts/"
                 )
-            ) {
+            ){
 
-                return (
-                    url.pathname
-                        .split("/")[2]
-                    || null
-                );
+                return url.pathname
+                    .split("/")[2]
+                    || null;
 
             }
 
-
-            /* embed */
-
-            if (
+            if(
                 url.pathname.startsWith(
                     "/embed/"
                 )
-            ) {
+            ){
 
-                return (
-                    url.pathname
-                        .split("/")[2]
-                    || null
-                );
+                return url.pathname
+                    .split("/")[2]
+                    || null;
 
             }
 
         }
 
-    } catch (error) {
-
-        return null;
-
-    }
+    }catch(e){}
 
     return null;
 }
 
 
-/* ============================================================
-   CREER UNE SALLE
-============================================================ */
+/* =========================================================
+   CREER SALLE
+========================================================= */
 
-function createRoom() {
+function createRoom(){
 
     const name =
-        document.getElementById(
-            "hostName"
-        ).value.trim();
+        document
+            .getElementById("hostName")
+            .value
+            .trim();
 
-
-    const videoURL =
-        document.getElementById(
-            "initialVideo"
-        ).value.trim();
-
+    const url =
+        document
+            .getElementById("initialVideo")
+            .value
+            .trim();
 
     const videoId =
-        getYouTubeId(videoURL);
+        getYouTubeId(url);
 
-
-    if (!name) {
+    if(!name){
 
         toast(
             "Choisis ton pseudo."
@@ -999,8 +904,7 @@ function createRoom() {
         return;
     }
 
-
-    if (!videoId) {
+    if(!videoId){
 
         toast(
             "Entre un lien YouTube valide."
@@ -1009,66 +913,47 @@ function createRoom() {
         return;
     }
 
-
     myName =
-        name.substring(
-            0,
-            20
-        );
-
+        name.substring(0,20);
 
     localStorage.setItem(
-        "weverName",
+        "watchTogetherName",
         myName
     );
-
 
     currentVideoId =
         videoId;
 
-
     roomId =
         generateRoomId();
 
-
     isHost = true;
 
-
     setStatus(
-        "🟡 Création de la salle..."
+        "🟡 Création..."
     );
-
-
-    /*
-        L'hôte utilise l'identifiant
-        de la salle comme Peer ID.
-    */
 
     peer =
         new Peer(
-            PEER_PREFIX + roomId
+            PEER_PREFIX +
+            roomId
         );
-
 
     peer.on(
         "open",
-        function(id) {
+        function(id){
 
             myId = id;
 
-
             users[myId] = {
 
-                name:
-                    myName,
+                name:myName,
 
-                host:
-                    true
+                host:true
 
             };
 
-
-            updateURL();
+            updateRoomURL();
 
             openRoom();
 
@@ -1076,122 +961,101 @@ function createRoom() {
                 "🟢 Salle en ligne"
             );
 
-
             loadYouTubeAPI();
 
         }
     );
-
 
     peer.on(
         "connection",
         handleIncomingConnection
     );
 
-
     peer.on(
         "error",
         handlePeerError
     );
-
 }
 
 
-/* ============================================================
-   REJOINDRE
-============================================================ */
+/* =========================================================
+   REJOINDRE SALLE
+========================================================= */
 
-function joinRoom() {
+function joinRoom(){
 
-    let savedName =
+    let name =
         localStorage.getItem(
-            "weverName"
+            "watchTogetherName"
         );
 
+    if(!name){
 
-    if (!savedName) {
-
-        savedName =
+        name =
             prompt(
-                "Choisis ton pseudo"
-            ) || "Invité";
+                "Choisis ton pseudo :"
+            ) || "";
 
     }
 
-
     myName =
-        savedName
+        name
             .trim()
-            .substring(
-                0,
-                20
-            ) ||
-        "Invité";
+            .substring(0,20);
 
+    if(!myName){
+
+        myName =
+            "Invité";
+
+    }
 
     localStorage.setItem(
-        "weverName",
+        "watchTogetherName",
         myName
     );
 
-
-    document.getElementById(
-        "myPseudo"
-    ).value =
-        myName;
-
-
     isHost = false;
-
 
     setStatus(
         "🟡 Connexion..."
     );
 
-
     peer =
         new Peer();
 
-
     peer.on(
         "open",
-        function(id) {
+        function(id){
 
             myId = id;
-
 
             hostConnection =
                 peer.connect(
                     PEER_PREFIX +
                     roomId,
                     {
-                        reliable: true
+                        reliable:true
                     }
                 );
 
-
             hostConnection.on(
                 "open",
-                function() {
+                function(){
 
                     setStatus(
                         "🟢 Connecté"
                     );
 
-
                     hostConnection.send({
 
-                        type:
-                            "hello",
+                        type:"hello",
 
-                        name:
-                            myName,
+                        name:myName,
 
-                        id:
-                            myId
+                        id:myId
 
                     });
-
 
                     openRoom();
 
@@ -1200,22 +1064,14 @@ function joinRoom() {
                 }
             );
 
-
             hostConnection.on(
                 "data",
-                function(data) {
-
-                    handleClientMessage(
-                        data
-                    );
-
-                }
+                handleClientMessage
             );
-
 
             hostConnection.on(
                 "close",
-                function() {
+                function(){
 
                     setStatus(
                         "🔴 Hôte déconnecté"
@@ -1231,32 +1087,27 @@ function joinRoom() {
         }
     );
 
-
     peer.on(
         "error",
         handlePeerError
     );
-
 }
 
 
-/* ============================================================
-   CONNEXION D'UN INVITE
-============================================================ */
+/* =========================================================
+   CONNEXION INVITE
+========================================================= */
 
-function handleIncomingConnection(
-    conn
-) {
+function handleIncomingConnection(conn){
 
     connections.set(
         conn.peer,
         conn
     );
 
-
     conn.on(
         "data",
-        function(data) {
+        function(data){
 
             handleHostMessage(
                 conn,
@@ -1266,38 +1117,32 @@ function handleIncomingConnection(
         }
     );
 
-
     conn.on(
         "close",
-        function() {
+        function(){
 
             const id =
+                conn.userId ||
                 conn.peer;
 
-
             connections.delete(
-                id
+                conn.peer
             );
-
 
             delete users[id];
 
-
             broadcastUsers();
-
-            updateUsers();
 
         }
     );
-
 }
 
 
-/* ============================================================
-   OUVRIR INTERFACE
-============================================================ */
+/* =========================================================
+   OPEN ROOM
+========================================================= */
 
-function openRoom() {
+function openRoom(){
 
     home.classList.add(
         "hidden"
@@ -1307,297 +1152,247 @@ function openRoom() {
         "hidden"
     );
 
+    document
+        .getElementById("roomCode")
+        .textContent =
+            roomId;
 
-    document.getElementById(
-        "roomCode"
-    ).textContent =
-        roomId;
+    document
+        .getElementById("shareLink")
+        .value =
+            createRoomLink();
 
+    if(isHost){
 
-    document.getElementById(
-        "shareLink"
-    ).value =
-        createRoomLink();
+        document
+            .getElementById(
+                "hostControls"
+            )
+            .classList.remove(
+                "hidden"
+            );
 
+        document
+            .getElementById(
+                "guestInfo"
+            )
+            .classList.add(
+                "hidden"
+            );
 
-    document.getElementById(
-        "myPseudo"
-    ).value =
-        myName;
+        document
+            .getElementById(
+                "videoControls"
+            )
+            .classList.remove(
+                "hidden"
+            );
 
+    }else{
 
-    if (isHost) {
+        document
+            .getElementById(
+                "hostControls"
+            )
+            .classList.add(
+                "hidden"
+            );
 
-        document.getElementById(
-            "hostControls"
-        ).classList.remove(
-            "hidden"
-        );
+        document
+            .getElementById(
+                "guestInfo"
+            )
+            .classList.remove(
+                "hidden"
+            );
 
-
-        document.getElementById(
-            "guestInfo"
-        ).classList.add(
-            "hidden"
-        );
-
-
-        document.getElementById(
-            "videoControls"
-        ).classList.remove(
-            "hidden"
-        );
-
-    } else {
-
-        document.getElementById(
-            "hostControls"
-        ).classList.add(
-            "hidden"
-        );
-
-
-        document.getElementById(
-            "guestInfo"
-        ).classList.remove(
-            "hidden"
-        );
-
-
-        /*
-            Un invité ne peut pas
-            changer la vidéo.
-        */
-
-        document.getElementById(
-            "videoControls"
-        ).classList.add(
-            "hidden"
-        );
+        document
+            .getElementById(
+                "videoControls"
+            )
+            .classList.add(
+                "hidden"
+            );
 
     }
 
-
     updateUsers();
-
 }
 
 
-/* ============================================================
-   URL SALLE
-============================================================ */
+/* =========================================================
+   ROOM LINK
+========================================================= */
 
-function createRoomLink() {
+function createRoomLink(){
 
     return (
         window.location.origin +
         window.location.pathname +
         "?room=" +
-        encodeURIComponent(
-            roomId
-        )
+        encodeURIComponent(roomId)
     );
 
 }
 
-
-function updateURL() {
+function updateRoomURL(){
 
     window.history.replaceState(
         {},
         "",
         "?room=" +
-        encodeURIComponent(
-            roomId
-        )
+        encodeURIComponent(roomId)
     );
 
 }
 
 
-/* ============================================================
+/* =========================================================
    YOUTUBE API
-============================================================ */
+========================================================= */
 
-function loadYouTubeAPI() {
+function loadYouTubeAPI(){
 
-    if (
+    if(
         window.YT &&
         window.YT.Player
-    ) {
+    ){
 
         createPlayer();
 
         return;
-
     }
 
-
-    if (
+    if(
         document.getElementById(
-            "youtube-api"
+            "youtube-api-script"
         )
-    ) {
+    ){
 
         return;
-
     }
-
 
     const script =
         document.createElement(
             "script"
         );
 
-
     script.id =
-        "youtube-api";
-
+        "youtube-api-script";
 
     script.src =
         "https://www.youtube.com/iframe_api";
 
-
     document.head.appendChild(
         script
     );
-
 }
 
 
 window.onYouTubeIframeAPIReady =
-    function() {
+    function(){
 
         createPlayer();
 
     };
 
 
-/* ============================================================
-   CREER PLAYER
-============================================================ */
+/* =========================================================
+   PLAYER
+========================================================= */
 
-function createPlayer() {
+function createPlayer(){
 
-    if (!currentVideoId) {
+    if(!currentVideoId)
         return;
-    }
 
-
-    if (player) {
+    if(player){
 
         applyingRemoteState =
             true;
-
 
         player.loadVideoById(
             currentVideoId
         );
 
-
         setTimeout(
-            function() {
+            () => {
 
                 applyingRemoteState =
                     false;
 
             },
-            1000
+            800
         );
-
 
         return;
     }
-
 
     player =
         new YT.Player(
             "player",
             {
 
-                width:
-                    "100%",
+                width:"100%",
 
-                height:
-                    "100%",
+                height:"100%",
 
                 videoId:
                     currentVideoId,
 
+                playerVars:{
 
-                playerVars: {
-
-                    autoplay:
-                        0,
+                    autoplay:0,
 
                     controls:
                         isHost ? 1 : 0,
 
-                    rel:
-                        0,
+                    rel:0,
 
-                    playsinline:
-                        1,
+                    playsinline:1,
 
-                    modestbranding:
-                        1
+                    modestbranding:1,
+
+                    iv_load_policy:3
 
                 },
 
+                events:{
 
-                events: {
+                    onReady:function(){
 
-                    onReady:
-                        function() {
+                        playerReady =
+                            true;
 
-                            playerReady =
-                                true;
+                        document
+                            .getElementById(
+                                "videoEmpty"
+                            )
+                            .classList.add(
+                                "hidden"
+                            );
 
+                        if(
+                            !isHost &&
+                            hostConnection &&
+                            hostConnection.open
+                        ){
 
-                            document
-                                .getElementById(
-                                    "videoEmpty"
-                                )
-                                .classList.add(
-                                    "hidden"
-                                );
+                            hostConnection.send({
 
+                                type:
+                                    "requestState"
 
-                            if (
-                                isHost
-                            ) {
+                            });
 
-                                startSync();
+                        }
 
-                            } else {
+                        startSyncTimer();
 
-                                /*
-                                    Demande immédiate
-                                    de l'état actuel.
-                                */
-
-                                if (
-                                    hostConnection &&
-                                    hostConnection.open
-                                ) {
-
-                                    hostConnection.send({
-
-                                        type:
-                                            "requestState"
-
-                                    });
-
-                                }
-
-                            }
-
-                        },
-
+                    },
 
                     onStateChange:
                         handlePlayerState,
-
 
                     onError:
                         handleYouTubeError
@@ -1606,76 +1401,76 @@ function createPlayer() {
 
             }
         );
-
 }
 
 
-/* ============================================================
-   ETAT PLAYER
-============================================================ */
+/* =========================================================
+   PLAYER STATE
+========================================================= */
 
-function handlePlayerState(
-    event
-) {
+function handlePlayerState(event){
 
-    if (!playerReady) {
+    if(!playerReady)
         return;
-    }
 
+    if(applyingRemoteState)
+        return;
+
+    if(!isHost)
+        return;
+
+    const state =
+        getPlayerState();
+
+    lastHostState =
+        state.state;
+
+    lastHostTime =
+        state.time;
 
     /*
-        Si l'action vient de l'hôte,
-        on ne la renvoie pas.
+       ENVOI IMMEDIAT :
+
+       play
+       pause
+       fin
+       changement de position
     */
 
-    if (applyingRemoteState) {
-        return;
-    }
+    broadcast({
 
+        type:"sync",
 
-    /*
-        SEUL L'HÔTE diffuse
-        l'état de la vidéo.
-    */
+        state:
+            state.state,
 
-    if (!isHost) {
-        return;
-    }
+        time:
+            state.time,
 
+        videoId:
+            currentVideoId
 
-    sendVideoState(
-        true
-    );
-
+    });
 }
 
 
-/* ============================================================
-   ETAT VIDEO
-============================================================ */
+/* =========================================================
+   GET STATE
+========================================================= */
 
-function getVideoState() {
+function getPlayerState(){
 
-    if (
-        !player ||
-        !playerReady
-    ) {
+    if(
+        !playerReady ||
+        !player
+    ){
 
         return {
-
-            state:
-                2,
-
-            time:
-                0,
-
-            videoId:
-                currentVideoId
-
+            state:2,
+            time:0
         };
 
     }
-
 
     return {
 
@@ -1683,417 +1478,471 @@ function getVideoState() {
             player.getPlayerState(),
 
         time:
-            player.getCurrentTime(),
-
-        videoId:
-            currentVideoId
+            player.getCurrentTime()
 
     };
-
 }
 
 
-/* ============================================================
-   ENVOYER ETAT
-============================================================ */
+/* =========================================================
+   SYNCHRO AUTOMATIQUE
+========================================================= */
 
-function sendVideoState(
-    force = false
-) {
+function startSyncTimer(){
 
-    if (!isHost) {
-        return;
-    }
-
-
-    if (
-        !player ||
-        !playerReady
-    ) {
-
-        return;
-    }
-
-
-    const state =
-        getVideoState();
-
-
-    const now =
-        Date.now();
-
-
-    /*
-        Évite de spammer PeerJS.
-    */
-
-    if (
-        !force &&
-        state.state ===
-            lastSentState &&
-        Math.abs(
-            state.time -
-            lastSentTime
-        ) < 0.4 &&
-        now -
-            lastBroadcast <
-            500
-    ) {
-
-        return;
-
-    }
-
-
-    lastSentState =
-        state.state;
-
-
-    lastSentTime =
-        state.time;
-
-
-    lastBroadcast =
-        now;
-
-
-    broadcast({
-
-        type:
-            "videoState",
-
-        videoId:
-            state.videoId,
-
-        state:
-            state.state,
-
-        time:
-            state.time
-
-    });
-
-}
-
-
-/* ============================================================
-   SYNCHRONISATION PERIODIQUE
-============================================================ */
-
-function startSync() {
-
-    if (syncInterval) {
+    if(syncTimer){
 
         clearInterval(
-            syncInterval
+            syncTimer
         );
 
     }
 
-
-    syncInterval =
+    syncTimer =
         setInterval(
-            function() {
+            function(){
 
-                if (
-                    !isHost ||
-                    !playerReady
-                ) {
-
+                if(!isHost)
                     return;
+
+                if(!playerReady)
+                    return;
+
+                const state =
+                    getPlayerState();
+
+                /*
+                   Si l'hôte a avancé ou reculé
+                   dans la vidéo.
+                */
+
+                if(
+                    Math.abs(
+                        state.time -
+                        lastHostTime
+                    ) > 1
+                ){
+
+                    broadcast({
+
+                        type:"sync",
+
+                        state:
+                            state.state,
+
+                        time:
+                            state.time,
+
+                        videoId:
+                            currentVideoId
+
+                    });
 
                 }
 
-
                 /*
-                    Toutes les 2 secondes,
-                    on corrige les décalages.
+                   Si play/pause change.
                 */
 
-                sendVideoState(
-                    true
-                );
+                if(
+                    state.state !==
+                    lastHostState
+                ){
+
+                    broadcast({
+
+                        type:"sync",
+
+                        state:
+                            state.state,
+
+                        time:
+                            state.time,
+
+                        videoId:
+                            currentVideoId
+
+                    });
+
+                }
+
+                lastHostState =
+                    state.state;
+
+                lastHostTime =
+                    state.time;
 
             },
-            2000
+            500
         );
-
 }
 
 
-/* ============================================================
-   APPLIQUER ETAT DISTANT
-============================================================ */
+/* =========================================================
+   PAUSE TOUT LE MONDE
+========================================================= */
 
-function applyRemoteState(
-    data
-) {
+function pauseEveryone(){
 
-    if (
-        !player ||
-        !playerReady
-    ) {
-
+    if(!isHost || !playerReady)
         return;
 
-    }
-
+    const time =
+        player.getCurrentTime();
 
     applyingRemoteState =
         true;
 
-
-    /*
-        Changement de vidéo.
-    */
-
-    if (
-        data.videoId &&
-        data.videoId !==
-            currentVideoId
-    ) {
-
-        currentVideoId =
-            data.videoId;
-
-
-        player.loadVideoById(
-            currentVideoId
-        );
-
-
-        setTimeout(
-            function() {
-
-                if (playerReady) {
-
-                    player.seekTo(
-                        Number(
-                            data.time || 0
-                        ),
-                        true
-                    );
-
-
-                    applyPlayState(
-                        data.state
-                    );
-
-                }
-
-
-                setTimeout(
-                    function() {
-
-                        applyingRemoteState =
-                            false;
-
-                    },
-                    400
-                );
-
-            },
-            900
-        );
-
-
-        return;
-    }
-
-
-    /*
-        Corriger la position.
-    */
-
-    const localTime =
-        player.getCurrentTime();
-
-
-    const remoteTime =
-        Number(
-            data.time || 0
-        );
-
-
-    const difference =
-        Math.abs(
-            localTime -
-            remoteTime
-        );
-
-
-    /*
-        Si le décalage est supérieur
-        à 0.5 seconde, on repositionne.
-    */
-
-    if (
-        difference >
-        0.5
-    ) {
-
-        player.seekTo(
-            remoteTime,
-            true
-        );
-
-    }
-
-
-    /*
-        Lecture / pause.
-    */
-
-    applyPlayState(
-        data.state
-    );
-
+    player.pauseVideo();
 
     setTimeout(
-        function() {
+        () => {
 
             applyingRemoteState =
                 false;
 
         },
-        500
+        300
     );
 
+    broadcast({
+
+        type:"sync",
+
+        state:2,
+
+        time:time,
+
+        videoId:
+            currentVideoId
+
+    });
+
+    lastHostState = 2;
+
+    lastHostTime = time;
+
+    document
+        .getElementById(
+            "syncStatus"
+        )
+        .textContent =
+            "⏸️ Tout le monde est en pause";
 }
 
 
-/* ============================================================
-   PLAY / PAUSE
-============================================================ */
+/* =========================================================
+   PLAY TOUT LE MONDE
+========================================================= */
 
-function applyPlayState(
-    state
-) {
+function playEveryone(){
 
-    if (!player) {
+    if(!isHost || !playerReady)
+        return;
+
+    const time =
+        player.getCurrentTime();
+
+    applyingRemoteState =
+        true;
+
+    player.playVideo();
+
+    setTimeout(
+        () => {
+
+            applyingRemoteState =
+                false;
+
+        },
+        300
+    );
+
+    broadcast({
+
+        type:"sync",
+
+        state:1,
+
+        time:time,
+
+        videoId:
+            currentVideoId
+
+    });
+
+    lastHostState = 1;
+
+    lastHostTime = time;
+
+    document
+        .getElementById(
+            "syncStatus"
+        )
+        .textContent =
+            "▶️ Tout le monde regarde";
+}
+
+
+/* =========================================================
+   APPLY REMOTE STATE
+========================================================= */
+
+function applyRemoteState(
+    state,
+    time,
+    videoId
+){
+
+    if(
+        !playerReady ||
+        !player
+    )
+        return;
+
+    applyingRemoteState =
+        true;
+
+    /*
+       Nouvelle vidéo
+    */
+
+    if(
+        videoId &&
+        videoId !==
+        currentVideoId
+    ){
+
+        currentVideoId =
+            videoId;
+
+        player.loadVideoById(
+            videoId
+        );
+
+        setTimeout(
+            function(){
+
+                if(playerReady){
+
+                    player.seekTo(
+                        Number(time) || 0,
+                        true
+                    );
+
+                    applyPlayPause(
+                        state
+                    );
+
+                }
+
+                applyingRemoteState =
+                    false;
+
+            },
+            900
+        );
+
         return;
     }
 
-
     /*
-        1 = PLAYING
+       Correction position
     */
 
-    if (
-        Number(state) === 1
-    ) {
+    const localTime =
+        player.getCurrentTime();
 
-        player.playVideo();
+    const difference =
+        Math.abs(
+            localTime -
+            Number(time || 0)
+        );
+
+    if(
+        difference > 0.5
+    ){
+
+        player.seekTo(
+            Number(time) || 0,
+            true
+        );
 
     }
 
+    applyPlayPause(
+        state
+    );
 
-    /*
-        2 = PAUSED
-    */
+    setTimeout(
+        function(){
 
-    else if (
-        Number(state) === 2
-    ) {
+            applyingRemoteState =
+                false;
 
-        player.pauseVideo();
-
-    }
-
-
-    /*
-        0 = ENDED
-    */
-
-    else if (
-        Number(state) === 0
-    ) {
-
-        player.pauseVideo();
-
-    }
-
+        },
+        350
+    );
 }
 
 
-/* ============================================================
-   MESSAGE HOTE
-============================================================ */
+/* =========================================================
+   PLAY / PAUSE DISTANT
+========================================================= */
+
+function applyPlayPause(state){
+
+    if(!player)
+        return;
+
+    if(
+        Number(state) === 1
+    ){
+
+        player.playVideo();
+
+    }else if(
+        Number(state) === 2 ||
+        Number(state) === 0
+    ){
+
+        player.pauseVideo();
+
+    }
+}
+
+
+/* =========================================================
+   ROOM STATE
+========================================================= */
+
+function sendRoomState(conn){
+
+    if(!isHost)
+        return;
+
+    const state =
+        getPlayerState();
+
+    conn.send({
+
+        type:"roomState",
+
+        videoId:
+            currentVideoId,
+
+        state:
+            state.state,
+
+        time:
+            state.time,
+
+        users:
+            users
+
+    });
+}
+
+
+/* =========================================================
+   BROADCAST
+========================================================= */
+
+function broadcast(data){
+
+    connections.forEach(
+        function(conn){
+
+            if(
+                conn &&
+                conn.open
+            ){
+
+                try{
+
+                    conn.send(
+                        data
+                    );
+
+                }catch(e){
+
+                    console.error(e);
+
+                }
+
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   HOST MESSAGE
+========================================================= */
 
 function handleHostMessage(
     conn,
     data
-) {
+){
 
-    if (
+    if(
         !data ||
         !data.type
-    ) {
-
+    )
         return;
 
-    }
+    /*
+       HELLO
+    */
 
-
-    /* HELLO */
-
-    if (
+    if(
         data.type ===
         "hello"
-    ) {
+    ){
 
         const id =
             data.id ||
             conn.peer;
 
-
         users[id] = {
 
             name:
-                String(
-                    data.name ||
-                    "Invité"
-                )
-                .substring(
-                    0,
-                    20
-                ),
+                data.name ||
+                "Invité",
 
-            host:
-                false
+            host:false
 
         };
 
-
         conn.userId =
             id;
-
 
         updateUsers();
 
         broadcastUsers();
 
-
         /*
-            Envoyer immédiatement
-            la vidéo actuelle.
+           Envoyer immédiatement
+           la vidéo + position + état.
         */
 
         sendRoomState(
             conn
         );
 
-
         return;
     }
 
 
-    /* DEMANDE ETAT */
+    /*
+       DEMANDE DE SYNCHRO
+    */
 
-    if (
+    if(
         data.type ===
         "requestState"
-    ) {
+    ){
 
         sendRoomState(
             conn
@@ -2103,26 +1952,22 @@ function handleHostMessage(
     }
 
 
-    /* CHAT */
+    /*
+       CHAT
+    */
 
-    if (
+    if(
         data.type ===
         "chat"
-    ) {
+    ){
 
         const message = {
 
-            type:
-                "chat",
+            type:"chat",
 
             name:
-                String(
-                    data.name ||
-                    "Invité"
-                ).substring(
-                    0,
-                    20
-                ),
+                data.name ||
+                "Invité",
 
             message:
                 String(
@@ -2139,10 +1984,9 @@ function handleHostMessage(
 
         };
 
-
-        /*
-            Affichage chez l'hôte.
-        */
+        broadcast(
+            message
+        );
 
         addMessage(
             message.name,
@@ -2150,402 +1994,215 @@ function handleHostMessage(
             false
         );
 
-
-        /*
-            Envoi à tous les autres.
-        */
-
-        connections.forEach(
-            function(other) {
-
-                if (
-                    other !== conn &&
-                    other.open
-                ) {
-
-                    other.send(
-                        message
-                    );
-
-                }
-
-            }
-        );
-
-
-        return;
     }
-
-
-    /* CHANGEMENT PSEUDO */
-
-    if (
-        data.type ===
-        "changeName"
-    ) {
-
-        const id =
-            data.id ||
-            conn.peer;
-
-
-        if (
-            users[id]
-        ) {
-
-            users[id].name =
-                String(
-                    data.name ||
-                    "Invité"
-                ).substring(
-                    0,
-                    20
-                );
-
-        }
-
-
-        broadcastUsers();
-
-        return;
-    }
-
 }
 
 
-/* ============================================================
-   MESSAGE CLIENT
-============================================================ */
+/* =========================================================
+   CLIENT MESSAGE
+========================================================= */
 
-function handleClientMessage(
-    data
-) {
+function handleClientMessage(data){
 
-    if (
+    if(
         !data ||
         !data.type
-    ) {
-
+    )
         return;
 
-    }
 
+    /*
+       Etat initial
+    */
 
-    /* ETAT SALLE */
-
-    if (
+    if(
         data.type ===
         "roomState"
-    ) {
+    ){
 
         currentVideoId =
             data.videoId;
 
+        users =
+            data.users ||
+            {};
 
-        updateUsersFromServer(
-            data.users
-        );
+        updateUsers();
 
+        if(playerReady){
 
-        if (
-            playerReady
-        ) {
+            applyRemoteState(
 
-            applyRemoteState({
+                data.state,
 
-                videoId:
-                    data.videoId,
+                data.time,
 
-                state:
-                    data.state,
+                data.videoId
 
-                time:
-                    data.time
+            );
 
-            });
-
-        } else {
+        }else{
 
             loadYouTubeAPI();
 
         }
 
-
         return;
     }
-
-
-    /* VIDEO */
-
-    if (
-        data.type ===
-        "videoState"
-    ) {
-
-        applyRemoteState({
-
-            videoId:
-                data.videoId,
-
-            state:
-                data.state,
-
-            time:
-                data.time
-
-        });
-
-
-        return;
-    }
-
-
-    /* USERS */
-
-    if (
-        data.type ===
-        "users"
-    ) {
-
-        updateUsersFromServer(
-            data.users
-        );
-
-        return;
-    }
-
-
-    /* CHAT */
-
-    if (
-        data.type ===
-        "chat"
-    ) {
-
-        addMessage(
-            data.name,
-            data.message,
-            data.sender === myId
-        );
-
-        return;
-    }
-
-}
-
-
-/* ============================================================
-   ETAT SALLE
-============================================================ */
-
-function sendRoomState(
-    conn
-) {
-
-    if (!isHost) {
-        return;
-    }
-
-
-    const state =
-        getVideoState();
-
-
-    conn.send({
-
-        type:
-            "roomState",
-
-        videoId:
-            state.videoId,
-
-        state:
-            state.state,
-
-        time:
-            state.time,
-
-        users:
-            users
-
-    });
-
-}
-
-
-/* ============================================================
-   BROADCAST
-============================================================ */
-
-function broadcast(
-    data
-) {
-
-    connections.forEach(
-        function(conn) {
-
-            if (
-                conn &&
-                conn.open
-            ) {
-
-                try {
-
-                    conn.send(
-                        data
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        error
-                    );
-
-                }
-
-            }
-
-        }
-    );
-
-}
-
-
-/* ============================================================
-   USERS
-============================================================ */
-
-function broadcastUsers() {
-
-    if (!isHost) {
-        return;
-    }
-
-
-    broadcast({
-
-        type:
-            "users",
-
-        users:
-            users
-
-    });
-
-
-    updateUsers();
-
-}
-
-
-function updateUsersFromServer(
-    serverUsers
-) {
-
-    if (!serverUsers) {
-        return;
-    }
-
-
-    users =
-        serverUsers;
 
 
     /*
-        Sécurité :
-        ajouter l'utilisateur local
-        si nécessaire.
+       SYNCHRONISATION
     */
 
-    if (
-        !users[myId]
-    ) {
+    if(
+        data.type ===
+        "sync"
+    ){
 
-        users[myId] = {
+        applyRemoteState(
 
-            name:
-                myName,
+            data.state,
 
-            host:
-                false
+            data.time,
 
-        };
+            data.videoId
 
+        );
+
+        return;
     }
 
 
-    updateUsers();
+    /*
+       UTILISATEURS
+    */
+
+    if(
+        data.type ===
+        "users"
+    ){
+
+        users =
+            data.users ||
+            {};
+
+        if(!users[myId]){
+
+            users[myId] = {
+
+                name:myName,
+
+                host:false
+
+            };
+
+        }
+
+        updateUsers();
+
+        return;
+    }
+
+
+    /*
+       CHAT
+    */
+
+    if(
+        data.type ===
+        "chat"
+    ){
+
+        addMessage(
+
+            data.name,
+
+            data.message,
+
+            data.sender === myId
+
+        );
+
+    }
 
 }
 
 
-function updateUsers() {
+/* =========================================================
+   USERS
+========================================================= */
+
+function broadcastUsers(){
+
+    if(!isHost)
+        return;
+
+    broadcast({
+
+        type:"users",
+
+        users:
+            users
+
+    });
+
+    updateUsers();
+}
+
+
+function updateUsers(){
 
     const list =
         document.getElementById(
             "userList"
         );
 
-
-    list.innerHTML =
-        "";
-
+    list.innerHTML = "";
 
     const entries =
         Object.entries(
             users
         );
 
-
-    if (
+    if(
         entries.length === 0
-    ) {
+    ){
 
         return;
 
     }
 
-
     entries.forEach(
-        function([
-            id,
-            user
-        ]) {
+        ([id,user]) => {
 
             const div =
                 document.createElement(
                     "div"
                 );
 
-
             div.className =
                 "user";
 
-
-            let text =
-                user.host
+            div.textContent =
+                (
+                    user.host
                     ? "👑 "
-                    : "👤 ";
+                    : "👤 "
+                ) +
+                (
+                    user.name ||
+                    "Invité"
+                );
 
-
-            text +=
-                user.name ||
-                "Invité";
-
-
-            if (
+            if(
                 id === myId
-            ) {
+            ){
 
-                text +=
+                div.textContent +=
                     " (toi)";
 
             }
-
-
-            div.textContent =
-                text;
-
 
             list.appendChild(
                 div
@@ -2554,169 +2211,132 @@ function updateUsers() {
         }
     );
 
-
     const count =
         entries.length;
 
-
-    document.getElementById(
-        "peopleCount"
-    ).textContent =
-        "👤 " +
-        count +
-        " personne" +
-        (
-            count > 1
+    document
+        .getElementById(
+            "peopleCount"
+        )
+        .textContent =
+            "👤 " +
+            count +
+            " personne" +
+            (
+                count > 1
                 ? "s"
                 : ""
-        );
-
+            );
 }
 
 
-/* ============================================================
+/* =========================================================
    CHANGER VIDEO
-============================================================ */
+========================================================= */
 
-function changeVideo() {
+function changeVideo(){
 
-    if (!isHost) {
+    if(!isHost){
 
         toast(
             "Seul l'hôte peut changer la vidéo."
         );
 
         return;
-
     }
-
 
     const input =
         document.getElementById(
             "newVideo"
         );
 
-
-    const videoId =
+    const id =
         getYouTubeId(
             input.value
         );
 
-
-    if (!videoId) {
+    if(!id){
 
         toast(
             "Lien YouTube invalide."
         );
 
         return;
-
     }
-
 
     currentVideoId =
-        videoId;
+        id;
 
+    applyingRemoteState =
+        true;
 
-    if (
-        playerReady
-    ) {
-
-        applyingRemoteState =
-            true;
-
+    if(playerReady){
 
         player.loadVideoById(
-            videoId
+            id
         );
-
-
-        /*
-            La vidéo démarre en pause
-            pour tout le monde.
-        */
-
-        setTimeout(
-            function() {
-
-                player.pauseVideo();
-
-                applyingRemoteState =
-                    false;
-
-
-                broadcast({
-
-                    type:
-                        "videoState",
-
-                    videoId:
-                        videoId,
-
-                    state:
-                        2,
-
-                    time:
-                        0
-
-                });
-
-            },
-            700
-        );
-
-    } else {
-
-        broadcast({
-
-            type:
-                "videoState",
-
-            videoId:
-                videoId,
-
-            state:
-                2,
-
-            time:
-                0
-
-        });
 
     }
 
+    setTimeout(
+        () => {
 
-    input.value =
-        "";
+            applyingRemoteState =
+                false;
 
+        },
+        900
+    );
+
+    /*
+       Tous les invités chargent
+       exactement la même vidéo.
+    */
+
+    broadcast({
+
+        type:"sync",
+
+        state:2,
+
+        time:0,
+
+        videoId:id
+
+    });
+
+    lastHostState = 2;
+
+    lastHostTime = 0;
+
+    input.value = "";
+
+    updateSyncStatus(
+        "🎬 Nouvelle vidéo chargée pour tout le monde"
+    );
 }
 
 
-/* ============================================================
+/* =========================================================
    CHAT
-============================================================ */
+========================================================= */
 
-function sendChat() {
+function sendChat(){
 
     const input =
         document.getElementById(
             "chatInput"
         );
 
-
     const message =
         input.value.trim();
 
-
-    if (!message) {
+    if(!message)
         return;
-    }
-
 
     const data = {
 
-        type:
-            "chat",
+        type:"chat",
 
         name:
             myName,
@@ -2732,52 +2352,30 @@ function sendChat() {
 
     };
 
-
-    /*
-        Afficher directement
-        chez nous.
-    */
-
     addMessage(
         myName,
         data.message,
         true
     );
 
-
-    if (isHost) {
-
-        /*
-            L'hôte envoie aux invités.
-        */
+    if(isHost){
 
         broadcast(
             data
         );
 
-    } else {
+    }else if(
+        hostConnection &&
+        hostConnection.open
+    ){
 
-        /*
-            L'invité envoie à l'hôte.
-        */
-
-        if (
-            hostConnection &&
-            hostConnection.open
-        ) {
-
-            hostConnection.send(
-                data
-            );
-
-        }
+        hostConnection.send(
+            data
+        );
 
     }
 
-
-    input.value =
-        "";
-
+    input.value = "";
 }
 
 
@@ -2785,213 +2383,95 @@ function addMessage(
     name,
     message,
     isMe
-) {
+){
 
     const chat =
         document.getElementById(
             "chat"
         );
 
-
     const div =
         document.createElement(
             "div"
         );
 
-
     div.className =
         "message" +
         (
             isMe
-                ? " me"
-                : ""
+            ? " me"
+            : ""
         );
-
 
     const nameElement =
         document.createElement(
             "span"
         );
 
-
     nameElement.className =
         "name";
-
 
     nameElement.textContent =
         name +
         " : ";
-
 
     const messageElement =
         document.createElement(
             "span"
         );
 
-
     messageElement.textContent =
         message;
-
 
     div.appendChild(
         nameElement
     );
 
-
     div.appendChild(
         messageElement
     );
-
 
     chat.appendChild(
         div
     );
 
-
     chat.scrollTop =
         chat.scrollHeight;
-
 }
 
 
-/* ============================================================
-   CHANGER PSEUDO
-============================================================ */
+/* =========================================================
+   SHARE
+========================================================= */
 
-function changePseudo() {
-
-    const input =
-        document.getElementById(
-            "myPseudo"
-        );
-
-
-    const newName =
-        input.value.trim();
-
-
-    if (!newName) {
-
-        toast(
-            "Entre un pseudo."
-        );
-
-        return;
-
-    }
-
-
-    myName =
-        newName.substring(
-            0,
-            20
-        );
-
-
-    localStorage.setItem(
-        "weverName",
-        myName
-    );
-
-
-    /*
-        Mettre à jour localement.
-    */
-
-    users[myId] = {
-
-        name:
-            myName,
-
-        host:
-            isHost
-
-    };
-
-
-    updateUsers();
-
-
-    /*
-        Prévenir l'hôte.
-    */
-
-    if (
-        !isHost &&
-        hostConnection &&
-        hostConnection.open
-    ) {
-
-        hostConnection.send({
-
-            type:
-                "changeName",
-
-            id:
-                myId,
-
-            name:
-                myName
-
-        });
-
-    }
-
-
-    /*
-        Si nous sommes l'hôte,
-        prévenir tout le monde.
-    */
-
-    if (isHost) {
-
-        broadcastUsers();
-
-    }
-
-
-    toast(
-        "Pseudo modifié."
-    );
-
-}
-
-
-/* ============================================================
-   PARTAGE
-============================================================ */
-
-async function shareRoom() {
+async function shareRoom(){
 
     const link =
         createRoomLink();
 
+    try{
 
-    try {
-
-        if (
+        if(
             navigator.share
-        ) {
+        ){
 
             await navigator.share({
 
                 title:
-                    "WEVER 🎬",
+                    "Rejoins ma Watch Party 🎬",
 
                 text:
-                    "Rejoins ma salle WEVER !",
+                    "Viens regarder une vidéo avec moi !",
 
                 url:
                     link
 
             });
 
-        } else {
+        }else{
 
             await navigator.clipboard
-                .writeText(
-                    link
-                );
+                .writeText(link);
 
             toast(
                 "Lien copié !"
@@ -2999,251 +2479,156 @@ async function shareRoom() {
 
         }
 
-    } catch (error) {
+    }catch(error){
 
-        if (
+        if(
             error.name !==
             "AbortError"
-        ) {
+        ){
 
-            try {
-
-                await navigator.clipboard
-                    .writeText(
-                        link
-                    );
-
-                toast(
-                    "Lien copié !"
-                );
-
-            } catch (e) {
-
-                toast(
-                    "Impossible de copier le lien."
-                );
-
-            }
+            copyRoomLink();
 
         }
 
     }
-
 }
 
 
-/* ============================================================
-   PEER ERROR
-============================================================ */
+async function copyRoomLink(){
 
-function handlePeerError(
-    error
-) {
+    try{
+
+        await navigator.clipboard
+            .writeText(
+                createRoomLink()
+            );
+
+        toast(
+            "Lien de la salle copié !"
+        );
+
+    }catch(e){
+
+        toast(
+            "Impossible de copier le lien."
+        );
+
+    }
+}
+
+
+/* =========================================================
+   SYNC STATUS
+========================================================= */
+
+function updateSyncStatus(text){
+
+    const element =
+        document.getElementById(
+            "syncStatus"
+        );
+
+    if(element){
+
+        element.textContent =
+            text;
+
+    }
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+function handlePeerError(error){
 
     console.error(
-        "PeerJS error:",
+        "PeerJS:",
         error
     );
 
-
-    if (
+    if(
         error.type ===
         "peer-unavailable"
-    ) {
+    ){
 
         toast(
             "La salle n'existe plus ou l'hôte est hors ligne."
         );
 
         return;
-
     }
 
-
-    if (
+    if(
         error.type ===
-        "network"
-    ) {
+        "unavailable-id"
+    ){
 
         toast(
-            "Problème réseau."
+            "Cette salle existe déjà."
         );
 
         return;
-
     }
-
 
     toast(
         "Erreur de connexion."
     );
-
 }
 
 
-/* ============================================================
-   YOUTUBE ERROR
-============================================================ */
-
-function handleYouTubeError(
-    event
-) {
+function handleYouTubeError(event){
 
     let message =
         "Impossible de lire cette vidéo.";
 
-
-    if (
+    if(
         event.data === 2
-    ) {
+    ){
 
         message =
             "Lien YouTube invalide.";
 
     }
 
-
-    if (
+    if(
         event.data === 5
-    ) {
+    ){
 
         message =
             "Cette vidéo ne peut pas être lue ici.";
 
     }
 
-
-    if (
+    if(
         event.data === 100
-    ) {
+    ){
 
         message =
-            "Cette vidéo n'existe plus ou est privée.";
+            "Cette vidéo est privée ou supprimée.";
 
     }
 
-
-    if (
+    if(
         event.data === 101 ||
         event.data === 150
-    ) {
+    ){
 
         message =
             "Cette vidéo interdit la lecture intégrée.";
 
     }
 
-
     toast(
         message
     );
-
 }
 
 
-/* ============================================================
-   ENTRÉE DANS UNE SALLE VIA URL
-============================================================ */
-
-window.addEventListener(
-    "load",
-    function() {
-
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-
-        const roomFromURL =
-            params.get(
-                "room"
-            );
-
-
-        /*
-            Pas de room :
-            on reste sur l'accueil.
-        */
-
-        if (!roomFromURL) {
-
-            const saved =
-                localStorage.getItem(
-                    "weverName"
-                );
-
-
-            if (saved) {
-
-                document.getElementById(
-                    "hostName"
-                ).value =
-                    saved;
-
-            }
-
-
-            return;
-
-        }
-
-
-        roomId =
-            roomFromURL
-                .toUpperCase()
-                .trim();
-
-
-        if (
-            !/^[A-Z0-9]{6}$/.test(
-                roomId
-            )
-        ) {
-
-            toast(
-                "Lien de salle invalide."
-            );
-
-            return;
-
-        }
-
-
-        /*
-            On rejoint automatiquement.
-        */
-
-        joinRoom();
-
-    }
-);
-
-
-/* ============================================================
-   SAUVEGARDE PSEUDO
-============================================================ */
-
-document
-    .getElementById(
-        "hostName"
-    )
-    .addEventListener(
-        "input",
-        function() {
-
-            localStorage.setItem(
-                "weverName",
-                this.value
-            );
-
-        }
-    );
-
-
-/* ============================================================
-   ENTER POUR LE CHAT
-============================================================ */
+/* =========================================================
+   ENTER CHAT
+========================================================= */
 
 document
     .getElementById(
@@ -3251,12 +2636,12 @@ document
     )
     .addEventListener(
         "keydown",
-        function(event) {
+        function(event){
 
-            if (
+            if(
                 event.key ===
                 "Enter"
-            ) {
+            ){
 
                 event.preventDefault();
 
@@ -3268,31 +2653,86 @@ document
     );
 
 
-/* ============================================================
-   ENTER POUR LE PSEUDO
-============================================================ */
+/* =========================================================
+   PSEUDO
+========================================================= */
 
 document
     .getElementById(
-        "myPseudo"
+        "hostName"
     )
     .addEventListener(
-        "keydown",
-        function(event) {
+        "input",
+        function(){
 
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                changePseudo();
-
-            }
+            localStorage.setItem(
+                "watchTogetherName",
+                this.value
+            );
 
         }
     );
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const roomFromURL =
+            params.get("room");
+
+        if(!roomFromURL){
+
+            const saved =
+                localStorage.getItem(
+                    "watchTogetherName"
+                );
+
+            if(saved){
+
+                document
+                    .getElementById(
+                        "hostName"
+                    )
+                    .value =
+                        saved;
+
+            }
+
+            return;
+        }
+
+        roomId =
+            roomFromURL
+                .toUpperCase()
+                .trim();
+
+        if(
+            !/^[A-Z0-9]{6}$/.test(
+                roomId
+            )
+        ){
+
+            toast(
+                "Lien de salle invalide."
+            );
+
+            return;
+        }
+
+        joinRoom();
+
+    }
+);
 
 </script>
 
