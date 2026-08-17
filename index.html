@@ -2,7 +2,13 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1,
+      maximum-scale=1,
+      user-scalable=no">
+
 <meta name="theme-color" content="#080808">
 
 <title>WatchTogether</title>
@@ -10,6 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -24,13 +31,14 @@ body{
     min-height:100vh;
 }
 
-button,input{
+button,
+input{
     font:inherit;
 }
 
 button{
-    border:0;
     cursor:pointer;
+    border:0;
 }
 
 .app{
@@ -42,8 +50,8 @@ button{
 
 header{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     gap:15px;
     margin-bottom:20px;
 }
@@ -51,6 +59,7 @@ header{
 .logo{
     font-size:25px;
     font-weight:800;
+    letter-spacing:-.5px;
 }
 
 .logo span{
@@ -108,13 +117,22 @@ button{
     background:#ff1744;
     color:#fff;
     font-weight:700;
+    transition:.15s;
+}
+
+button:active{
+    transform:scale(.97);
 }
 
 button.secondary{
     background:#292929;
 }
 
-.full{
+button.dark{
+    background:#1c1c1c;
+}
+
+button.full{
     width:100%;
 }
 
@@ -131,14 +149,20 @@ button.secondary{
     display:none!important;
 }
 
-/* ACCUEIL */
+
+/* =========================
+   ACCUEIL
+========================= */
 
 .home-icon{
     font-size:50px;
     margin-bottom:15px;
 }
 
-/* SALLE */
+
+/* =========================
+   SALLE
+========================= */
 
 .room-top{
     display:flex;
@@ -150,6 +174,7 @@ button.secondary{
 
 .room-code{
     display:inline-flex;
+    align-items:center;
     background:#202020;
     border-radius:9px;
     padding:9px 12px;
@@ -173,7 +198,14 @@ button.secondary{
     flex:1;
 }
 
-/* VIDEO */
+
+/* =========================
+   VIDEO
+========================= */
+
+.video-card{
+    margin-bottom:6px;
+}
 
 .video-wrapper{
     position:relative;
@@ -198,49 +230,24 @@ button.secondary{
     text-align:center;
     color:#777;
     background:#050505;
+    font-size:15px;
 }
 
 .host-label{
     display:block;
-    margin-top:12px;
-    color:#aaa;
-    font-size:13px;
-}
-
-.control-info{
-    margin-top:12px;
-    padding:11px 13px;
-    border-radius:10px;
-    background:#1c1517;
-    color:#ffb9c4;
-    font-size:13px;
-    line-height:1.4;
-}
-
-.sync-controls{
-    display:flex;
-    gap:10px;
-    margin-top:13px;
-}
-
-.sync-controls button{
-    flex:1;
-}
-
-.sync-status{
     margin-top:10px;
-    padding:10px;
-    border-radius:10px;
-    background:#191919;
-    color:#aaa;
+    color:#999;
     font-size:13px;
-    text-align:center;
 }
 
-/* CHAT */
+
+/* =========================
+   CHAT
+========================= */
 
 .chat-card{
     margin-top:0;
+    padding-top:15px;
 }
 
 .chat{
@@ -270,7 +277,63 @@ button.secondary{
     color:#ff4265;
 }
 
-/* USERS */
+
+/* =========================
+   CONTROLES SYNCHRO
+========================= */
+
+.sync-card{
+    margin-top:0;
+}
+
+.sync-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.sync-badge{
+    font-size:11px;
+    color:#8f8f8f;
+    background:#1d1d1d;
+    padding:6px 9px;
+    border-radius:999px;
+}
+
+.sync-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.sync-buttons button{
+    flex:1;
+}
+
+.sync-status{
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    background:#1a1a1a;
+    color:#999;
+    font-size:12px;
+    text-align:center;
+}
+
+.guest-sync{
+    padding:11px 13px;
+    border-radius:10px;
+    background:#1c1517;
+    color:#ffb9c4;
+    font-size:13px;
+    line-height:1.4;
+}
+
+
+/* =========================
+   PARTICIPANTS
+========================= */
 
 .user-list{
     display:flex;
@@ -285,7 +348,10 @@ button.secondary{
     font-size:13px;
 }
 
-/* TOAST */
+
+/* =========================
+   TOAST
+========================= */
 
 #toast{
     position:fixed;
@@ -294,7 +360,7 @@ button.secondary{
     transform:translateX(-50%) translateY(20px);
     background:#222;
     border:1px solid #333;
-    color:white;
+    color:#fff;
     padding:12px 17px;
     border-radius:12px;
     opacity:0;
@@ -310,12 +376,19 @@ button.secondary{
     transform:translateX(-50%) translateY(0);
 }
 
-/* MOBILE */
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:650px){
 
     .app{
         padding:12px;
+    }
+
+    header{
+        margin-bottom:14px;
     }
 
     .logo{
@@ -331,24 +404,41 @@ button.secondary{
         font-size:23px;
     }
 
-    .form,
     .share-row,
-    .sync-controls{
+    .form,
+    .sync-buttons{
         flex-direction:column;
     }
 
-    .form button,
     .share-row button,
-    .sync-controls button{
+    .form button,
+    .sync-buttons button{
         width:100%;
     }
+
+    /*
+       On réduit encore l'espace entre
+       la vidéo et le chat sur téléphone.
+    */
+
+    .video-card{
+        margin-bottom:4px;
+    }
+
+    .chat-card{
+        margin-top:0;
+        padding-top:10px;
+    }
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
+
 
 <header>
 
@@ -357,73 +447,90 @@ button.secondary{
     </div>
 
     <div
-        class="status"
-        id="status">
+        id="status"
+        class="status">
+
         ⚪ Hors ligne
+
     </div>
 
 </header>
 
 
-<!-- =========================
+
+<!-- =====================================================
      ACCUEIL
-========================= -->
+===================================================== -->
 
 <section id="home">
 
-<div class="card">
+    <div class="card">
 
-    <div class="home-icon">🎬</div>
+        <div class="home-icon">
+            🎬
+        </div>
 
-    <h1>Regarde ensemble</h1>
+        <h1>
+            Regarde ensemble
+        </h1>
 
-    <p class="subtitle">
-        Crée une salle privée, ajoute une vidéo YouTube
-        et invite tes amis avec un simple lien.
-    </p>
+        <p class="subtitle">
+            Crée une salle privée, ajoute une vidéo YouTube
+            et invite tes amis avec un simple lien.
+        </p>
 
-    <h2>Ton pseudo</h2>
 
-    <input
-        id="hostName"
-        maxlength="20"
-        placeholder="Choisis ton pseudo"
-        autocomplete="off">
+        <h2>
+            Ton pseudo
+        </h2>
 
-    <br><br>
+        <input
+            id="hostName"
+            maxlength="20"
+            placeholder="Choisis ton pseudo"
+            autocomplete="off">
 
-    <h2>Lien YouTube</h2>
 
-    <input
-        id="initialVideo"
-        placeholder="https://www.youtube.com/watch?v=..."
-        autocomplete="off">
+        <br><br>
 
-    <br>
 
-    <button
-        class="full"
-        onclick="createRoom()">
+        <h2>
+            Lien YouTube
+        </h2>
 
-        🚀 Créer ma salle
+        <input
+            id="initialVideo"
+            placeholder="https://www.youtube.com/watch?v=..."
+            autocomplete="off">
 
-    </button>
 
-</div>
+        <br>
+
+
+        <button
+            class="full"
+            onclick="createRoom()">
+
+            🚀 Créer ma salle
+
+        </button>
+
+    </div>
 
 </section>
 
 
-<!-- =========================
+
+<!-- =====================================================
      SALLE
-========================= -->
+===================================================== -->
 
 <section
     id="room"
     class="hidden">
 
 
-<!-- INFOS SALLE -->
+<!-- SALLE -->
 
 <div class="card">
 
@@ -432,15 +539,18 @@ button.secondary{
         <div>
 
             <div
-                style="color:#999;font-size:13px;margin-bottom:6px;">
+                style="
+                color:#999;
+                font-size:13px;
+                margin-bottom:6px;">
 
                 Salle privée
 
             </div>
 
             <div
-                class="room-code"
-                id="roomCode">
+                id="roomCode"
+                class="room-code">
 
                 ------
 
@@ -448,15 +558,17 @@ button.secondary{
 
         </div>
 
+
         <div
-            class="people"
-            id="peopleCount">
+            id="peopleCount"
+            class="people">
 
             👤 1 personne
 
         </div>
 
     </div>
+
 
     <div class="share-row">
 
@@ -475,11 +587,12 @@ button.secondary{
 </div>
 
 
-<!-- =========================
-     VIDEO
-========================= -->
 
-<div class="card">
+<!-- =====================================================
+     VIDEO
+===================================================== -->
+
+<div class="card video-card">
 
     <div class="video-wrapper">
 
@@ -497,10 +610,8 @@ button.secondary{
     </div>
 
 
-    <!-- HOTE -->
-
     <div
-        id="hostControls"
+        id="hostLabel"
         class="hidden">
 
         <span class="host-label">
@@ -509,15 +620,91 @@ button.secondary{
 
         </span>
 
-        <div class="sync-controls">
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CHAT
+     DIRECTEMENT SOUS LA VIDEO
+===================================================== -->
+
+<div class="card chat-card">
+
+    <h2>
+        💬 Discussion
+    </h2>
+
+
+    <div
+        id="chat"
+        class="chat">
+    </div>
+
+
+    <div class="form">
+
+        <input
+            id="chatInput"
+            maxlength="300"
+            placeholder="Écris un message..."
+            autocomplete="off">
+
+        <button
+            onclick="sendChat()">
+
+            Envoyer
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CONTROLES SYNCHRONISATION
+     SOUS LE CHAT
+===================================================== -->
+
+<div
+    id="syncCard"
+    class="card sync-card">
+
+
+    <!-- HOTE -->
+
+    <div
+        id="hostSync"
+        class="hidden">
+
+        <div class="sync-title">
+
+            <h2 style="margin:0;">
+                🎬 Contrôle de la salle
+            </h2>
+
+            <div class="sync-badge">
+                HÔTE
+            </div>
+
+        </div>
+
+
+        <div class="sync-buttons">
 
             <button
                 class="secondary"
                 onclick="pauseEveryone()">
 
-                ⏸️ Pause tout le monde
+                ⏸️ Tout le monde en pause
 
             </button>
+
 
             <button
                 onclick="playEveryone()">
@@ -527,6 +714,7 @@ button.secondary{
             </button>
 
         </div>
+
 
         <div
             id="syncStatus"
@@ -542,57 +730,33 @@ button.secondary{
     <!-- INVITE -->
 
     <div
-        id="guestInfo"
-        class="control-info hidden">
+        id="guestSync"
+        class="hidden">
 
-        👀 Tu regardes la vidéo de l'hôte.
-        <br>
-        La lecture, la pause et la position sont synchronisées automatiquement.
+        <div class="guest-sync">
 
-    </div>
+            👀 Tu regardes la vidéo de l'hôte.
+            <br><br>
+            ▶️ Lecture, ⏸️ pause et position
+            sont synchronisées automatiquement.
 
-</div>
-
-
-<!-- =========================
-     CHAT JUSTE SOUS VIDEO
-========================= -->
-
-<div class="card chat-card">
-
-    <h2>💬 Discussion</h2>
-
-    <div
-        id="chat"
-        class="chat">
-    </div>
-
-    <div class="form">
-
-        <input
-            id="chatInput"
-            placeholder="Écris un message..."
-            maxlength="300"
-            autocomplete="off">
-
-        <button onclick="sendChat()">
-
-            Envoyer
-
-        </button>
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- =========================
-     INVITES / PARTICIPANTS
-========================= -->
+
+<!-- =====================================================
+     PARTICIPANTS
+===================================================== -->
 
 <div class="card">
 
-    <h2>👥 Dans la salle</h2>
+    <h2>
+        👥 Dans la salle
+    </h2>
 
     <div
         id="userList"
@@ -602,22 +766,28 @@ button.secondary{
 </div>
 
 
-<!-- =========================
-     CHANGER DE VIDEO
-========================= -->
+
+<!-- =====================================================
+     CHANGER VIDEO
+===================================================== -->
 
 <div
-    class="card"
-    id="videoControls">
+    id="videoControls"
+    class="card hidden">
 
-    <h2>🎥 Changer de vidéo</h2>
+    <h2>
+        🎥 Changer de vidéo
+    </h2>
+
 
     <input
         id="newVideo"
         placeholder="Colle un lien YouTube..."
         autocomplete="off">
 
+
     <br>
+
 
     <button
         class="full"
@@ -630,21 +800,30 @@ button.secondary{
 </div>
 
 
-<!-- =========================
-     LIEN VIDEO
-========================= -->
+
+<!-- =====================================================
+     INVITER
+===================================================== -->
 
 <div class="card">
 
-    <h2>🔗 Inviter quelqu'un</h2>
+    <h2>
+        🔗 Inviter
+    </h2>
+
 
     <p
-        style="color:#999;font-size:13px;line-height:1.5;margin-bottom:12px;">
+        style="
+        color:#999;
+        font-size:13px;
+        line-height:1.5;
+        margin-bottom:12px;">
 
-        Envoie simplement le lien de cette salle à tes amis.
-        Ils choisissent leur propre pseudo en entrant.
+        Envoie le lien de cette salle à tes amis.
+        Chacun choisit son propre pseudo.
 
     </p>
+
 
     <button
         class="full"
@@ -665,11 +844,12 @@ button.secondary{
 <div id="toast"></div>
 
 
+
 <script>
 
-/* =========================================================
+/* =====================================================
    VARIABLES
-========================================================= */
+===================================================== */
 
 const PEER_PREFIX = "wt-";
 
@@ -704,9 +884,10 @@ let lastHostTime = 0;
 let lastHostState = 2;
 
 
-/* =========================================================
+
+/* =====================================================
    ELEMENTS
-========================================================= */
+===================================================== */
 
 const home =
     document.getElementById("home");
@@ -721,9 +902,10 @@ const toastElement =
     document.getElementById("toast");
 
 
-/* =========================================================
+
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 let toastTimeout;
 
@@ -740,7 +922,7 @@ function toast(message){
 
     toastTimeout =
         setTimeout(
-            () => {
+            function(){
 
                 toastElement.classList.remove(
                     "show"
@@ -752,9 +934,10 @@ function toast(message){
 }
 
 
-/* =========================================================
+
+/* =====================================================
    STATUS
-========================================================= */
+===================================================== */
 
 function setStatus(text){
 
@@ -764,9 +947,10 @@ function setStatus(text){
 }
 
 
-/* =========================================================
+
+/* =====================================================
    ROOM ID
-========================================================= */
+===================================================== */
 
 function generateRoomId(){
 
@@ -795,13 +979,15 @@ function generateRoomId(){
 }
 
 
-/* =========================================================
+
+/* =====================================================
    YOUTUBE ID
-========================================================= */
+===================================================== */
 
 function getYouTubeId(value){
 
-    if(!value) return null;
+    if(!value)
+        return null;
 
     value =
         value.trim();
@@ -833,8 +1019,7 @@ function getYouTubeId(value){
         ){
 
             if(
-                url.pathname ===
-                "/watch"
+                url.pathname === "/watch"
             ){
 
                 return url.searchParams
@@ -843,9 +1028,7 @@ function getYouTubeId(value){
             }
 
             if(
-                url.pathname.startsWith(
-                    "/shorts/"
-                )
+                url.pathname.startsWith("/shorts/")
             ){
 
                 return url.pathname
@@ -855,9 +1038,7 @@ function getYouTubeId(value){
             }
 
             if(
-                url.pathname.startsWith(
-                    "/embed/"
-                )
+                url.pathname.startsWith("/embed/")
             ){
 
                 return url.pathname
@@ -874,9 +1055,10 @@ function getYouTubeId(value){
 }
 
 
-/* =========================================================
+
+/* =====================================================
    CREER SALLE
-========================================================= */
+===================================================== */
 
 function createRoom(){
 
@@ -895,6 +1077,7 @@ function createRoom(){
     const videoId =
         getYouTubeId(url);
 
+
     if(!name){
 
         toast(
@@ -903,6 +1086,7 @@ function createRoom(){
 
         return;
     }
+
 
     if(!videoId){
 
@@ -913,6 +1097,7 @@ function createRoom(){
         return;
     }
 
+
     myName =
         name.substring(0,20);
 
@@ -921,29 +1106,35 @@ function createRoom(){
         myName
     );
 
+
     currentVideoId =
         videoId;
+
 
     roomId =
         generateRoomId();
 
+
     isHost = true;
+
 
     setStatus(
         "🟡 Création..."
     );
 
+
     peer =
         new Peer(
-            PEER_PREFIX +
-            roomId
+            PEER_PREFIX + roomId
         );
+
 
     peer.on(
         "open",
         function(id){
 
             myId = id;
+
 
             users[myId] = {
 
@@ -953,34 +1144,41 @@ function createRoom(){
 
             };
 
+
             updateRoomURL();
 
             openRoom();
 
+
             setStatus(
                 "🟢 Salle en ligne"
             );
+
 
             loadYouTubeAPI();
 
         }
     );
 
+
     peer.on(
         "connection",
         handleIncomingConnection
     );
 
+
     peer.on(
         "error",
         handlePeerError
     );
+
 }
 
 
-/* =========================================================
-   REJOINDRE SALLE
-========================================================= */
+
+/* =====================================================
+   REJOINDRE
+===================================================== */
 
 function joinRoom(){
 
@@ -988,6 +1186,7 @@ function joinRoom(){
         localStorage.getItem(
             "watchTogetherName"
         );
+
 
     if(!name){
 
@@ -998,10 +1197,12 @@ function joinRoom(){
 
     }
 
+
     myName =
         name
             .trim()
             .substring(0,20);
+
 
     if(!myName){
 
@@ -1010,19 +1211,24 @@ function joinRoom(){
 
     }
 
+
     localStorage.setItem(
         "watchTogetherName",
         myName
     );
 
+
     isHost = false;
+
 
     setStatus(
         "🟡 Connexion..."
     );
 
+
     peer =
         new Peer();
+
 
     peer.on(
         "open",
@@ -1030,14 +1236,15 @@ function joinRoom(){
 
             myId = id;
 
+
             hostConnection =
                 peer.connect(
-                    PEER_PREFIX +
-                    roomId,
+                    PEER_PREFIX + roomId,
                     {
                         reliable:true
                     }
                 );
+
 
             hostConnection.on(
                 "open",
@@ -1046,6 +1253,7 @@ function joinRoom(){
                     setStatus(
                         "🟢 Connecté"
                     );
+
 
                     hostConnection.send({
 
@@ -1057,6 +1265,7 @@ function joinRoom(){
 
                     });
 
+
                     openRoom();
 
                     loadYouTubeAPI();
@@ -1064,10 +1273,12 @@ function joinRoom(){
                 }
             );
 
+
             hostConnection.on(
                 "data",
                 handleClientMessage
             );
+
 
             hostConnection.on(
                 "close",
@@ -1087,16 +1298,19 @@ function joinRoom(){
         }
     );
 
+
     peer.on(
         "error",
         handlePeerError
     );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    CONNEXION INVITE
-========================================================= */
+===================================================== */
 
 function handleIncomingConnection(conn){
 
@@ -1104,6 +1318,7 @@ function handleIncomingConnection(conn){
         conn.peer,
         conn
     );
+
 
     conn.on(
         "data",
@@ -1117,6 +1332,7 @@ function handleIncomingConnection(conn){
         }
     );
 
+
     conn.on(
         "close",
         function(){
@@ -1125,22 +1341,27 @@ function handleIncomingConnection(conn){
                 conn.userId ||
                 conn.peer;
 
+
             connections.delete(
                 conn.peer
             );
 
+
             delete users[id];
+
 
             broadcastUsers();
 
         }
     );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    OPEN ROOM
-========================================================= */
+===================================================== */
 
 function openRoom(){
 
@@ -1148,42 +1369,49 @@ function openRoom(){
         "hidden"
     );
 
+
     room.classList.remove(
         "hidden"
     );
+
 
     document
         .getElementById("roomCode")
         .textContent =
             roomId;
 
+
     document
         .getElementById("shareLink")
         .value =
             createRoomLink();
 
+
     if(isHost){
 
         document
-            .getElementById(
-                "hostControls"
-            )
+            .getElementById("hostLabel")
             .classList.remove(
                 "hidden"
             );
 
+
         document
-            .getElementById(
-                "guestInfo"
-            )
+            .getElementById("hostSync")
+            .classList.remove(
+                "hidden"
+            );
+
+
+        document
+            .getElementById("guestSync")
             .classList.add(
                 "hidden"
             );
 
+
         document
-            .getElementById(
-                "videoControls"
-            )
+            .getElementById("videoControls")
             .classList.remove(
                 "hidden"
             );
@@ -1191,38 +1419,37 @@ function openRoom(){
     }else{
 
         document
-            .getElementById(
-                "hostControls"
-            )
+            .getElementById("hostLabel")
             .classList.add(
                 "hidden"
             );
 
+
         document
-            .getElementById(
-                "guestInfo"
-            )
+            .getElementById("hostSync")
+            .classList.add(
+                "hidden"
+            );
+
+
+        document
+            .getElementById("guestSync")
             .classList.remove(
-                "hidden"
-            );
-
-        document
-            .getElementById(
-                "videoControls"
-            )
-            .classList.add(
                 "hidden"
             );
 
     }
 
+
     updateUsers();
+
 }
 
 
-/* =========================================================
-   ROOM LINK
-========================================================= */
+
+/* =====================================================
+   URL
+===================================================== */
 
 function createRoomLink(){
 
@@ -1234,6 +1461,7 @@ function createRoomLink(){
     );
 
 }
+
 
 function updateRoomURL(){
 
@@ -1247,9 +1475,10 @@ function updateRoomURL(){
 }
 
 
-/* =========================================================
+
+/* =====================================================
    YOUTUBE API
-========================================================= */
+===================================================== */
 
 function loadYouTubeAPI(){
 
@@ -1263,6 +1492,7 @@ function loadYouTubeAPI(){
         return;
     }
 
+
     if(
         document.getElementById(
             "youtube-api-script"
@@ -1270,22 +1500,28 @@ function loadYouTubeAPI(){
     ){
 
         return;
+
     }
+
 
     const script =
         document.createElement(
             "script"
         );
 
+
     script.id =
         "youtube-api-script";
+
 
     script.src =
         "https://www.youtube.com/iframe_api";
 
+
     document.head.appendChild(
         script
     );
+
 }
 
 
@@ -1297,26 +1533,30 @@ window.onYouTubeIframeAPIReady =
     };
 
 
-/* =========================================================
+
+/* =====================================================
    PLAYER
-========================================================= */
+===================================================== */
 
 function createPlayer(){
 
     if(!currentVideoId)
         return;
 
+
     if(player){
 
         applyingRemoteState =
             true;
 
+
         player.loadVideoById(
             currentVideoId
         );
 
+
         setTimeout(
-            () => {
+            function(){
 
                 applyingRemoteState =
                     false;
@@ -1325,8 +1565,11 @@ function createPlayer(){
             800
         );
 
+
         return;
+
     }
+
 
     player =
         new YT.Player(
@@ -1364,6 +1607,7 @@ function createPlayer(){
                         playerReady =
                             true;
 
+
                         document
                             .getElementById(
                                 "videoEmpty"
@@ -1371,6 +1615,7 @@ function createPlayer(){
                             .classList.add(
                                 "hidden"
                             );
+
 
                         if(
                             !isHost &&
@@ -1387,12 +1632,15 @@ function createPlayer(){
 
                         }
 
+
                         startSyncTimer();
 
                     },
 
+
                     onStateChange:
                         handlePlayerState,
+
 
                     onError:
                         handleYouTubeError
@@ -1401,41 +1649,76 @@ function createPlayer(){
 
             }
         );
+
 }
 
 
-/* =========================================================
-   PLAYER STATE
-========================================================= */
 
-function handlePlayerState(event){
+/* =====================================================
+   ETAT PLAYER
+===================================================== */
+
+function getPlayerState(){
+
+    if(
+        !playerReady ||
+        !player
+    ){
+
+        return {
+
+            state:2,
+
+            time:0
+
+        };
+
+    }
+
+
+    return {
+
+        state:
+            player.getPlayerState(),
+
+        time:
+            player.getCurrentTime()
+
+    };
+
+}
+
+
+
+/* =====================================================
+   CHANGEMENT PLAY / PAUSE
+===================================================== */
+
+function handlePlayerState(){
 
     if(!playerReady)
         return;
 
+
     if(applyingRemoteState)
         return;
+
 
     if(!isHost)
         return;
 
+
     const state =
         getPlayerState();
+
 
     lastHostState =
         state.state;
 
+
     lastHostTime =
         state.time;
 
-    /*
-       ENVOI IMMEDIAT :
-
-       play
-       pause
-       fin
-       changement de position
-    */
 
     broadcast({
 
@@ -1451,42 +1734,14 @@ function handlePlayerState(event){
             currentVideoId
 
     });
+
 }
 
 
-/* =========================================================
-   GET STATE
-========================================================= */
 
-function getPlayerState(){
-
-    if(
-        !playerReady ||
-        !player
-    ){
-
-        return {
-            state:2,
-            time:0
-        };
-
-    }
-
-    return {
-
-        state:
-            player.getPlayerState(),
-
-        time:
-            player.getCurrentTime()
-
-    };
-}
-
-
-/* =========================================================
-   SYNCHRO AUTOMATIQUE
-========================================================= */
+/* =====================================================
+   SYNCHRO CONTINUE
+===================================================== */
 
 function startSyncTimer(){
 
@@ -1498,6 +1753,7 @@ function startSyncTimer(){
 
     }
 
+
     syncTimer =
         setInterval(
             function(){
@@ -1505,15 +1761,17 @@ function startSyncTimer(){
                 if(!isHost)
                     return;
 
+
                 if(!playerReady)
                     return;
+
 
                 const state =
                     getPlayerState();
 
+
                 /*
-                   Si l'hôte a avancé ou reculé
-                   dans la vidéo.
+                   Avance / retour dans la vidéo
                 */
 
                 if(
@@ -1540,8 +1798,9 @@ function startSyncTimer(){
 
                 }
 
+
                 /*
-                   Si play/pause change.
+                   Play / pause
                 */
 
                 if(
@@ -1566,37 +1825,49 @@ function startSyncTimer(){
 
                 }
 
+
                 lastHostState =
                     state.state;
+
 
                 lastHostTime =
                     state.time;
 
+
             },
             500
         );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    PAUSE TOUT LE MONDE
-========================================================= */
+===================================================== */
 
 function pauseEveryone(){
 
-    if(!isHost || !playerReady)
+    if(
+        !isHost ||
+        !playerReady
+    )
         return;
+
 
     const time =
         player.getCurrentTime();
 
+
     applyingRemoteState =
         true;
 
+
     player.pauseVideo();
 
+
     setTimeout(
-        () => {
+        function(){
 
             applyingRemoteState =
                 false;
@@ -1604,6 +1875,7 @@ function pauseEveryone(){
         },
         300
     );
+
 
     broadcast({
 
@@ -1618,9 +1890,11 @@ function pauseEveryone(){
 
     });
 
+
     lastHostState = 2;
 
     lastHostTime = time;
+
 
     document
         .getElementById(
@@ -1628,28 +1902,37 @@ function pauseEveryone(){
         )
         .textContent =
             "⏸️ Tout le monde est en pause";
+
 }
 
 
-/* =========================================================
-   PLAY TOUT LE MONDE
-========================================================= */
+
+/* =====================================================
+   REPRENDRE TOUT LE MONDE
+===================================================== */
 
 function playEveryone(){
 
-    if(!isHost || !playerReady)
+    if(
+        !isHost ||
+        !playerReady
+    )
         return;
+
 
     const time =
         player.getCurrentTime();
 
+
     applyingRemoteState =
         true;
 
+
     player.playVideo();
 
+
     setTimeout(
-        () => {
+        function(){
 
             applyingRemoteState =
                 false;
@@ -1657,6 +1940,7 @@ function playEveryone(){
         },
         300
     );
+
 
     broadcast({
 
@@ -1671,9 +1955,11 @@ function playEveryone(){
 
     });
 
+
     lastHostState = 1;
 
     lastHostTime = time;
+
 
     document
         .getElementById(
@@ -1681,12 +1967,14 @@ function playEveryone(){
         )
         .textContent =
             "▶️ Tout le monde regarde";
+
 }
 
 
-/* =========================================================
-   APPLY REMOTE STATE
-========================================================= */
+
+/* =====================================================
+   APPLIQUER ETAT DISTANT
+===================================================== */
 
 function applyRemoteState(
     state,
@@ -1700,11 +1988,13 @@ function applyRemoteState(
     )
         return;
 
+
     applyingRemoteState =
         true;
 
+
     /*
-       Nouvelle vidéo
+       Changement de vidéo
     */
 
     if(
@@ -1716,9 +2006,11 @@ function applyRemoteState(
         currentVideoId =
             videoId;
 
+
         player.loadVideoById(
             videoId
         );
+
 
         setTimeout(
             function(){
@@ -1730,11 +2022,13 @@ function applyRemoteState(
                         true
                     );
 
+
                     applyPlayPause(
                         state
                     );
 
                 }
+
 
                 applyingRemoteState =
                     false;
@@ -1743,15 +2037,18 @@ function applyRemoteState(
             900
         );
 
+
         return;
     }
 
+
     /*
-       Correction position
+       Corriger la position
     */
 
     const localTime =
         player.getCurrentTime();
+
 
     const difference =
         Math.abs(
@@ -1759,8 +2056,9 @@ function applyRemoteState(
             Number(time || 0)
         );
 
+
     if(
-        difference > 0.5
+        difference > .5
     ){
 
         player.seekTo(
@@ -1770,9 +2068,11 @@ function applyRemoteState(
 
     }
 
+
     applyPlayPause(
         state
     );
+
 
     setTimeout(
         function(){
@@ -1783,17 +2083,20 @@ function applyRemoteState(
         },
         350
     );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    PLAY / PAUSE DISTANT
-========================================================= */
+===================================================== */
 
 function applyPlayPause(state){
 
     if(!player)
         return;
+
 
     if(
         Number(state) === 1
@@ -1801,7 +2104,8 @@ function applyPlayPause(state){
 
         player.playVideo();
 
-    }else if(
+    }
+    else if(
         Number(state) === 2 ||
         Number(state) === 0
     ){
@@ -1809,20 +2113,24 @@ function applyPlayPause(state){
         player.pauseVideo();
 
     }
+
 }
 
 
-/* =========================================================
-   ROOM STATE
-========================================================= */
+
+/* =====================================================
+   ETAT SALLE
+===================================================== */
 
 function sendRoomState(conn){
 
     if(!isHost)
         return;
 
+
     const state =
         getPlayerState();
+
 
     conn.send({
 
@@ -1841,12 +2149,14 @@ function sendRoomState(conn){
             users
 
     });
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    BROADCAST
-========================================================= */
+===================================================== */
 
 function broadcast(data){
 
@@ -1864,7 +2174,8 @@ function broadcast(data){
                         data
                     );
 
-                }catch(e){
+                }
+                catch(e){
 
                     console.error(e);
 
@@ -1874,12 +2185,14 @@ function broadcast(data){
 
         }
     );
+
 }
 
 
-/* =========================================================
-   HOST MESSAGE
-========================================================= */
+
+/* =====================================================
+   MESSAGE HOTE
+===================================================== */
 
 function handleHostMessage(
     conn,
@@ -1892,18 +2205,19 @@ function handleHostMessage(
     )
         return;
 
+
     /*
-       HELLO
+       Connexion utilisateur
     */
 
     if(
-        data.type ===
-        "hello"
+        data.type === "hello"
     ){
 
         const id =
             data.id ||
             conn.peer;
+
 
         users[id] = {
 
@@ -1915,28 +2229,33 @@ function handleHostMessage(
 
         };
 
+
         conn.userId =
             id;
+
 
         updateUsers();
 
         broadcastUsers();
 
+
         /*
            Envoyer immédiatement
-           la vidéo + position + état.
+           la vidéo actuelle
         */
 
         sendRoomState(
             conn
         );
 
+
         return;
+
     }
 
 
     /*
-       DEMANDE DE SYNCHRO
+       Demande de synchro
     */
 
     if(
@@ -1949,6 +2268,7 @@ function handleHostMessage(
         );
 
         return;
+
     }
 
 
@@ -1957,8 +2277,7 @@ function handleHostMessage(
     */
 
     if(
-        data.type ===
-        "chat"
+        data.type === "chat"
     ){
 
         const message = {
@@ -1984,23 +2303,31 @@ function handleHostMessage(
 
         };
 
+
         broadcast(
             message
         );
 
+
         addMessage(
+
             message.name,
+
             message.message,
+
             false
+
         );
 
     }
+
 }
 
 
-/* =========================================================
-   CLIENT MESSAGE
-========================================================= */
+
+/* =====================================================
+   MESSAGE INVITE
+===================================================== */
 
 function handleClientMessage(data){
 
@@ -2023,11 +2350,14 @@ function handleClientMessage(data){
         currentVideoId =
             data.videoId;
 
+
         users =
             data.users ||
             {};
 
+
         updateUsers();
+
 
         if(playerReady){
 
@@ -2041,23 +2371,25 @@ function handleClientMessage(data){
 
             );
 
-        }else{
+        }
+        else{
 
             loadYouTubeAPI();
 
         }
 
+
         return;
+
     }
 
 
     /*
-       SYNCHRONISATION
+       SYNCHRO
     */
 
     if(
-        data.type ===
-        "sync"
+        data.type === "sync"
     ){
 
         applyRemoteState(
@@ -2070,7 +2402,9 @@ function handleClientMessage(data){
 
         );
 
+
         return;
+
     }
 
 
@@ -2079,13 +2413,13 @@ function handleClientMessage(data){
     */
 
     if(
-        data.type ===
-        "users"
+        data.type === "users"
     ){
 
         users =
             data.users ||
             {};
+
 
         if(!users[myId]){
 
@@ -2099,9 +2433,12 @@ function handleClientMessage(data){
 
         }
 
+
         updateUsers();
 
+
         return;
+
     }
 
 
@@ -2110,8 +2447,7 @@ function handleClientMessage(data){
     */
 
     if(
-        data.type ===
-        "chat"
+        data.type === "chat"
     ){
 
         addMessage(
@@ -2129,14 +2465,16 @@ function handleClientMessage(data){
 }
 
 
-/* =========================================================
-   USERS
-========================================================= */
+
+/* =====================================================
+   UTILISATEURS
+===================================================== */
 
 function broadcastUsers(){
 
     if(!isHost)
         return;
+
 
     broadcast({
 
@@ -2147,7 +2485,9 @@ function broadcastUsers(){
 
     });
 
+
     updateUsers();
+
 }
 
 
@@ -2158,31 +2498,28 @@ function updateUsers(){
             "userList"
         );
 
+
     list.innerHTML = "";
+
 
     const entries =
         Object.entries(
             users
         );
 
-    if(
-        entries.length === 0
-    ){
-
-        return;
-
-    }
 
     entries.forEach(
-        ([id,user]) => {
+        function([id,user]){
 
             const div =
                 document.createElement(
                     "div"
                 );
 
+
             div.className =
                 "user";
+
 
             div.textContent =
                 (
@@ -2195,6 +2532,7 @@ function updateUsers(){
                     "Invité"
                 );
 
+
             if(
                 id === myId
             ){
@@ -2204,6 +2542,7 @@ function updateUsers(){
 
             }
 
+
             list.appendChild(
                 div
             );
@@ -2211,8 +2550,10 @@ function updateUsers(){
         }
     );
 
+
     const count =
         entries.length;
+
 
     document
         .getElementById(
@@ -2227,12 +2568,14 @@ function updateUsers(){
                 ? "s"
                 : ""
             );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    CHANGER VIDEO
-========================================================= */
+===================================================== */
 
 function changeVideo(){
 
@@ -2243,17 +2586,21 @@ function changeVideo(){
         );
 
         return;
+
     }
+
 
     const input =
         document.getElementById(
             "newVideo"
         );
 
+
     const id =
         getYouTubeId(
             input.value
         );
+
 
     if(!id){
 
@@ -2262,13 +2609,17 @@ function changeVideo(){
         );
 
         return;
+
     }
+
 
     currentVideoId =
         id;
 
+
     applyingRemoteState =
         true;
+
 
     if(playerReady){
 
@@ -2278,8 +2629,9 @@ function changeVideo(){
 
     }
 
+
     setTimeout(
-        () => {
+        function(){
 
             applyingRemoteState =
                 false;
@@ -2288,10 +2640,6 @@ function changeVideo(){
         900
     );
 
-    /*
-       Tous les invités chargent
-       exactement la même vidéo.
-    */
 
     broadcast({
 
@@ -2305,21 +2653,29 @@ function changeVideo(){
 
     });
 
+
     lastHostState = 2;
 
     lastHostTime = 0;
 
+
     input.value = "";
 
-    updateSyncStatus(
-        "🎬 Nouvelle vidéo chargée pour tout le monde"
-    );
+
+    document
+        .getElementById(
+            "syncStatus"
+        )
+        .textContent =
+            "🎬 Nouvelle vidéo chargée pour tout le monde";
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    CHAT
-========================================================= */
+===================================================== */
 
 function sendChat(){
 
@@ -2328,11 +2684,14 @@ function sendChat(){
             "chatInput"
         );
 
+
     const message =
         input.value.trim();
 
+
     if(!message)
         return;
+
 
     const data = {
 
@@ -2352,11 +2711,17 @@ function sendChat(){
 
     };
 
+
     addMessage(
+
         myName,
+
         data.message,
+
         true
+
     );
+
 
     if(isHost){
 
@@ -2364,7 +2729,8 @@ function sendChat(){
             data
         );
 
-    }else if(
+    }
+    else if(
         hostConnection &&
         hostConnection.open
     ){
@@ -2375,8 +2741,11 @@ function sendChat(){
 
     }
 
+
     input.value = "";
+
 }
+
 
 
 function addMessage(
@@ -2390,10 +2759,12 @@ function addMessage(
             "chat"
         );
 
+
     const div =
         document.createElement(
             "div"
         );
+
 
     div.className =
         "message" +
@@ -2403,51 +2774,63 @@ function addMessage(
             : ""
         );
 
+
     const nameElement =
         document.createElement(
             "span"
         );
 
+
     nameElement.className =
         "name";
+
 
     nameElement.textContent =
         name +
         " : ";
+
 
     const messageElement =
         document.createElement(
             "span"
         );
 
+
     messageElement.textContent =
         message;
+
 
     div.appendChild(
         nameElement
     );
 
+
     div.appendChild(
         messageElement
     );
+
 
     chat.appendChild(
         div
     );
 
+
     chat.scrollTop =
         chat.scrollHeight;
+
 }
 
 
-/* =========================================================
-   SHARE
-========================================================= */
+
+/* =====================================================
+   PARTAGE
+===================================================== */
 
 async function shareRoom(){
 
     const link =
         createRoomLink();
+
 
     try{
 
@@ -2468,7 +2851,8 @@ async function shareRoom(){
 
             });
 
-        }else{
+        }
+        else{
 
             await navigator.clipboard
                 .writeText(link);
@@ -2479,7 +2863,8 @@ async function shareRoom(){
 
         }
 
-    }catch(error){
+    }
+    catch(error){
 
         if(
             error.name !==
@@ -2491,7 +2876,9 @@ async function shareRoom(){
         }
 
     }
+
 }
+
 
 
 async function copyRoomLink(){
@@ -2503,43 +2890,27 @@ async function copyRoomLink(){
                 createRoomLink()
             );
 
+
         toast(
             "Lien de la salle copié !"
         );
 
-    }catch(e){
+    }
+    catch(e){
 
         toast(
             "Impossible de copier le lien."
         );
 
     }
+
 }
 
 
-/* =========================================================
-   SYNC STATUS
-========================================================= */
 
-function updateSyncStatus(text){
-
-    const element =
-        document.getElementById(
-            "syncStatus"
-        );
-
-    if(element){
-
-        element.textContent =
-            text;
-
-    }
-}
-
-
-/* =========================================================
-   ERRORS
-========================================================= */
+/* =====================================================
+   ERREURS
+===================================================== */
 
 function handlePeerError(error){
 
@@ -2547,6 +2918,7 @@ function handlePeerError(error){
         "PeerJS:",
         error
     );
+
 
     if(
         error.type ===
@@ -2558,7 +2930,9 @@ function handlePeerError(error){
         );
 
         return;
+
     }
+
 
     if(
         error.type ===
@@ -2570,18 +2944,23 @@ function handlePeerError(error){
         );
 
         return;
+
     }
+
 
     toast(
         "Erreur de connexion."
     );
+
 }
+
 
 
 function handleYouTubeError(event){
 
     let message =
         "Impossible de lire cette vidéo.";
+
 
     if(
         event.data === 2
@@ -2592,6 +2971,7 @@ function handleYouTubeError(event){
 
     }
 
+
     if(
         event.data === 5
     ){
@@ -2601,6 +2981,7 @@ function handleYouTubeError(event){
 
     }
 
+
     if(
         event.data === 100
     ){
@@ -2609,6 +2990,7 @@ function handleYouTubeError(event){
             "Cette vidéo est privée ou supprimée.";
 
     }
+
 
     if(
         event.data === 101 ||
@@ -2620,15 +3002,18 @@ function handleYouTubeError(event){
 
     }
 
+
     toast(
         message
     );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    ENTER CHAT
-========================================================= */
+===================================================== */
 
 document
     .getElementById(
@@ -2639,8 +3024,7 @@ document
         function(event){
 
             if(
-                event.key ===
-                "Enter"
+                event.key === "Enter"
             ){
 
                 event.preventDefault();
@@ -2653,9 +3037,10 @@ document
     );
 
 
-/* =========================================================
-   PSEUDO
-========================================================= */
+
+/* =====================================================
+   SAUVEGARDE PSEUDO
+===================================================== */
 
 document
     .getElementById(
@@ -2674,9 +3059,10 @@ document
     );
 
 
-/* =========================================================
+
+/* =====================================================
    CHARGEMENT
-========================================================= */
+===================================================== */
 
 window.addEventListener(
     "load",
@@ -2687,8 +3073,10 @@ window.addEventListener(
                 window.location.search
             );
 
+
         const roomFromURL =
             params.get("room");
+
 
         if(!roomFromURL){
 
@@ -2696,6 +3084,7 @@ window.addEventListener(
                 localStorage.getItem(
                     "watchTogetherName"
                 );
+
 
             if(saved){
 
@@ -2708,13 +3097,17 @@ window.addEventListener(
 
             }
 
+
             return;
+
         }
+
 
         roomId =
             roomFromURL
                 .toUpperCase()
                 .trim();
+
 
         if(
             !/^[A-Z0-9]{6}$/.test(
@@ -2727,7 +3120,9 @@ window.addEventListener(
             );
 
             return;
+
         }
+
 
         joinRoom();
 
