@@ -25,7 +25,6 @@
       padding: 25px;
     }
 
-    /* HEADER */
     header {
       display: flex;
       justify-content: space-between;
@@ -36,7 +35,6 @@
     .logo {
       font-size: 30px;
       font-weight: 800;
-      letter-spacing: -1px;
     }
 
     .logo span {
@@ -63,6 +61,7 @@
     }
 
     /* VIDEO */
+
     .video-section {
       background: #000;
       border-radius: 18px 18px 0 0;
@@ -70,11 +69,12 @@
       position: relative;
     }
 
-    video {
+    video,
+    iframe {
       width: 100%;
       display: block;
       aspect-ratio: 16 / 9;
-      object-fit: cover;
+      border: none;
       background: #000;
     }
 
@@ -87,10 +87,11 @@
       padding: 8px 13px;
       border-radius: 8px;
       font-size: 14px;
-      backdrop-filter: blur(5px);
+      z-index: 5;
     }
 
     /* CHAT */
+
     .chat {
       background: white;
       border-radius: 0 0 18px 18px;
@@ -123,6 +124,15 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+    }
+
+    .empty-chat {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
     }
 
     .message {
@@ -161,6 +171,7 @@
     .message-text {
       font-size: 14px;
       line-height: 1.4;
+      word-break: break-word;
     }
 
     .message-time {
@@ -182,7 +193,8 @@
       color: rgba(255,255,255,.7);
     }
 
-    /* CHAT INPUT */
+    /* INPUT CHAT */
+
     .chat-input {
       display: flex;
       gap: 10px;
@@ -213,11 +225,59 @@
       font-weight: bold;
     }
 
-    .send:hover {
-      background: #593be0;
+    /* PSEUDO */
+
+    .pseudo-box {
+      display: none;
+      margin: 15px;
+      padding: 15px;
+      background: #f7f7f8;
+      border-radius: 12px;
+      border: 1px solid #e5e5e5;
+    }
+
+    .pseudo-box.active {
+      display: block;
+    }
+
+    .pseudo-box p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .pseudo-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .pseudo-row input {
+      flex: 1;
+      padding: 11px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    .pseudo-row button {
+      border: none;
+      background: #171717;
+      color: white;
+      padding: 0 15px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .pseudo-change {
+      border: none;
+      background: transparent;
+      color: #6c4cff;
+      cursor: pointer;
+      font-size: 12px;
     }
 
     /* PARTICIPANTS */
+
     .participants {
       margin-top: 25px;
       background: white;
@@ -276,7 +336,8 @@
       border-left: 3px solid #25c76f;
     }
 
-    /* NEW VIDEO */
+    /* NOUVELLE VIDEO */
+
     .new-video {
       margin-top: 25px;
       background: white;
@@ -319,12 +380,10 @@
       font-weight: bold;
     }
 
-    .video-link button:hover {
-      background: #333;
-    }
+    /* MOBILE */
 
-    /* RESPONSIVE */
     @media (max-width: 700px) {
+
       .page {
         padding: 12px;
       }
@@ -362,246 +421,551 @@
 
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <!-- HEADER -->
-    <header>
-      <div class="logo">WE<span>VER</span></div>
-      <div class="status">Session en direct</div>
-    </header>
+  <!-- HEADER -->
+
+  <header>
+    <div class="logo">
+      WE<span>VER</span>
+    </div>
+
+    <div class="status">
+      Session en direct
+    </div>
+  </header>
 
 
-    <!-- VIDEO -->
-    <section class="video-section">
+  <!-- VIDEO -->
 
-      <video controls autoplay muted playsinline>
-        <!-- Remplace cette URL par ta vidéo -->
+  <section class="video-section">
+
+    <div id="videoContainer">
+
+      <video
+        id="videoPlayer"
+        controls
+        autoplay
+        muted
+        playsinline
+      >
         <source src="video.mp4" type="video/mp4">
-        Votre navigateur ne supporte pas la vidéo.
       </video>
 
-      <div class="video-title">
-        Présentation WEVER
-      </div>
+    </div>
 
-    </section>
+    <div class="video-title">
+      Présentation WEVER
+    </div>
 
-
-    <!-- CHAT JUSTE SOUS LA VIDEO -->
-    <section class="chat">
-
-      <div class="chat-header">
-        <h2>Discussion</h2>
-        <span class="online">3 participants</span>
-      </div>
-
-      <div class="messages" id="messages">
-
-        <div class="message">
-          <div class="avatar">A</div>
-
-          <div class="message-content">
-            <div class="message-name">Alex</div>
-            <div class="message-text">
-              Bienvenue sur la session 👋
-            </div>
-            <div class="message-time">
-              20:14
-            </div>
-          </div>
-        </div>
+  </section>
 
 
-        <div class="message">
-          <div class="avatar">M</div>
+  <!-- CHAT -->
 
-          <div class="message-content">
-            <div class="message-name">Mathis</div>
-            <div class="message-text">
-              La vidéo est bien visible.
-            </div>
-            <div class="message-time">
-              20:15
-            </div>
-          </div>
-        </div>
+  <section class="chat">
 
+    <div class="chat-header">
 
-        <div class="message my-message">
+      <h2>
+        Discussion
+      </h2>
 
-          <div class="message-content">
-            <div class="message-name">Vous</div>
-            <div class="message-text">
-              Parfait 👍
-            </div>
-            <div class="message-time">
-              20:16
-            </div>
-          </div>
+      <div>
+        <span class="online">
+          Chat
+        </span>
 
-        </div>
-
-      </div>
-
-
-      <!-- ENVOI MESSAGE -->
-      <form class="chat-input" id="chatForm">
-
-        <input
-          type="text"
-          id="messageInput"
-          placeholder="Écrire un message..."
-          autocomplete="off"
+        <button
+          class="pseudo-change"
+          onclick="changePseudo()"
         >
-
-        <button class="send" type="submit">
-          Envoyer
+          Modifier le pseudo
         </button>
-
-      </form>
-
-    </section>
-
-
-    <!-- INVITÉ / PARTICIPANT -->
-    <section class="participants">
-
-      <h2>Invité et participant</h2>
-
-      <div class="people">
-
-        <div class="person guest">
-
-          <div class="person-avatar">
-            I
-          </div>
-
-          <div class="person-info">
-            <strong>Invité</strong>
-            <small>Invité à la session</small>
-          </div>
-
-        </div>
-
-
-        <div class="person participant">
-
-          <div class="person-avatar">
-            P
-          </div>
-
-          <div class="person-info">
-            <strong>Participant</strong>
-            <small>Connecté à la session</small>
-          </div>
-
-        </div>
-
       </div>
 
-    </section>
+    </div>
 
 
-    <!-- NOUVELLE VIDEO -->
-    <section class="new-video">
+    <!-- CHOIX DU PSEUDO -->
 
-      <h2>Ajouter une nouvelle vidéo</h2>
+    <div
+      class="pseudo-box"
+      id="pseudoBox"
+    >
 
       <p>
-        Ajoutez le lien d'une nouvelle vidéo pour remplacer la vidéo actuelle.
+        Choisissez le pseudo qui sera affiché dans le chat.
       </p>
 
-      <div class="video-link">
+      <div class="pseudo-row">
 
         <input
           type="text"
-          id="videoUrl"
-          placeholder="https://exemple.com/video.mp4"
+          id="pseudoInput"
+          placeholder="Votre pseudo"
+          maxlength="25"
         >
 
-        <button onclick="changeVideo()">
-          Charger la vidéo
+        <button onclick="savePseudo()">
+          Valider
         </button>
 
       </div>
 
-    </section>
-
-  </div>
+    </div>
 
 
-  <script>
+    <!-- MESSAGES -->
 
-    /* CHAT */
+    <div
+      class="messages"
+      id="messages"
+    >
 
-    const chatForm = document.getElementById("chatForm");
-    const messageInput = document.getElementById("messageInput");
-    const messages = document.getElementById("messages");
+      <div class="empty-chat" id="emptyChat">
+        Aucun message pour le moment.
+      </div>
 
-    chatForm.addEventListener("submit", function(event) {
+    </div>
+
+
+    <!-- ENVOYER -->
+
+    <form
+      class="chat-input"
+      id="chatForm"
+    >
+
+      <input
+        type="text"
+        id="messageInput"
+        placeholder="Écrire un message..."
+        autocomplete="off"
+      >
+
+      <button
+        class="send"
+        type="submit"
+      >
+        Envoyer
+      </button>
+
+    </form>
+
+  </section>
+
+
+  <!-- INVITÉ / PARTICIPANT -->
+
+  <section class="participants">
+
+    <h2>
+      Invité et participant
+    </h2>
+
+    <div class="people">
+
+      <div class="person guest">
+
+        <div
+          class="person-avatar"
+          id="guestAvatar"
+        >
+          ?
+        </div>
+
+        <div class="person-info">
+
+          <strong id="guestName">
+            Invité
+          </strong>
+
+          <small>
+            Invité à la session
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="person participant">
+
+        <div class="person-avatar">
+          P
+        </div>
+
+        <div class="person-info">
+
+          <strong>
+            Participant
+          </strong>
+
+          <small>
+            Connecté à la session
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- NOUVELLE VIDEO -->
+
+  <section class="new-video">
+
+    <h2>
+      Ajouter une nouvelle vidéo
+    </h2>
+
+    <p>
+      Collez un lien YouTube ou un lien direct vers une vidéo.
+    </p>
+
+    <div class="video-link">
+
+      <input
+        type="text"
+        id="videoUrl"
+        placeholder="https://www.youtube.com/watch?v=..."
+      >
+
+      <button onclick="changeVideo()">
+        Charger la vidéo
+      </button>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+  /* ================================
+     PSEUDO
+  ================================= */
+
+  let pseudo = localStorage.getItem("weverPseudo");
+
+  const pseudoBox = document.getElementById("pseudoBox");
+  const pseudoInput = document.getElementById("pseudoInput");
+
+  if (!pseudo) {
+    pseudoBox.classList.add("active");
+  } else {
+    updateUser();
+  }
+
+
+  function savePseudo() {
+
+    const value = pseudoInput.value.trim();
+
+    if (!value) {
+      alert("Veuillez choisir un pseudo.");
+      return;
+    }
+
+    pseudo = value;
+
+    localStorage.setItem(
+      "weverPseudo",
+      pseudo
+    );
+
+    pseudoBox.classList.remove("active");
+
+    updateUser();
+  }
+
+
+  function changePseudo() {
+
+    pseudoInput.value = pseudo || "";
+
+    pseudoBox.classList.add("active");
+
+    pseudoInput.focus();
+  }
+
+
+  function updateUser() {
+
+    const name = document.getElementById("guestName");
+    const avatar = document.getElementById("guestAvatar");
+
+    if (!pseudo) return;
+
+    name.textContent = pseudo;
+
+    avatar.textContent =
+      pseudo.charAt(0).toUpperCase();
+  }
+
+
+  /* ================================
+     CHAT
+  ================================= */
+
+  const chatForm =
+    document.getElementById("chatForm");
+
+  const messageInput =
+    document.getElementById("messageInput");
+
+  const messages =
+    document.getElementById("messages");
+
+  chatForm.addEventListener(
+    "submit",
+    function(event) {
 
       event.preventDefault();
 
-      const text = messageInput.value.trim();
+      if (!pseudo) {
+
+        pseudoBox.classList.add("active");
+
+        pseudoInput.focus();
+
+        return;
+      }
+
+      const text =
+        messageInput.value.trim();
 
       if (!text) return;
 
-      const message = document.createElement("div");
+      const empty =
+        document.getElementById("emptyChat");
 
-      message.className = "message my-message";
+      if (empty) {
+        empty.remove();
+      }
+
+      const message =
+        document.createElement("div");
+
+      message.className =
+        "message my-message";
 
       message.innerHTML = `
+
         <div class="message-content">
-          <div class="message-name">Vous</div>
-          <div class="message-text">${escapeHTML(text)}</div>
-          <div class="message-time">Maintenant</div>
+
+          <div class="message-name">
+            ${escapeHTML(pseudo)}
+          </div>
+
+          <div class="message-text">
+            ${escapeHTML(text)}
+          </div>
+
+          <div class="message-time">
+            Maintenant
+          </div>
+
         </div>
+
       `;
 
       messages.appendChild(message);
 
       messageInput.value = "";
 
-      messages.scrollTop = messages.scrollHeight;
+      messages.scrollTop =
+        messages.scrollHeight;
+    }
+  );
 
-    });
 
+  /* ================================
+     YOUTUBE
+  ================================= */
 
-    /* CHANGER LA VIDEO */
+  function getYouTubeId(url) {
 
-    function changeVideo() {
+    try {
 
-      const url = document.getElementById("videoUrl").value.trim();
+      const parsed =
+        new URL(url);
 
-      if (!url) {
-        alert("Veuillez entrer un lien vidéo.");
-        return;
+      /* youtube.com/watch?v= */
+
+      if (
+        parsed.hostname.includes("youtube.com") &&
+        parsed.searchParams.get("v")
+      ) {
+
+        return parsed.searchParams.get("v");
       }
 
-      const video = document.querySelector("video");
 
-      video.src = url;
+      /* youtu.be/VIDEO */
 
-      video.load();
+      if (
+        parsed.hostname.includes("youtu.be")
+      ) {
 
-      video.play().catch(() => {});
+        return parsed.pathname
+          .substring(1)
+          .split("/")[0];
+      }
 
+
+      /* youtube.com/shorts/VIDEO */
+
+      if (
+        parsed.hostname.includes("youtube.com") &&
+        parsed.pathname.startsWith("/shorts/")
+      ) {
+
+        return parsed.pathname
+          .split("/")[2];
+      }
+
+
+      /* youtube.com/embed/VIDEO */
+
+      if (
+        parsed.hostname.includes("youtube.com") &&
+        parsed.pathname.startsWith("/embed/")
+      ) {
+
+        return parsed.pathname
+          .split("/")[2];
+      }
+
+    } catch (error) {
+
+      return null;
+    }
+
+    return null;
+  }
+
+
+  function changeVideo() {
+
+    const url =
+      document.getElementById("videoUrl")
+      .value
+      .trim();
+
+    if (!url) {
+
+      alert(
+        "Veuillez entrer un lien YouTube ou vidéo."
+      );
+
+      return;
     }
 
 
-    /* PROTECTION DU TEXTE DU CHAT */
+    const youtubeId =
+      getYouTubeId(url);
 
-    function escapeHTML(text) {
 
-      const div = document.createElement("div");
+    /* YOUTUBE */
 
-      div.textContent = text;
+    if (youtubeId) {
 
-      return div.innerHTML;
+      const container =
+        document.getElementById(
+          "videoContainer"
+        );
 
+      container.innerHTML = `
+
+        <iframe
+          src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1"
+          title="Vidéo YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+
+      `;
+
+      return;
     }
 
-  </script>
+
+    /* VIDEO DIRECTE */
+
+    if (
+      url.endsWith(".mp4") ||
+      url.endsWith(".webm") ||
+      url.endsWith(".ogg")
+    ) {
+
+      const container =
+        document.getElementById(
+          "videoContainer"
+        );
+
+      container.innerHTML = `
+
+        <video
+          id="videoPlayer"
+          controls
+          autoplay
+          muted
+          playsinline
+        >
+
+          <source
+            src="${escapeAttribute(url)}"
+          >
+
+          Votre navigateur ne supporte pas
+          la vidéo.
+
+        </video>
+
+      `;
+
+      return;
+    }
+
+
+    alert(
+      "Lien non reconnu. Collez un lien YouTube ou un lien direct .mp4."
+    );
+  }
+
+
+  /* ================================
+     SECURITE
+  ================================= */
+
+  function escapeHTML(text) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+  }
+
+
+  function escapeAttribute(text) {
+
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+</script>
 
 </body>
 </html>
