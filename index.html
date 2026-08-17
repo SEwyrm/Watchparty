@@ -1,2795 +1,607 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
-<title>WatchTogether</title>
-
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js"></script>
-
-<style>
-:root{
- --bg:#090a10;
- --panel:#11131c;
- --panel2:#181b26;
- --border:#282c3b;
- --text:#f6f7fb;
- --muted:#8d93a7;
- --accent:#7c5cff;
- --accent2:#9b87ff;
- --danger:#ff4f6d;
- --green:#3ddc97;
- --shadow:0 15px 45px rgba(0,0,0,.28);
-}
-
-*{
- box-sizing:border-box;
- margin:0;
- padding:0;
- -webkit-tap-highlight-color:transparent;
-}
-
-body{
- background:
- radial-gradient(circle at 15% 0%,rgba(124,92,255,.15),transparent 30%),
- radial-gradient(circle at 90% 10%,rgba(255,79,109,.08),transparent 25%),
- var(--bg);
- color:var(--text);
- font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
- min-height:100vh;
-}
-
-button,input{
- font:inherit;
-}
-
-button{
- border:0;
- cursor:pointer;
- color:white;
-}
-
-button:active{
- transform:scale(.97);
-}
-
-input{
- color:white;
- background:#0c0e15;
- border:1px solid var(--border);
- outline:none;
- border-radius:12px;
- padding:12px 14px;
- width:100%;
-}
-
-input:focus{
- border-color:var(--accent);
-}
-
-.hidden{
- display:none!important;
-}
-
-.app{
- width:min(1450px,100%);
- margin:auto;
- padding:14px;
-}
-
-/* HEADER */
-
-.header{
- height:52px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- margin-bottom:12px;
-}
-
-.brand{
- display:flex;
- align-items:center;
- gap:10px;
- font-size:20px;
- font-weight:800;
-}
-
-.brand-mark{
- width:34px;
- height:34px;
- border-radius:10px;
- display:grid;
- place-items:center;
- background:linear-gradient(135deg,var(--accent),var(--danger));
- box-shadow:0 8px 25px rgba(124,92,255,.25);
-}
-
-.brand span{
- color:var(--accent2);
-}
-
-.header-right{
- display:flex;
- align-items:center;
- gap:8px;
-}
-
-.status{
- color:var(--muted);
- font-size:12px;
-}
-
-.icon-btn{
- width:40px;
- height:40px;
- padding:0;
- border-radius:11px;
- background:var(--panel2);
- border:1px solid var(--border);
- display:grid;
- place-items:center;
-}
-
-/* HOME */
-
-.home{
- min-height:calc(100vh - 80px);
- display:grid;
- place-items:center;
-}
-
-.home-card{
- width:min(500px,100%);
- background:rgba(17,19,28,.88);
- border:1px solid var(--border);
- border-radius:24px;
- padding:28px;
- box-shadow:var(--shadow);
- backdrop-filter:blur(20px);
-}
-
-.home-logo{
- font-size:52px;
- margin-bottom:10px;
-}
-
-.home h1{
- font-size:30px;
- letter-spacing:-1px;
-}
-
-.home p{
- color:var(--muted);
- margin:8px 0 22px;
- line-height:1.5;
-}
-
-.label{
- color:var(--muted);
- font-size:12px;
- margin:15px 0 7px;
-}
-
-.primary{
- background:linear-gradient(135deg,var(--accent),var(--accent2));
- padding:13px 18px;
- border-radius:12px;
- font-weight:750;
- width:100%;
- box-shadow:0 8px 25px rgba(124,92,255,.25);
-}
-
-.secondary{
- background:var(--panel2);
- border:1px solid var(--border);
- padding:12px 15px;
- border-radius:11px;
-}
-
-.row{
- display:flex;
- gap:8px;
-}
-
-/* AVATARS */
-
-.avatar-grid{
- display:grid;
- grid-template-columns:repeat(8,1fr);
- gap:7px;
-}
-
-.avatar{
- aspect-ratio:1;
- border-radius:12px;
- background:var(--panel2);
- border:1px solid var(--border);
- display:grid;
- place-items:center;
- font-size:23px;
- cursor:pointer;
-}
-
-.avatar.selected{
- border:2px solid var(--accent);
- background:rgba(124,92,255,.18);
-}
-
-/* ROOM */
-
-.room-layout{
- display:grid;
- grid-template-columns:minmax(0,1fr) 335px;
- gap:12px;
- align-items:start;
-}
-
-.video-card,
-.side-card,
-.bottom-card{
- background:rgba(17,19,28,.88);
- border:1px solid var(--border);
- border-radius:17px;
- box-shadow:var(--shadow);
-}
-
-.video-card{
- overflow:hidden;
-}
-
-.video-header{
- padding:11px 13px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
- border-bottom:1px solid var(--border);
-}
-
-.video-title{
- font-weight:700;
- font-size:14px;
- overflow:hidden;
- text-overflow:ellipsis;
- white-space:nowrap;
-}
-
-.room-code{
- font-family:monospace;
- font-size:11px;
- color:var(--muted);
- background:var(--panel2);
- padding:6px 8px;
- border-radius:7px;
-}
-
-.video{
- aspect-ratio:16/9;
- background:#000;
- position:relative;
-}
-
-#player{
- width:100%;
- height:100%;
-}
-
-.video-empty{
- position:absolute;
- inset:0;
- display:grid;
- place-items:center;
- text-align:center;
- color:#656b7d;
- padding:20px;
- background:#05060a;
-}
-
-.video-bottom{
- padding:10px;
- display:flex;
- gap:8px;
-}
-
-.video-bottom input{
- min-width:0;
-}
-
-.video-bottom button{
- flex:0 0 auto;
- background:var(--accent);
- border-radius:10px;
- padding:0 15px;
-}
-
-/* SIDE */
-
-.side{
- display:flex;
- flex-direction:column;
- gap:12px;
-}
-
-.side-card{
- padding:12px;
-}
-
-.side-title{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:9px;
- font-size:13px;
- font-weight:750;
-}
-
-.count{
- color:var(--muted);
- font-size:11px;
-}
-
-.users{
- display:flex;
- flex-wrap:wrap;
- gap:6px;
-}
-
-.user{
- display:flex;
- align-items:center;
- gap:6px;
- background:var(--panel2);
- border:1px solid var(--border);
- padding:6px 8px;
- border-radius:9px;
- font-size:11px;
-}
-
-.user-avatar{
- font-size:17px;
-}
-
-.crown{
- font-size:11px;
-}
-
-/* CHAT */
-
-.chat{
- height:300px;
- overflow-y:auto;
- padding:3px;
- scrollbar-width:thin;
-}
-
-.msg{
- display:flex;
- gap:7px;
- margin-bottom:8px;
-}
-
-.msg-avatar{
- width:27px;
- height:27px;
- flex:0 0 27px;
- display:grid;
- place-items:center;
- border-radius:9px;
- background:var(--panel2);
- font-size:15px;
-}
-
-.msg-body{
- min-width:0;
-}
-
-.msg-top{
- display:flex;
- gap:5px;
- align-items:center;
-}
-
-.msg-name{
- font-size:11px;
- font-weight:750;
-}
-
-.msg-time{
- color:#62687a;
- font-size:9px;
-}
-
-.msg-text{
- margin-top:2px;
- color:#d6d9e3;
- font-size:12px;
- line-height:1.35;
- word-break:break-word;
-}
-
-.chat-input{
- display:flex;
- gap:6px;
- margin-top:8px;
-}
-
-.chat-input input{
- min-width:0;
- padding:10px;
- font-size:12px;
-}
-
-.chat-input button{
- background:var(--accent);
- border-radius:10px;
- width:42px;
-}
-
-/* REACTIONS */
-
-.reactions{
- display:flex;
- gap:5px;
- overflow-x:auto;
- padding-bottom:2px;
-}
-
-.reaction{
- flex:0 0 auto;
- background:var(--panel2);
- border:1px solid var(--border);
- border-radius:9px;
- padding:6px 9px;
- font-size:14px;
-}
-
-/* VOTE */
-
-.vote-box{
- display:flex;
- flex-direction:column;
- gap:7px;
-}
-
-.vote-status{
- color:var(--muted);
- font-size:11px;
- line-height:1.4;
-}
-
-.vote-actions{
- display:flex;
- gap:6px;
-}
-
-.vote-actions button{
- flex:1;
- padding:8px;
- border-radius:9px;
- font-size:11px;
-}
-
-.accept{
- background:var(--green);
- color:#06150f;
-}
-
-.reject{
- background:#292c38;
-}
-
-/* SHARE */
-
-.share{
- display:flex;
- gap:6px;
-}
-
-.share input{
- font-size:10px;
-}
-
-.share button{
- background:var(--accent);
- border-radius:10px;
- padding:0 11px;
-}
-
-/* THEMES */
-
-.theme-picker{
- display:flex;
- gap:7px;
-}
-
-.theme{
- width:25px;
- height:25px;
- border-radius:50%;
- border:2px solid transparent;
- cursor:pointer;
-}
-
-.theme.active{
- border-color:white;
-}
-
-.t-purple{background:#7c5cff}
-.t-blue{background:#3687ff}
-.t-pink{background:#ff4f9a}
-.t-green{background:#22c58b}
-.t-orange{background:#ff8a3d}
-.t-red{background:#ff4f6d}
-
-/* MOBILE */
-
-@media(max-width:900px){
-
- .room-layout{
-  grid-template-columns:1fr;
- }
-
- .side{
-  display:grid;
-  grid-template-columns:1fr 1fr;
- }
-
- .chat-card{
-  grid-column:1/-1;
- }
-
- .chat{
-  height:230px;
- }
-
-}
-
-@media(max-width:600px){
-
- .app{
-  padding:8px;
- }
-
- .header{
-  margin-bottom:8px;
- }
-
- .brand{
-  font-size:17px;
- }
-
- .status{
-  display:none;
- }
-
- .room-layout{
-  gap:8px;
- }
-
- .video-header{
-  padding:9px;
- }
-
- .video-bottom{
-  padding:7px;
- }
-
- .video-bottom button{
-  padding:0 10px;
- }
-
- .side{
-  display:flex;
- }
-
- .side-card{
-  border-radius:14px;
- }
-
- .chat{
-  height:210px;
- }
-
- .avatar-grid{
-  grid-template-columns:repeat(8,1fr);
- }
-
- .home-card{
-  padding:20px;
-  border-radius:20px;
- }
-
-}
-
-/* TOAST */
-
-.toast{
- position:fixed;
- bottom:20px;
- left:50%;
- transform:translate(-50%,20px);
- background:#191c27;
- border:1px solid var(--border);
- padding:10px 14px;
- border-radius:11px;
- font-size:12px;
- opacity:0;
- pointer-events:none;
- transition:.25s;
- z-index:9999;
- box-shadow:var(--shadow);
-}
-
-.toast.show{
- opacity:1;
- transform:translate(-50%,0);
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEVER</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f6f8;
+      color: #171717;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 25px;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #6c4cff;
+    }
+
+    .status {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .status::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #25c76f;
+      border-radius: 50%;
+      margin-right: 7px;
+    }
+
+    /* VIDEO */
+    .video-section {
+      background: #000;
+      border-radius: 18px 18px 0 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .video-title {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(0,0,0,.65);
+      color: white;
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 14px;
+      backdrop-filter: blur(5px);
+    }
+
+    /* CHAT */
+    .chat {
+      background: white;
+      border-radius: 0 0 18px 18px;
+      border: 1px solid #e3e3e3;
+      border-top: none;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .chat-header h2 {
+      font-size: 17px;
+    }
+
+    .online {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .messages {
+      height: 270px;
+      overflow-y: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 50%;
+      background: #ece9ff;
+      color: #6c4cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .message-content {
+      background: #f4f4f6;
+      padding: 9px 12px;
+      border-radius: 12px;
+      max-width: 75%;
+    }
+
+    .message-name {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+
+    .message-text {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message-time {
+      font-size: 10px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .my-message {
+      justify-content: flex-end;
+    }
+
+    .my-message .message-content {
+      background: #6c4cff;
+      color: white;
+    }
+
+    .my-message .message-time {
+      color: rgba(255,255,255,.7);
+    }
+
+    /* CHAT INPUT */
+    .chat-input {
+      display: flex;
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid #eee;
+    }
+
+    .chat-input input {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .chat-input input:focus {
+      border-color: #6c4cff;
+    }
+
+    .send {
+      border: none;
+      background: #6c4cff;
+      color: white;
+      padding: 0 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .send:hover {
+      background: #593be0;
+    }
+
+    /* PARTICIPANTS */
+    .participants {
+      margin-top: 25px;
+      background: white;
+      border: 1px solid #e4e4e4;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .participants h2 {
+      font-size: 18px;
+      margin-bottom: 17px;
+    }
+
+    .people {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .person {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+    }
+
+    .person-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .person-info strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .person-info small {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .guest {
+      border-left: 3px solid #6c4cff;
+    }
+
+    .participant {
+      border-left: 3px solid #25c76f;
+    }
+
+    /* NEW VIDEO */
+    .new-video {
+      margin-top: 25px;
+      background: white;
+      border: 1px solid #e4e4e4;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .new-video h2 {
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .new-video p {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .video-link {
+      display: flex;
+      gap: 10px;
+    }
+
+    .video-link input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .video-link button {
+      border: none;
+      background: #171717;
+      color: white;
+      border-radius: 10px;
+      padding: 0 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .video-link button:hover {
+      background: #333;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .page {
+        padding: 12px;
+      }
+
+      header {
+        margin-bottom: 15px;
+      }
+
+      .logo {
+        font-size: 25px;
+      }
+
+      .status {
+        font-size: 11px;
+      }
+
+      .people {
+        grid-template-columns: 1fr;
+      }
+
+      .messages {
+        height: 240px;
+      }
+
+      .video-link {
+        flex-direction: column;
+      }
+
+      .video-link button {
+        height: 44px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
+  <div class="page">
 
-<header class="header">
-
- <div class="brand">
-  <div class="brand-mark">▶</div>
-  Watch<span>Together</span>
- </div>
-
- <div class="header-right">
-
-  <div class="status" id="status">
-   Hors ligne
-  </div>
-
-  <button
-   class="icon-btn"
-   onclick="copyRoomLink()"
-   title="Partager"
-  >↗</button>
-
- </div>
-
-</header>
+    <!-- HEADER -->
+    <header>
+      <div class="logo">WE<span>VER</span></div>
+      <div class="status">Session en direct</div>
+    </header>
 
 
-<!-- ================= HOME ================= -->
+    <!-- VIDEO -->
+    <section class="video-section">
 
-<section id="home" class="home">
+      <video controls autoplay muted playsinline>
+        <!-- Remplace cette URL par ta vidéo -->
+        <source src="video.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas la vidéo.
+      </video>
 
- <div class="home-card">
-
-  <div class="home-logo">◉</div>
-
-  <h1>Regarder ensemble.</h1>
-
-  <p>
-   Crée une salle privée, choisis ton avatar
-   et regarde YouTube avec quelqu'un en temps réel.
-  </p>
-
-  <div class="label">TON PSEUDO</div>
-
-  <input
-   id="name"
-   maxlength="20"
-   placeholder="Ton prénom..."
-  >
-
-  <div class="label">TON AVATAR</div>
-
-  <div class="avatar-grid" id="avatars"></div>
-
-  <div class="label">THÈME</div>
-
-  <div class="theme-picker">
-
-   <div class="theme t-purple active"
-        onclick="setTheme('purple',this)"></div>
-
-   <div class="theme t-blue"
-        onclick="setTheme('blue',this)"></div>
-
-   <div class="theme t-pink"
-        onclick="setTheme('pink',this)"></div>
-
-   <div class="theme t-green"
-        onclick="setTheme('green',this)"></div>
-
-   <div class="theme t-orange"
-        onclick="setTheme('orange',this)"></div>
-
-   <div class="theme t-red"
-        onclick="setTheme('red',this)"></div>
-
-  </div>
-
-  <div class="label">VIDÉO YOUTUBE</div>
-
-  <input
-   id="videoInput"
-   placeholder="Colle un lien YouTube..."
-  >
-
-  <br><br>
-
-  <button
-   class="primary"
-   onclick="createRoom()"
-  >
-   Créer une salle
-  </button>
-
- </div>
-
-</section>
-
-
-<!-- ================= ROOM ================= -->
-
-<section id="room" class="hidden">
-
- <div class="room-layout">
-
-  <!-- VIDEO -->
-
-  <div class="video-card">
-
-   <div class="video-header">
-
-    <div
-     class="video-title"
-     id="videoTitle"
-    >
-     Aucune vidéo
-    </div>
-
-    <div
-     class="room-code"
-     id="roomCode"
-    >
-     ------
-    </div>
-
-   </div>
-
-   <div class="video">
-
-    <div id="player"></div>
-
-    <div
-     id="videoEmpty"
-     class="video-empty"
-    >
-     <div>
-      <div style="font-size:34px;margin-bottom:8px">
-       ▶
+      <div class="video-title">
+        Présentation WEVER
       </div>
-      En attente de la vidéo...
-     </div>
-    </div>
 
-   </div>
+    </section>
 
-   <div class="video-bottom">
 
-    <input
-     id="changeVideoInput"
-     placeholder="Nouveau lien YouTube..."
-    >
+    <!-- CHAT JUSTE SOUS LA VIDEO -->
+    <section class="chat">
 
-    <button onclick="changeVideo()">
-     Charger
-    </button>
+      <div class="chat-header">
+        <h2>Discussion</h2>
+        <span class="online">3 participants</span>
+      </div>
 
-   </div>
+      <div class="messages" id="messages">
+
+        <div class="message">
+          <div class="avatar">A</div>
+
+          <div class="message-content">
+            <div class="message-name">Alex</div>
+            <div class="message-text">
+              Bienvenue sur la session 👋
+            </div>
+            <div class="message-time">
+              20:14
+            </div>
+          </div>
+        </div>
+
+
+        <div class="message">
+          <div class="avatar">M</div>
+
+          <div class="message-content">
+            <div class="message-name">Mathis</div>
+            <div class="message-text">
+              La vidéo est bien visible.
+            </div>
+            <div class="message-time">
+              20:15
+            </div>
+          </div>
+        </div>
+
+
+        <div class="message my-message">
+
+          <div class="message-content">
+            <div class="message-name">Vous</div>
+            <div class="message-text">
+              Parfait 👍
+            </div>
+            <div class="message-time">
+              20:16
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ENVOI MESSAGE -->
+      <form class="chat-input" id="chatForm">
+
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Écrire un message..."
+          autocomplete="off"
+        >
+
+        <button class="send" type="submit">
+          Envoyer
+        </button>
+
+      </form>
+
+    </section>
+
+
+    <!-- INVITÉ / PARTICIPANT -->
+    <section class="participants">
+
+      <h2>Invité et participant</h2>
+
+      <div class="people">
+
+        <div class="person guest">
+
+          <div class="person-avatar">
+            I
+          </div>
+
+          <div class="person-info">
+            <strong>Invité</strong>
+            <small>Invité à la session</small>
+          </div>
+
+        </div>
+
+
+        <div class="person participant">
+
+          <div class="person-avatar">
+            P
+          </div>
+
+          <div class="person-info">
+            <strong>Participant</strong>
+            <small>Connecté à la session</small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- NOUVELLE VIDEO -->
+    <section class="new-video">
+
+      <h2>Ajouter une nouvelle vidéo</h2>
+
+      <p>
+        Ajoutez le lien d'une nouvelle vidéo pour remplacer la vidéo actuelle.
+      </p>
+
+      <div class="video-link">
+
+        <input
+          type="text"
+          id="videoUrl"
+          placeholder="https://exemple.com/video.mp4"
+        >
+
+        <button onclick="changeVideo()">
+          Charger la vidéo
+        </button>
+
+      </div>
+
+    </section>
 
   </div>
 
 
-  <!-- SIDE -->
+  <script>
 
-  <aside class="side">
+    /* CHAT */
 
-   <!-- USERS -->
+    const chatForm = document.getElementById("chatForm");
+    const messageInput = document.getElementById("messageInput");
+    const messages = document.getElementById("messages");
 
-   <div class="side-card">
+    chatForm.addEventListener("submit", function(event) {
 
-    <div class="side-title">
+      event.preventDefault();
 
-     <span>Participants</span>
+      const text = messageInput.value.trim();
 
-     <span
-      class="count"
-      id="peopleCount"
-     >0</span>
+      if (!text) return;
 
-    </div>
+      const message = document.createElement("div");
 
-    <div
-     class="users"
-     id="users"
-    ></div>
+      message.className = "message my-message";
 
-   </div>
+      message.innerHTML = `
+        <div class="message-content">
+          <div class="message-name">Vous</div>
+          <div class="message-text">${escapeHTML(text)}</div>
+          <div class="message-time">Maintenant</div>
+        </div>
+      `;
 
+      messages.appendChild(message);
 
-   <!-- SHARE -->
+      messageInput.value = "";
 
-   <div class="side-card">
+      messages.scrollTop = messages.scrollHeight;
 
-    <div class="side-title">
-     Inviter
-    </div>
+    });
 
-    <div class="share">
 
-     <input
-      id="shareLink"
-      readonly
-     >
+    /* CHANGER LA VIDEO */
 
-     <button onclick="copyRoomLink()">
-      Copier
-     </button>
+    function changeVideo() {
 
-    </div>
+      const url = document.getElementById("videoUrl").value.trim();
 
-   </div>
-
-
-   <!-- VOTE -->
-
-   <div class="side-card">
-
-    <div class="side-title">
-     Proposer une vidéo
-    </div>
-
-    <div class="vote-box">
-
-     <input
-      id="voteVideoInput"
-      placeholder="Lien YouTube..."
-     >
-
-     <button
-      class="secondary"
-      onclick="proposeVideo()"
-     >
-      Soumettre au vote
-     </button>
-
-     <div
-      class="vote-status"
-      id="voteStatus"
-     >
-      Aucune proposition.
-     </div>
-
-     <div
-      class="vote-actions hidden"
-      id="voteActions"
-     >
-
-      <button
-       class="accept"
-       onclick="vote(true)"
-      >
-       Accepter
-      </button>
-
-      <button
-       class="reject"
-       onclick="vote(false)"
-      >
-       Refuser
-      </button>
-
-     </div>
-
-    </div>
-
-   </div>
-
-
-   <!-- CHAT -->
-
-   <div class="side-card chat-card">
-
-    <div class="side-title">
-     Discussion
-    </div>
-
-    <div
-     class="chat"
-     id="chat"
-    ></div>
-
-    <div class="reactions">
-
-     <button
-      class="reaction"
-      onclick="react('❤️')"
-     >❤️</button>
-
-     <button
-      class="reaction"
-      onclick="react('😂')"
-     >😂</button>
-
-     <button
-      class="reaction"
-      onclick="react('🔥')"
-     >🔥</button>
-
-     <button
-      class="reaction"
-      onclick="react('👏')"
-     >👏</button>
-
-     <button
-      class="reaction"
-      onclick="react('😮')"
-     >😮</button>
-
-     <button
-      class="reaction"
-      onclick="react('💀')"
-     >💀</button>
-
-    </div>
-
-    <div class="chat-input">
-
-     <input
-      id="chatInput"
-      maxlength="300"
-      placeholder="Écrire..."
-     >
-
-     <button onclick="sendChat()">
-      ↑
-     </button>
-
-    </div>
-
-   </div>
-
-  </aside>
-
- </div>
-
-</section>
-
-</div>
-
-<div
- id="toast"
- class="toast"
-></div>
-
-
-<script>
-
-/* =========================================================
-   CONFIG
-========================================================= */
-
-const PEER_PREFIX = "wt-";
-
-let peer = null;
-
-let roomId = null;
-
-let isHost = false;
-
-let myId = null;
-
-let myName = "";
-
-let myAvatar = "🙂";
-
-let hostConnection = null;
-
-let connections = new Map();
-
-let users = {};
-
-let currentVideoId = null;
-
-let player = null;
-
-let playerReady = false;
-
-let applyingRemote = false;
-
-let currentVote = null;
-
-let syncInterval = null;
-
-
-/* =========================================================
-   AVATARS
-========================================================= */
-
-const AVATARS = [
- "🙂","😎","🤠","👽",
- "🐱","🐻","🐼","🦊",
- "🐸","🐵","🦁","🐯",
- "🐨","🐰","🐹","🐙"
-];
-
-const avatarBox =
- document.getElementById("avatars");
-
-AVATARS.forEach((avatar,index)=>{
-
- const el =
-  document.createElement("div");
-
- el.className =
-  "avatar" +
-  (index === 0 ? " selected" : "");
-
- el.textContent = avatar;
-
- el.onclick = ()=>{
-
-  document
-   .querySelectorAll(".avatar")
-   .forEach(x=>x.classList.remove("selected"));
-
-  el.classList.add("selected");
-
-  myAvatar = avatar;
-
- };
-
- avatarBox.appendChild(el);
-
-});
-
-
-/* =========================================================
-   THEME
-========================================================= */
-
-const themes = {
-
- purple:{
-  accent:"#7c5cff",
-  accent2:"#9b87ff"
- },
-
- blue:{
-  accent:"#3687ff",
-  accent2:"#63a0ff"
- },
-
- pink:{
-  accent:"#ff4f9a",
-  accent2:"#ff80b5"
- },
-
- green:{
-  accent:"#22c58b",
-  accent2:"#5be0ae"
- },
-
- orange:{
-  accent:"#ff8a3d",
-  accent2:"#ffae70"
- },
-
- red:{
-  accent:"#ff4f6d",
-  accent2:"#ff7d94"
- }
-
-};
-
-function setTheme(name,el){
-
- const theme = themes[name];
-
- document.documentElement
-  .style.setProperty(
-   "--accent",
-   theme.accent
-  );
-
- document.documentElement
-  .style.setProperty(
-   "--accent2",
-   theme.accent2
-  );
-
- document
-  .querySelectorAll(".theme")
-  .forEach(x=>x.classList.remove("active"));
-
- el.classList.add("active");
-
- localStorage.setItem(
-  "wt-theme",
-  name
- );
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-function toast(text){
-
- clearTimeout(toastTimer);
-
- const el =
-  document.getElementById("toast");
-
- el.textContent = text;
-
- el.classList.add("show");
-
- toastTimer =
-  setTimeout(()=>{
-   el.classList.remove("show");
-  },2200);
-
-}
-
-
-/* =========================================================
-   YOUTUBE ID
-========================================================= */
-
-function getYoutubeId(value){
-
- if(!value)return null;
-
- try{
-
-  const url =
-   new URL(value.trim());
-
-  const host =
-   url.hostname
-    .replace("www.","")
-    .replace("m.","");
-
-  if(host === "youtu.be"){
-
-   return url.pathname
-    .split("/")
-    .filter(Boolean)[0] || null;
-
-  }
-
-  if(host === "youtube.com"){
-
-   if(url.pathname === "/watch")
-    return url.searchParams.get("v");
-
-   if(url.pathname.startsWith("/shorts/"))
-    return url.pathname.split("/")[2];
-
-   if(url.pathname.startsWith("/embed/"))
-    return url.pathname.split("/")[2];
-
-  }
-
- }catch(e){}
-
- return null;
-
-}
-
-
-/* =========================================================
-   ROOM ID
-========================================================= */
-
-function randomRoom(){
-
- const chars =
-  "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
- let out = "";
-
- for(let i=0;i<6;i++){
-
-  out +=
-   chars[
-    Math.floor(
-     Math.random()*chars.length
-    )
-   ];
-
- }
-
- return out;
-
-}
-
-
-/* =========================================================
-   CREATE ROOM
-========================================================= */
-
-function createRoom(){
-
- myName =
-  document.getElementById("name")
-   .value.trim()
-   .substring(0,20);
-
- const url =
-  document.getElementById("videoInput")
-   .value.trim();
-
- currentVideoId =
-  getYoutubeId(url);
-
- if(!myName){
-
-  toast("Choisis un pseudo.");
-
-  return;
-
- }
-
- if(!currentVideoId){
-
-  toast("Ajoute un lien YouTube.");
-
-  return;
-
- }
-
- localStorage.setItem(
-  "wt-name",
-  myName
- );
-
- roomId =
-  randomRoom();
-
- isHost = true;
-
- users = {};
-
- setStatus("Connexion...");
-
- peer =
-  new Peer(
-   PEER_PREFIX + roomId
-  );
-
- peer.on("open",id=>{
-
-  myId = id;
-
-  users[id] = {
-   name:myName,
-   avatar:myAvatar,
-   host:true
-  };
-
-  openRoom();
-
-  setStatus("Salle en ligne");
-
-  updateUsers();
-
-  loadYoutube();
-
- });
-
- peer.on(
-  "connection",
-  incomingConnection
- );
-
- peer.on(
-  "error",
-  peerError
- );
-
-}
-
-
-/* =========================================================
-   JOIN
-========================================================= */
-
-function joinRoom(){
-
- myName =
-  localStorage.getItem("wt-name") ||
-  prompt("Ton pseudo ?") ||
-  "Invité";
-
- myName =
-  myName.trim().substring(0,20);
-
- isHost = false;
-
- setStatus("Connexion...");
-
- peer = new Peer();
-
- peer.on("open",id=>{
-
-  myId = id;
-
-  hostConnection =
-   peer.connect(
-    PEER_PREFIX + roomId,
-    {
-     reliable:true
-    }
-   );
-
-  hostConnection.on("open",()=>{
-
-   setStatus("Connecté");
-
-   hostConnection.send({
-
-    type:"hello",
-
-    id:myId,
-
-    name:myName,
-
-    avatar:myAvatar
-
-   });
-
-   openRoom();
-
-   loadYoutube();
-
-  });
-
-  hostConnection.on(
-   "data",
-   clientMessage
-  );
-
-  hostConnection.on("close",()=>{
-
-   setStatus("Hôte déconnecté");
-
-   toast(
-    "La salle a été fermée."
-   );
-
-  });
-
- });
-
- peer.on(
-  "error",
-  peerError
- );
-
-}
-
-
-/* =========================================================
-   OPEN ROOM
-========================================================= */
-
-function openRoom(){
-
- document
-  .getElementById("home")
-  .classList.add("hidden");
-
- document
-  .getElementById("room")
-  .classList.remove("hidden");
-
- document
-  .getElementById("roomCode")
-  .textContent =
-  roomId;
-
- document
-  .getElementById("shareLink")
-  .value =
-  createLink();
-
- history.replaceState(
-  {},
-  "",
-  "?room="+encodeURIComponent(roomId)
- );
-
-}
-
-
-/* =========================================================
-   LINK
-========================================================= */
-
-function createLink(){
-
- return (
-  location.origin +
-  location.pathname +
-  "?room=" +
-  encodeURIComponent(roomId)
- );
-
-}
-
-async function copyRoomLink(){
-
- try{
-
-  await navigator.clipboard
-   .writeText(createLink());
-
-  toast("Lien copié.");
-
- }catch(e){
-
-  const input =
-   document.getElementById(
-    "shareLink"
-   );
-
-  input.select();
-
-  document.execCommand("copy");
-
-  toast("Lien copié.");
-
- }
-
-}
-
-
-/* =========================================================
-   YOUTUBE
-========================================================= */
-
-function loadYoutube(){
-
- if(
-  window.YT &&
-  window.YT.Player
- ){
-
-  createPlayer();
-
-  return;
-
- }
-
- if(
-  document.getElementById(
-   "yt-api"
-  )
- )return;
-
- const script =
-  document.createElement("script");
-
- script.id="yt-api";
-
- script.src =
-  "https://www.youtube.com/iframe_api";
-
- document.head.appendChild(script);
-
-}
-
-window.onYouTubeIframeAPIReady =
- ()=>createPlayer();
-
-
-function createPlayer(){
-
- if(!currentVideoId)return;
-
- if(player){
-
-  applyingRemote = true;
-
-  player.loadVideoById(
-   currentVideoId
-  );
-
-  setTimeout(()=>{
-   applyingRemote=false;
-  },700);
-
-  return;
-
- }
-
- player =
-  new YT.Player(
-   "player",
-   {
-
-    videoId:
-     currentVideoId,
-
-    playerVars:{
-     autoplay:0,
-     controls:isHost?1:0,
-     rel:0,
-     playsinline:1,
-     modestbranding:1
-    },
-
-    events:{
-
-     onReady:()=>{
-
-      playerReady=true;
-
-      document
-       .getElementById(
-        "videoEmpty"
-       )
-       .classList.add("hidden");
-
-      if(!isHost){
-
-       hostConnection?.send({
-        type:"requestState"
-       });
-
+      if (!url) {
+        alert("Veuillez entrer un lien vidéo.");
+        return;
       }
 
-      startSync();
+      const video = document.querySelector("video");
 
-     },
+      video.src = url;
 
-     onStateChange:
-      playerStateChanged
+      video.load();
+
+      video.play().catch(() => {});
 
     }
 
-   }
-  );
 
-}
+    /* PROTECTION DU TEXTE DU CHAT */
 
+    function escapeHTML(text) {
 
-/* =========================================================
-   PLAYER STATE
-========================================================= */
+      const div = document.createElement("div");
 
-function playerStateChanged(){
+      div.textContent = text;
 
- if(!isHost)return;
+      return div.innerHTML;
 
- if(applyingRemote)return;
-
- broadcastState();
-
-}
-
-function broadcastState(){
-
- if(!playerReady)return;
-
- broadcast({
-
-  type:"state",
-
-  videoId:
-   currentVideoId,
-
-  state:
-   player.getPlayerState(),
-
-  time:
-   player.getCurrentTime()
-
- });
-
-}
-
-
-/* =========================================================
-   SYNC
-========================================================= */
-
-function startSync(){
-
- clearInterval(syncInterval);
-
- syncInterval =
-  setInterval(()=>{
-
-   if(!isHost)return;
-
-   if(!playerReady)return;
-
-   broadcast({
-
-    type:"sync",
-
-    videoId:
-     currentVideoId,
-
-    state:
-     player.getPlayerState(),
-
-    time:
-     player.getCurrentTime()
-
-   });
-
-  },3000);
-
-}
-
-
-function applyState(data){
-
- if(!playerReady)return;
-
- applyingRemote=true;
-
- if(
-  data.videoId &&
-  data.videoId !==
-  currentVideoId
- ){
-
-  currentVideoId =
-   data.videoId;
-
-  player.loadVideoById(
-   currentVideoId
-  );
-
-  setTimeout(()=>{
-
-   player.seekTo(
-    data.time || 0,
-    true
-   );
-
-   playPause(
-    data.state
-   );
-
-   applyingRemote=false;
-
-  },800);
-
-  return;
-
- }
-
- const difference =
-  Math.abs(
-   player.getCurrentTime() -
-   Number(data.time || 0)
-  );
-
- if(difference > .7){
-
-  player.seekTo(
-   Number(data.time || 0),
-   true
-  );
-
- }
-
- playPause(data.state);
-
- setTimeout(()=>{
-  applyingRemote=false;
- },300);
-
-}
-
-
-function playPause(state){
-
- if(state === 1){
-
-  player.playVideo();
-
- }else if(
-  state === 2 ||
-  state === 0
- ){
-
-  player.pauseVideo();
-
- }
-
-}
-
-
-/* =========================================================
-   INCOMING CONNECTION
-========================================================= */
-
-function incomingConnection(conn){
-
- connections.set(
-  conn.peer,
-  conn
- );
-
- conn.on("open",()=>{
-
-  sendRoomState(conn);
-
- });
-
- conn.on(
-  "data",
-  data=>{
-   hostMessage(
-    conn,
-    data
-   );
-  }
- );
-
- conn.on("close",()=>{
-
-  const id =
-   conn.peer;
-
-  connections.delete(id);
-
-  delete users[id];
-
-  broadcastUsers();
-
- });
-
-}
-
-
-/* =========================================================
-   HOST MESSAGE
-========================================================= */
-
-function hostMessage(conn,data){
-
- if(!data)return;
-
-
- if(data.type==="hello"){
-
-  users[data.id]={
-   name:data.name || "Invité",
-   avatar:data.avatar || "🙂",
-   host:false
-  };
-
-  updateUsers();
-
-  broadcastUsers();
-
-  sendRoomState(conn);
-
- }
-
-
- if(data.type==="requestState"){
-
-  sendRoomState(conn);
-
- }
-
-
- if(data.type==="chat"){
-
-  const message = {
-
-   type:"chat",
-
-   name:data.name,
-
-   avatar:data.avatar,
-
-   message:data.message,
-
-   time:Date.now()
-
-  };
-
-  addMessage(
-   message,
-   false
-  );
-
-  broadcast(message);
-
- }
-
-
- if(data.type==="reaction"){
-
-  broadcast(data);
-
-  showReaction(
-   data.avatar,
-   data.reaction
-  );
-
- }
-
-
- if(data.type==="voteProposal"){
-
-  currentVote = {
-
-   id:data.id,
-
-   videoId:data.videoId,
-
-   proposer:data.proposer,
-
-   proposerName:data.proposerName,
-
-   votes:{}
-
-  };
-
-  broadcast({
-   type:"voteProposal",
-   ...currentVote
-  });
-
-  renderVote();
-
- }
-
-
- if(data.type==="vote"){
-
-  if(!currentVote)return;
-
-  currentVote.votes[
-   data.userId
-  ] =
-   data.accepted;
-
-  evaluateVote();
-
- }
-
-}
-
-
-/* =========================================================
-   CLIENT MESSAGE
-========================================================= */
-
-function clientMessage(data){
-
- if(!data)return;
-
-
- if(data.type==="roomState"){
-
-  currentVideoId =
-   data.videoId;
-
-  users =
-   data.users || {};
-
-  updateUsers();
-
-  if(playerReady){
-
-   applyState(data);
-
-  }
-
-  loadYoutube();
-
- }
-
-
- if(
-  data.type==="state" ||
-  data.type==="sync"
- ){
-
-  applyState(data);
-
- }
-
-
- if(data.type==="users"){
-
-  users =
-   data.users || {};
-
-  updateUsers();
-
- }
-
-
- if(data.type==="chat"){
-
-  addMessage(
-   data,
-   false
-  );
-
- }
-
-
- if(data.type==="reaction"){
-
-  showReaction(
-   data.avatar,
-   data.reaction
-  );
-
- }
-
-
- if(data.type==="voteProposal"){
-
-  currentVote = data;
-
-  renderVote();
-
- }
-
-
- if(data.type==="voteResult"){
-
-  currentVote=null;
-
-  renderVote();
-
-  if(data.accepted){
-
-   currentVideoId =
-    data.videoId;
-
-   if(playerReady){
-
-    applyingRemote=true;
-
-    player.loadVideoById(
-     currentVideoId
-    );
-
-    setTimeout(()=>{
-     applyingRemote=false;
-    },700);
-
-   }
-
-   toast(
-    "Nouvelle vidéo chargée."
-   );
-
-  }else{
-
-   toast(
-    "Vote refusé."
-   );
-
-  }
-
- }
-
-}
-
-
-/* =========================================================
-   ROOM STATE
-========================================================= */
-
-function sendRoomState(conn){
-
- if(!isHost)return;
-
- conn.send({
-
-  type:"roomState",
-
-  videoId:
-   currentVideoId,
-
-  state:
-   playerReady ?
-    player.getPlayerState() :
-    2,
-
-  time:
-   playerReady ?
-    player.getCurrentTime() :
-    0,
-
-  users:users
-
- });
-
-}
-
-
-/* =========================================================
-   BROADCAST
-========================================================= */
-
-function broadcast(data){
-
- connections.forEach(conn=>{
-
-  if(
-   conn &&
-   conn.open
-  ){
-
-   try{
-    conn.send(data);
-   }catch(e){}
-
-  }
-
- });
-
-}
-
-
-/* =========================================================
-   USERS
-========================================================= */
-
-function broadcastUsers(){
-
- broadcast({
-  type:"users",
-  users:users
- });
-
- updateUsers();
-
-}
-
-
-function updateUsers(){
-
- const box =
-  document.getElementById(
-   "users"
-  );
-
- box.innerHTML="";
-
- Object.entries(users)
- .forEach(([id,user])=>{
-
-  const el =
-   document.createElement("div");
-
-  el.className="user";
-
-  el.innerHTML = `
-   <span class="user-avatar">
-    ${escapeHTML(user.avatar || "🙂")}
-   </span>
-
-   <span>
-    ${escapeHTML(user.name || "Invité")}
-   </span>
-
-   ${
-    user.host
-     ? '<span class="crown">♛</span>'
-     : ''
-   }
-  `;
-
-  box.appendChild(el);
-
- });
-
- document
-  .getElementById("peopleCount")
-  .textContent =
-  Object.keys(users).length;
-
-}
-
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-function sendChat(){
-
- const input =
-  document.getElementById(
-   "chatInput"
-  );
-
- const text =
-  input.value.trim();
-
- if(!text)return;
-
- const data = {
-
-  type:"chat",
-
-  name:myName,
-
-  avatar:myAvatar,
-
-  message:text,
-
-  time:Date.now()
-
- };
-
- addMessage(
-  data,
-  true
- );
-
- if(isHost){
-
-  broadcast(data);
-
- }else{
-
-  hostConnection?.send(data);
-
- }
-
- input.value="";
-
-}
-
-
-function addMessage(data,isMe){
-
- const chat =
-  document.getElementById(
-   "chat"
-  );
-
- const div =
-  document.createElement(
-   "div"
-  );
-
- div.className="msg";
-
- const date =
-  new Date(
-   data.time || Date.now()
-  );
-
- const time =
-  date.toLocaleTimeString(
-   [],
-   {
-    hour:"2-digit",
-    minute:"2-digit"
-   }
-  );
-
- div.innerHTML = `
-
-  <div class="msg-avatar">
-   ${escapeHTML(data.avatar || "🙂")}
-  </div>
-
-  <div class="msg-body">
-
-   <div class="msg-top">
-
-    <span class="msg-name">
-     ${escapeHTML(data.name || "Invité")}
-    </span>
-
-    ${
-     data.host
-      ? '<span class="crown">♛</span>'
-      : ''
     }
 
-    <span class="msg-time">
-     ${time}
-    </span>
-
-   </div>
-
-   <div class="msg-text">
-    ${escapeHTML(data.message || "")}
-   </div>
-
-  </div>
-
- `;
-
- chat.appendChild(div);
-
- chat.scrollTop =
-  chat.scrollHeight;
-
-}
-
-
-/* =========================================================
-   REACTIONS
-========================================================= */
-
-function react(reaction){
-
- const data = {
-
-  type:"reaction",
-
-  reaction:reaction,
-
-  avatar:myAvatar
-
- };
-
- showReaction(
-  myAvatar,
-  reaction
- );
-
- if(isHost){
-
-  broadcast(data);
-
- }else{
-
-  hostConnection?.send(data);
-
- }
-
-}
-
-
-function showReaction(
- avatar,
- reaction
-){
-
- const el =
-  document.createElement("div");
-
- el.textContent =
-  avatar + " " + reaction;
-
- el.style.position="fixed";
-
- el.style.left =
-  (20 + Math.random()*60) + "%";
-
- el.style.bottom="70px";
-
- el.style.fontSize="25px";
-
- el.style.zIndex="9998";
-
- el.style.pointerEvents="none";
-
- el.style.transition=
-  "1.2s ease";
-
- document.body.appendChild(el);
-
- requestAnimationFrame(()=>{
-
-  el.style.transform=
-   "translateY(-180px) scale(1.4)";
-
-  el.style.opacity="0";
-
- });
-
- setTimeout(()=>{
-  el.remove();
- },1300);
-
-}
-
-
-/* =========================================================
-   VIDEO CHANGE
-========================================================= */
-
-function changeVideo(){
-
- if(!isHost){
-
-  toast(
-   "Propose la vidéo au vote."
-  );
-
-  return;
-
- }
-
- const input =
-  document.getElementById(
-   "changeVideoInput"
-  );
-
- const id =
-  getYoutubeId(input.value);
-
- if(!id){
-
-  toast(
-   "Lien YouTube invalide."
-  );
-
-  return;
-
- }
-
- currentVideoId=id;
-
- broadcast({
-
-  type:"state",
-
-  videoId:id,
-
-  state:2,
-
-  time:0
-
- });
-
- if(playerReady){
-
-  applyingRemote=true;
-
-  player.loadVideoById(id);
-
-  setTimeout(()=>{
-   applyingRemote=false;
-  },700);
-
- }
-
- input.value="";
-
-}
-
-
-/* =========================================================
-   VOTE
-========================================================= */
-
-function proposeVideo(){
-
- const url =
-  document.getElementById(
-   "voteVideoInput"
-  ).value.trim();
-
- const id =
-  getYoutubeId(url);
-
- if(!id){
-
-  toast(
-   "Lien YouTube invalide."
-  );
-
-  return;
-
- }
-
- const vote = {
-
-  type:"voteProposal",
-
-  id:
-   Date.now().toString(),
-
-  videoId:id,
-
-  proposer:myId,
-
-  proposerName:myName,
-
-  votes:{}
-
- };
-
- if(isHost){
-
-  currentVote=vote;
-
-  renderVote();
-
- }else{
-
-  hostConnection?.send(vote);
-
- }
-
- document
-  .getElementById(
-   "voteVideoInput"
-  )
-  .value="";
-
-}
-
-
-function renderVote(){
-
- const status =
-  document.getElementById(
-   "voteStatus"
-  );
-
- const actions =
-  document.getElementById(
-   "voteActions"
-  );
-
- if(!currentVote){
-
-  status.textContent =
-   "Aucune proposition.";
-
-  actions.classList.add(
-   "hidden"
-  );
-
-  return;
-
- }
-
- status.textContent =
-  currentVote.proposerName +
-  " propose une nouvelle vidéo.";
-
- actions.classList.remove(
-  "hidden"
- );
-
-}
-
-
-function vote(accepted){
-
- if(!currentVote)return;
-
- const data = {
-
-  type:"vote",
-
-  userId:myId,
-
-  accepted:accepted
-
- };
-
- if(isHost){
-
-  currentVote.votes[myId]=
-   accepted;
-
-  evaluateVote();
-
- }else{
-
-  hostConnection?.send(data);
-
- }
-
- document
-  .getElementById(
-   "voteActions"
-  )
-  .classList.add(
-   "hidden"
-  );
-
-}
-
-
-function evaluateVote(){
-
- if(!isHost)return;
-
- const people =
-  Object.keys(users);
-
- const votes =
-  currentVote.votes;
-
- const yes =
-  people.filter(
-   id=>votes[id] === true
-  ).length;
-
- const no =
-  people.filter(
-   id=>votes[id] === false
-  ).length;
-
- /*
-   Pour deux personnes :
-   les deux doivent accepter.
-
-   Pour plus de monde :
-   majorité.
- */
-
- const required =
-  Math.ceil(
-   people.length / 2
-  );
-
- if(yes >= required){
-
-  const result = {
-
-   type:"voteResult",
-
-   accepted:true,
-
-   videoId:
-    currentVote.videoId
-
-  };
-
-  broadcast(result);
-
-  currentVideoId =
-   currentVote.videoId;
-
-  if(playerReady){
-
-   applyingRemote=true;
-
-   player.loadVideoById(
-    currentVideoId
-   );
-
-   setTimeout(()=>{
-    applyingRemote=false;
-   },700);
-
-  }
-
-  currentVote=null;
-
-  renderVote();
-
- }
-
- else if(
-  no > people.length / 2
- ){
-
-  broadcast({
-
-   type:"voteResult",
-
-   accepted:false
-
-  });
-
-  currentVote=null;
-
-  renderVote();
-
- }
-
-}
-
-
-/* =========================================================
-   PEER ERRORS
-========================================================= */
-
-function peerError(error){
-
- console.error(error);
-
- if(
-  error.type ===
-  "peer-unavailable"
- ){
-
-  toast(
-   "Salle introuvable."
-  );
-
- }else if(
-  error.type ===
-  "unavailable-id"
- ){
-
-  toast(
-   "Cette salle existe déjà."
-  );
-
- }else{
-
-  toast(
-   "Erreur de connexion."
-  );
-
- }
-
- setStatus("Erreur");
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function setStatus(text){
-
- document
-  .getElementById(
-   "status"
-  )
-  .textContent =
-  text;
-
-}
-
-
-/* =========================================================
-   ESCAPE
-========================================================= */
-
-function escapeHTML(value){
-
- return String(value)
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;")
-  .replaceAll("'","&#039;");
-
-}
-
-
-/* =========================================================
-   ENTER CHAT
-========================================================= */
-
-document
- .getElementById(
-  "chatInput"
- )
- .addEventListener(
-  "keydown",
-  e=>{
-
-   if(e.key==="Enter"){
-
-    e.preventDefault();
-
-    sendChat();
-
-   }
-
-  }
- );
-
-
-/* =========================================================
-   LOAD SAVED SETTINGS
-========================================================= */
-
-const savedName =
- localStorage.getItem(
-  "wt-name"
- );
-
-if(savedName){
-
- document
-  .getElementById("name")
-  .value =
-  savedName;
-
-}
-
-const savedTheme =
- localStorage.getItem(
-  "wt-theme"
- );
-
-if(savedTheme &&
- themes[savedTheme]){
-
- const theme =
-  themes[savedTheme];
-
- document.documentElement
-  .style.setProperty(
-   "--accent",
-   theme.accent
-  );
-
- document.documentElement
-  .style.setProperty(
-   "--accent2",
-   theme.accent2
-  );
-
-}
-
-
-/* =========================================================
-   URL ROOM
-========================================================= */
-
-window.addEventListener(
- "load",
- ()=>{
-
-  const params =
-   new URLSearchParams(
-    location.search
-   );
-
-  const code =
-   params.get("room");
-
-  if(code){
-
-   roomId =
-    code
-     .toUpperCase()
-     .trim();
-
-   if(
-    /^[A-Z0-9]{6}$/.test(roomId)
-   ){
-
-    joinRoom();
-
-   }else{
-
-    toast(
-     "Lien de salle invalide."
-    );
-
-   }
-
-  }
-
- }
-);
-
-</script>
+  </script>
 
 </body>
 </html>
