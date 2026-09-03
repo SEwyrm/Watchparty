@@ -141,7 +141,7 @@ input::placeholder{color:#565a66;}
 .sync-note{margin-top:10px;font-size:12px;color:var(--text-dim);}
 
 /* CHAT */
-.chat-col{display:flex;flex-direction:column;border-top:1px solid var(--border);}
+.chat-col{display:flex;flex-direction:column;border-top:1px solid var(--border);height:420px;}
 
 .chat-header{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -160,7 +160,7 @@ input::placeholder{color:#565a66;}
 .people-count{font-size:12px;color:var(--text-dim);margin-left:2px;}
 
 .messages{
-    flex:1;min-height:280px;overflow-y:auto;padding:14px 16px;
+    flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px;
     display:flex;flex-direction:column;gap:9px;background:var(--bg);
 }
 
@@ -187,15 +187,32 @@ input::placeholder{color:#565a66;}
 @media(min-width:900px){
     .watch-panel{flex-direction:row;height:620px;}
     .video-frame{aspect-ratio:auto;flex:1;}
-    .chat-col{width:360px;border-top:0;border-left:1px solid var(--border);}
+    .chat-col{width:360px;height:auto;border-top:0;border-left:1px solid var(--border);}
 }
 
 @media(max-width:650px){
     .wrap{padding:10px;}
     .card{padding:16px;}
     #home{margin-top:20px;}
-    .messages{min-height:230px;}
+    .chat-col{height:360px;}
 }
+
+/* Message contenant un lien YouTube proposé par un participant */
+.link-card{
+    background:var(--surface-2);border-radius:12px;padding:10px 11px;
+    display:flex;align-items:center;gap:10px;
+}
+.link-card .link-info{flex:1;min-width:0;}
+.link-card .link-label{font-size:12.5px;color:var(--text-dim);}
+.link-card .link-url{font-size:12.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.link-card button{
+    flex-shrink:0;display:inline-flex;align-items:center;gap:6px;
+    background:var(--accent);color:#fff;border-radius:8px;padding:7px 10px;font-size:12.5px;font-weight:600;
+}
+.link-card button .icon{width:14px;height:14px;}
+.link-card button:disabled{opacity:.55;cursor:default;}
+
+.system-message{align-self:center;color:var(--text-dim);font-size:12px;text-align:center;}
 
 @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
@@ -380,6 +397,10 @@ function getYouTubeId(value){
         }
     }catch(e){}
     return null;
+}
+
+function isYouTubeUrl(value){
+    return !!getYouTubeId(value);
 }
 
 function isGifUrl(value){
@@ -657,14 +678,22 @@ function handleHostMessage(conn,data){
         return;
     }
     if(data.type==="requestState"){ sendRoomState(conn); return; }
+    if(data.type==="requestChangeVideo"){
+        const id=getYouTubeId(String(data.videoId||""))||String(data.videoId||"");
+        if(/^[A-Za-z0-9_-]{6,}$/.test(id)){
+            changeVideoById(id, data.name||"Un invité");
+        }
+        return;
+    }
     if(data.type==="chat"){
         const message={
             type:"chat", name:data.name||"Invité",
             message:String(data.message||"").substring(0,300),
-            isGif:!!data.isGif, sender:data.sender||conn.peer
+            isGif:!!data.isGif, isVideoLink:!!data.isVideoLink, videoId:data.videoId||null,
+            sender:data.sender||conn.peer
         };
         broadcast(message);
-        addMessage(message.name,message.message,message.isGif,false);
+        addMessage(message.name,message.message,message.isGif,false,false,message.isVideoLink,message.videoId);
     }
 }
 
@@ -686,7 +715,10 @@ function handleClientMessage(data){
         updateUsers();
         return;
     }
-    if(data.type==="chat"){ addMessage(data.name,data.message,data.isGif,data.sender===myId); }
+    if(data.type==="chat"){
+        if(data.isSystem){ addMessage(null,data.message,false,false,true); return; }
+        addMessage(data.name,data.message,data.isGif,data.sender===myId,false,data.isVideoLink,data.videoId);
+    }
 }
 
 /* =====================================================
@@ -729,6 +761,17 @@ function changeVideo(){
     const id=getYouTubeId(input.value);
     if(!id){ toast("Lien YouTube invalide."); return; }
 
+    changeVideoById(id, myName);
+
+    input.value="";
+    document.getElementById("editVideoRow").classList.remove("open");
+}
+
+/* Applique un changement de vidéo côté hôte, quelle que soit son origine
+   (champ "changer de vidéo", ou lien YouTube posté par un participant dans le chat) */
+function changeVideoById(id, requesterName){
+    if(!isHost) return;
+
     currentVideoId=id;
     applyingRemoteState=true;
     if(playerReady){ player.loadVideoById(id); }
@@ -738,9 +781,32 @@ function changeVideo(){
     broadcast({type:"sync",state:2,time:0,videoId:id});
     lastHostState=2; lastHostTime=0;
 
-    input.value="";
-    document.getElementById("editVideoRow").classList.remove("open");
-    toast("Vidéo mise à jour pour tout le monde.");
+    const label=requesterName&&requesterName!==myName
+        ? requesterName+" a lancé une nouvelle vidéo."
+        : "Vidéo mise à jour pour tout le monde.";
+
+    toast(label);
+    addMessage(null,label,false,false,true);
+    broadcast({type:"chat",isSystem:true,message:label});
+}
+
+/* Appelé quand quelqu'un clique sur "Lire pour tout le monde" sur un lien
+   YouTube posté dans le chat — fonctionne pour l'hôte comme pour un invité. */
+function requestPlayVideo(id, buttonEl){
+    if(buttonEl){ buttonEl.disabled=true; }
+
+    if(isHost){
+        changeVideoById(id, myName);
+        return;
+    }
+
+    if(hostConnection&&hostConnection.open){
+        hostConnection.send({type:"requestChangeVideo",videoId:id,name:myName});
+        toast("Demande envoyée à l'hôte.");
+    }else{
+        toast("Connexion à l'hôte indisponible.");
+        if(buttonEl){ buttonEl.disabled=false; }
+    }
 }
 
 /* =====================================================
@@ -765,9 +831,15 @@ function sendChat(){
         return;
     }
 
-    const data={type:"chat",name:myName,message:raw.substring(0,300),isGif:asGif,sender:myId};
+    const videoId=!asGif?getYouTubeId(raw):null;
+    const isVideoLink=!!videoId;
 
-    addMessage(myName,data.message,asGif,true);
+    const data={
+        type:"chat",name:myName,message:raw.substring(0,300),
+        isGif:asGif,isVideoLink:isVideoLink,videoId:videoId,sender:myId
+    };
+
+    addMessage(myName,data.message,asGif,true,false,isVideoLink,videoId);
 
     if(isHost){ broadcast(data); }
     else if(hostConnection&&hostConnection.open){ hostConnection.send(data); }
@@ -776,8 +848,17 @@ function sendChat(){
     if(gifMode){ toggleGifMode(); }
 }
 
-function addMessage(name,message,isGif,isMe){
+function addMessage(name,message,isGif,isMe,isSystem,isVideoLink,videoId){
     const chat=document.getElementById("chat");
+
+    if(isSystem){
+        const sys=document.createElement("div");
+        sys.className="system-message";
+        sys.textContent=message;
+        chat.appendChild(sys);
+        chat.scrollTop=chat.scrollHeight;
+        return;
+    }
 
     const wrap=document.createElement("div");
     wrap.className="message"+(isMe?" me":"");
@@ -796,6 +877,27 @@ function addMessage(name,message,isGif,isMe){
         img.alt="GIF";
         img.referrerPolicy="no-referrer";
         bubble.appendChild(img);
+    }else if(isVideoLink&&videoId){
+        bubble.className="bubble link-card";
+
+        const info=document.createElement("div");
+        info.className="link-info";
+        const label=document.createElement("div");
+        label.className="link-label";
+        label.textContent="Lien YouTube";
+        const urlEl=document.createElement("div");
+        urlEl.className="link-url";
+        urlEl.textContent=message;
+        info.appendChild(label);
+        info.appendChild(urlEl);
+
+        const playBtn=document.createElement("button");
+        playBtn.innerHTML='<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Lire</span>';
+        playBtn.title="Lancer cette vidéo pour tout le monde";
+        playBtn.addEventListener("click",function(){ requestPlayVideo(videoId,playBtn); });
+
+        bubble.appendChild(info);
+        bubble.appendChild(playBtn);
     }else{
         bubble.className="bubble";
         bubble.textContent=message;
