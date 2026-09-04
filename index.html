@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#0d0e13">
+<meta name="theme-color" content="#0b0713">
 <title>WatchTogether</title>
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -17,22 +17,25 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 
 :root{
-    --bg:#0d0e13;
-    --surface:#15161d;
-    --surface-2:#1c1e27;
-    --border:#262832;
-    --text:#f2f3f6;
-    --text-dim:#8d919e;
-    --accent:#4f8cff;
-    --accent-dim:#152540;
-    --host:#e0a530;
-    --host-dim:#2b2312;
-    --radius-lg:16px;
-    --radius-md:11px;
+    --bg:#0b0713;
+    --surface:#161022;
+    --surface-2:#1e1730;
+    --border:#2b2440;
+    --text:#f5f3fa;
+    --text-dim:#a99cc0;
+    --v1:#8b5cf6;
+    --v2:#ec4899;
+    --grad:linear-gradient(135deg,var(--v1),var(--v2));
+    --host:#f7b733;
+    --radius-lg:22px;
+    --radius-md:14px;
 }
 
 body{
-    background:var(--bg);
+    background:
+        radial-gradient(600px 300px at 15% -10%, rgba(139,92,246,.22), transparent 60%),
+        radial-gradient(600px 300px at 90% 0%, rgba(236,72,153,.16), transparent 60%),
+        var(--bg);
     color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
     min-height:100vh;
@@ -45,73 +48,83 @@ button{cursor:pointer;border:0;background:none;}
 .wrap{width:100%;max-width:1120px;margin:auto;padding:16px;}
 
 /* TOPBAR */
-.topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    gap:12px;padding:10px 4px;margin-bottom:16px;
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 4px;margin-bottom:16px;}
+.brand{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;letter-spacing:-.2px;}
+.brand-icon{
+    width:32px;height:32px;border-radius:10px;background:var(--grad);
+    display:flex;align-items:center;justify-content:center;color:#fff;
+    box-shadow:0 4px 14px rgba(139,92,246,.4);
 }
-.brand{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;}
-.brand .icon{color:var(--accent);width:20px;height:20px;}
+.brand-icon .icon{width:18px;height:18px;}
 
 .topbar-right{display:flex;align-items:center;gap:10px;}
 
-.status-dot{width:8px;height:8px;border-radius:50%;background:#4b4f5c;flex-shrink:0;}
-.status-dot.on{background:#3ecf8e;}
-.status-dot.pending{background:var(--host);}
-
-.chip{
+.pill{
     display:inline-flex;align-items:center;gap:7px;
     background:var(--surface);border:1px solid var(--border);
-    border-radius:999px;padding:7px 12px;font-size:13px;color:var(--text-dim);
+    border-radius:999px;padding:7px 13px;font-size:13px;color:var(--text-dim);
 }
+.status-dot{width:8px;height:8px;border-radius:50%;background:#4b4560;flex-shrink:0;}
+.status-dot.on{background:#3ecf8e;box-shadow:0 0 0 3px rgba(62,207,142,.18);}
+.status-dot.pending{background:var(--host);}
 
 .icon-btn{
     display:inline-flex;align-items:center;justify-content:center;
-    width:36px;height:36px;border-radius:10px;
+    width:38px;height:38px;border-radius:12px;
     background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
-    transition:background .12s, color .12s;
 }
-.icon-btn:hover{color:var(--text);}
 .icon-btn:active{transform:scale(.94);}
-.icon-btn.accent{background:var(--accent);border-color:var(--accent);color:#fff;}
+.icon-btn.grad{background:var(--grad);border-color:transparent;color:#fff;}
+
+/* Avatars superposés */
+.avatar-stack{display:flex;align-items:center;}
+.avatar{
+    width:28px;height:28px;border-radius:50%;background:var(--surface-2);
+    border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:#fff;margin-left:-9px;flex-shrink:0;
+}
+.avatar-stack .avatar:first-child{margin-left:0;}
+.avatar.host{box-shadow:0 0 0 2px var(--host);}
 
 /* CARDS */
-.card{
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--radius-lg);padding:22px;
-}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;}
 
-h1{font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:-.2px;}
-.subtitle{color:var(--text-dim);margin-bottom:22px;max-width:42ch;font-size:14.5px;}
+h1{font-size:25px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px;}
+.subtitle{color:var(--text-dim);margin-bottom:24px;max-width:42ch;font-size:14.5px;line-height:1.5;}
 
-label{display:block;font-size:12.5px;font-weight:600;color:var(--text-dim);margin-bottom:7px;}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--text-dim);margin-bottom:8px;}
 .field{margin-bottom:16px;}
 
 input[type=text],input[type=url]{
-    width:100%;height:46px;padding:0 14px;
+    width:100%;height:48px;padding:0 15px;
     border-radius:var(--radius-md);border:1px solid var(--border);
-    background:var(--bg);color:var(--text);outline:none;
-    transition:border-color .15s;
+    background:var(--bg);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s;
 }
-input:focus{border-color:var(--accent);}
-input::placeholder{color:#565a66;}
+input:focus{border-color:var(--v1);box-shadow:0 0 0 3px rgba(139,92,246,.18);}
+input::placeholder{color:#5f5878;}
 
 .btn{
-    min-height:46px;padding:0 18px;border-radius:var(--radius-md);
-    font-weight:600;font-size:14.5px;transition:transform .1s, opacity .1s;
+    min-height:48px;padding:0 20px;border-radius:999px;
+    font-weight:700;font-size:14.5px;transition:transform .1s, opacity .1s;
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
 }
 .btn:active{transform:scale(.97);}
-.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 22px rgba(139,92,246,.35);}
 .btn-primary:disabled{opacity:.5;}
 .btn-ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border);}
 .btn.full{width:100%;}
-
 .hidden{display:none!important;}
 
 /* HOME */
-#home{max-width:440px;margin:40px auto 0;}
+#home{max-width:440px;margin:36px auto 0;}
+.home-icon{
+    width:52px;height:52px;border-radius:16px;background:var(--grad);
+    display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:18px;
+    box-shadow:0 10px 26px rgba(139,92,246,.4);
+}
+.home-icon .icon{width:26px;height:26px;}
 
-/* WATCH PANEL (video + chat, assemblés) */
+/* WATCH PANEL */
 .watch-panel{
     display:flex;flex-direction:column;
     background:var(--surface);border:1px solid var(--border);
@@ -122,97 +135,103 @@ input::placeholder{color:#565a66;}
 .video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;}
 #player{width:100%;height:100%;}
 .video-empty{
-    position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;
+    position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;
     align-items:center;justify-content:center;color:var(--text-dim);
-    background:#050609;font-size:13.5px;
+    background:linear-gradient(160deg,#0d0916,#050308);font-size:13.5px;
 }
-.video-empty .icon{width:26px;height:26px;}
+.video-empty .home-icon{margin-bottom:2px;}
 
-.video-toolbar{padding:14px 16px;border-top:1px solid var(--border);}
+.video-toolbar{padding:16px;border-top:1px solid var(--border);}
 .toolbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
 .toolbar-left{display:flex;align-items:center;gap:8px;min-width:0;}
 .now-playing{font-size:13.5px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .host-controls{display:flex;gap:8px;}
 
-.edit-video-row{display:none;gap:8px;margin-top:12px;}
+.edit-video-row{display:none;gap:8px;margin-top:14px;}
 .edit-video-row.open{display:flex;}
 .edit-video-row input{flex:1;}
 
-.sync-note{margin-top:10px;font-size:12px;color:var(--text-dim);}
+.sync-note{margin-top:12px;font-size:12px;color:var(--text-dim);}
 
-/* CHAT */
-.chat-col{display:flex;flex-direction:column;border-top:1px solid var(--border);height:420px;}
-
-.chat-header{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:13px 16px;border-bottom:1px solid var(--border);
+/* CHAT (docké sur desktop, tiroir sur mobile) */
+.chat-drawer{
+    display:flex;flex-direction:column;border-top:1px solid var(--border);
+    position:fixed;left:0;right:0;bottom:0;height:80vh;
+    background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);
+    transform:translateY(100%);transition:transform .3s cubic-bezier(.22,.85,.3,1);
+    z-index:39;box-shadow:0 -16px 44px rgba(0,0,0,.55);
 }
-.chat-title{display:flex;align-items:center;gap:9px;font-weight:600;font-size:14.5px;}
-.chat-title .icon{color:var(--text-dim);}
+.chat-drawer.open{transform:translateY(0);}
+.drawer-handle{width:40px;height:4px;border-radius:999px;background:var(--border);margin:10px auto 2px;}
 
-.people-row{display:flex;align-items:center;gap:6px;}
-.avatar{
-    width:24px;height:24px;border-radius:50%;background:var(--surface-2);
-    border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
-    font-size:10.5px;font-weight:700;color:var(--text-dim);
+.chat-backdrop{
+    position:fixed;inset:0;background:rgba(6,3,12,.62);
+    opacity:0;pointer-events:none;transition:opacity .25s;z-index:38;
 }
-.avatar.host{border-color:var(--host);color:var(--host);}
-.people-count{font-size:12px;color:var(--text-dim);margin-left:2px;}
+.chat-backdrop.open{opacity:1;pointer-events:auto;}
 
-.messages{
-    flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px;
-    display:flex;flex-direction:column;gap:9px;background:var(--bg);
-}
+.chat-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px 13px;border-bottom:1px solid var(--border);}
+.chat-title{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14.5px;}
+.chat-title .icon{color:var(--v2);}
+
+.people-row{display:flex;align-items:center;gap:8px;}
+.people-count{font-size:12px;color:var(--text-dim);}
+
+.messages{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:var(--bg);}
 
 .message{max-width:88%;}
-.message .name{font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:3px;}
+.message .name{font-size:11.5px;font-weight:800;margin-bottom:3px;}
 .message.me{align-self:flex-end;}
-.message.me .name{color:#7fb2ff;text-align:right;}
+.message.me .name{text-align:right;}
 
-.bubble{
-    background:var(--surface-2);border-radius:12px;padding:8px 11px;
-    font-size:14px;line-height:1.4;word-break:break-word;
-}
-.message.me .bubble{background:var(--accent-dim);}
+.bubble{background:var(--surface-2);border-radius:14px;padding:9px 12px;font-size:14px;line-height:1.4;word-break:break-word;}
+.message.me .bubble{background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(236,72,153,.28));}
 
 .gif-bubble{padding:0;overflow:hidden;background:transparent;}
-.gif-bubble img{display:block;max-width:220px;max-height:220px;border-radius:12px;}
+.gif-bubble img{display:block;max-width:220px;max-height:220px;border-radius:14px;}
 
-.chat-input-row{
-    display:flex;align-items:center;gap:8px;padding:12px 14px;border-top:1px solid var(--border);
+.link-card{background:var(--surface-2);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.link-card .link-info{flex:1;min-width:0;}
+.link-card .link-label{font-size:12.5px;color:var(--text-dim);}
+.link-card .link-url{font-size:12.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.link-card button{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;background:var(--grad);color:#fff;border-radius:999px;padding:8px 12px;font-size:12.5px;font-weight:700;}
+.link-card button .icon{width:14px;height:14px;}
+.link-card button:disabled{opacity:.55;}
+
+.system-message{align-self:center;color:var(--text-dim);font-size:12px;text-align:center;}
+
+.chat-input-row{display:flex;align-items:center;gap:8px;padding:12px 14px;border-top:1px solid var(--border);}
+.chat-input-row input{flex:1;height:44px;border-radius:999px;}
+.gif-btn.active{color:#fff;background:var(--grad);border-color:transparent;}
+
+/* Bouton flottant qui ouvre le chat (mobile) */
+.chat-fab{
+    position:fixed;right:18px;bottom:22px;width:58px;height:58px;border-radius:50%;
+    background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;
+    box-shadow:0 10px 28px rgba(139,92,246,.5);z-index:40;
 }
-.chat-input-row input{flex:1;height:42px;}
-.gif-btn.active{color:var(--accent);border-color:var(--accent);}
+.chat-fab .icon{width:25px;height:25px;}
+.chat-fab .badge{
+    position:absolute;top:-3px;right:-3px;background:#fff;color:var(--v2);
+    font-size:10.5px;font-weight:800;min-width:19px;height:19px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;padding:0 5px;
+}
 
 @media(min-width:900px){
-    .watch-panel{flex-direction:row;height:620px;}
+    .watch-panel{flex-direction:row;height:640px;}
     .video-frame{aspect-ratio:auto;flex:1;}
-    .chat-col{width:360px;height:auto;border-top:0;border-left:1px solid var(--border);}
+    .chat-drawer{
+        position:static;transform:none;height:auto;width:370px;
+        border-radius:0;box-shadow:none;border-top:0;border-left:1px solid var(--border);
+    }
+    .chat-fab,.chat-backdrop,.drawer-handle,#closeChatBtn{display:none!important;}
 }
 
 @media(max-width:650px){
     .wrap{padding:10px;}
-    .card{padding:16px;}
-    #home{margin-top:20px;}
-    .chat-col{height:360px;}
+    .card{padding:18px;}
+    #home{margin-top:18px;}
 }
-
-/* Message contenant un lien YouTube proposé par un participant */
-.link-card{
-    background:var(--surface-2);border-radius:12px;padding:10px 11px;
-    display:flex;align-items:center;gap:10px;
-}
-.link-card .link-info{flex:1;min-width:0;}
-.link-card .link-label{font-size:12.5px;color:var(--text-dim);}
-.link-card .link-url{font-size:12.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.link-card button{
-    flex-shrink:0;display:inline-flex;align-items:center;gap:6px;
-    background:var(--accent);color:#fff;border-radius:8px;padding:7px 10px;font-size:12.5px;font-weight:600;
-}
-.link-card button .icon{width:14px;height:14px;}
-.link-card button:disabled{opacity:.55;cursor:default;}
-
-.system-message{align-self:center;color:var(--text-dim);font-size:12px;text-align:center;}
 
 @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
@@ -223,13 +242,15 @@ input::placeholder{color:#565a66;}
 
 <div class="topbar">
     <div class="brand">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/></svg>
+        <div class="brand-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
         WatchTogether
     </div>
 
     <div class="topbar-right">
-        <div class="chip"><span id="statusDot" class="status-dot"></span><span id="statusText">Hors ligne</span></div>
-        <div id="roomChip" class="chip hidden" style="cursor:pointer" onclick="copyRoomLink()">
+        <div class="pill"><span id="statusDot" class="status-dot"></span><span id="statusText">Hors ligne</span></div>
+        <div id="roomChip" class="pill hidden" style="cursor:pointer" onclick="copyRoomLink()">
             <span id="roomCode">------</span>
         </div>
         <button id="shareBtn" class="icon-btn hidden" onclick="copyRoomLink()" title="Copier le lien de la salle">
@@ -241,6 +262,9 @@ input::placeholder{color:#565a66;}
 <!-- ACCUEIL -->
 <section id="home">
     <div class="card">
+        <div class="home-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
         <h1>Regardez une vidéo ensemble</h1>
         <p class="subtitle">Crée une salle privée, colle un lien YouTube et partage-le. Tout se synchronise automatiquement pour tes invités.</p>
 
@@ -261,13 +285,18 @@ input::placeholder{color:#565a66;}
 <!-- SALLE -->
 <section id="room" class="hidden">
 
+    <div class="pill" style="margin-bottom:12px;">
+        <div id="peopleAvatars" class="avatar-stack"></div>
+        <span id="peopleCount" class="people-count">1 personne</span>
+    </div>
+
     <div class="watch-panel">
 
         <div class="video-col">
             <div class="video-frame">
                 <div id="player"></div>
                 <div id="videoEmpty" class="video-empty">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/></svg>
+                    <div class="home-icon"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
                     <span>Aucune vidéo chargée</span>
                 </div>
             </div>
@@ -285,7 +314,7 @@ input::placeholder{color:#565a66;}
                         <button class="icon-btn" onclick="pauseEveryone()" title="Mettre en pause pour tout le monde">
                             <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                         </button>
-                        <button class="icon-btn accent" onclick="playEveryone()" title="Reprendre pour tout le monde">
+                        <button class="icon-btn grad" onclick="playEveryone()" title="Reprendre pour tout le monde">
                             <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                         </button>
                     </div>
@@ -300,16 +329,18 @@ input::placeholder{color:#565a66;}
             </div>
         </div>
 
-        <div class="chat-col">
+        <!-- Tiroir de chat : docké sur ordinateur, glisse depuis le bas sur mobile -->
+        <div id="chatDrawer" class="chat-drawer">
+            <div class="drawer-handle"></div>
+
             <div class="chat-header">
                 <div class="chat-title">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     Discussion
                 </div>
-                <div class="people-row">
-                    <div id="peopleAvatars" class="people-row"></div>
-                    <span id="peopleCount" class="people-count">1</span>
-                </div>
+                <button id="closeChatBtn" class="icon-btn" onclick="closeChatDrawer()" title="Fermer">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
 
             <div id="chat" class="messages"></div>
@@ -319,7 +350,7 @@ input::placeholder{color:#565a66;}
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 </button>
                 <input id="chatInput" type="text" maxlength="300" placeholder="Écris un message..." autocomplete="off">
-                <button class="icon-btn accent" onclick="sendChat()" title="Envoyer">
+                <button class="icon-btn grad" onclick="sendChat()" title="Envoyer">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
             </div>
@@ -331,21 +362,29 @@ input::placeholder{color:#565a66;}
 
 </div>
 
-<div id="toast" style="position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(16px);background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:11px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9999;max-width:90%;text-align:center;font-size:13.5px;"></div>
+<div id="chatBackdrop" class="chat-backdrop" onclick="closeChatDrawer()"></div>
+
+<button id="chatFab" class="chat-fab hidden" onclick="openChatDrawer()" title="Ouvrir le chat">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span id="chatBadge" class="badge hidden">0</span>
+</button>
+
+<div id="toast" style="position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(16px);background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9999;max-width:90%;text-align:center;font-size:13.5px;"></div>
 
 <script>
 /* =====================================================
    VARIABLES
 ===================================================== */
-const PEER_PREFIX = "wta-";
-const GIF_PATTERN = /\.(gif|webp|png|jpe?g)(\?.*)?$/i;
-const GIF_HOSTS = ["media.giphy.com","media0.giphy.com","media1.giphy.com","media2.giphy.com","media3.giphy.com","media4.giphy.com","media.tenor.com","c.tenor.com","i.imgur.com"];
+const PEER_PREFIX="wta-";
+const GIF_PATTERN=/\.(gif|webp|png|jpe?g)(\?.*)?$/i;
+const GIF_HOSTS=["media.giphy.com","media0.giphy.com","media1.giphy.com","media2.giphy.com","media3.giphy.com","media4.giphy.com","media.tenor.com","c.tenor.com","i.imgur.com"];
+const AVATAR_COLORS=["#8b5cf6","#ec4899","#f97316","#22c55e","#06b6d4","#eab308","#f43f5e"];
 
 let peer=null, isHost=false, roomId=null, myId=null, myName="";
 let hostConnection=null, connections=new Map(), users={};
 let currentVideoId=null, player=null, playerReady=false, applyingRemoteState=false;
 let syncTimer=null, lastHostTime=0, lastHostState=2;
-let gifMode=false;
+let gifMode=false, chatOpen=false, unreadCount=0;
 
 const home=document.getElementById("home");
 const room=document.getElementById("room");
@@ -367,11 +406,32 @@ function toast(msg){
     },2500);
 }
 
-function setStatus(text, dotClass){
+function setStatus(text,dotClass){
     document.getElementById("statusText").textContent=text;
-    const dot=document.getElementById("statusDot");
-    dot.className="status-dot"+(dotClass?" "+dotClass:"");
+    document.getElementById("statusDot").className="status-dot"+(dotClass?" "+dotClass:"");
 }
+
+/* =====================================================
+   TIROIR DE CHAT (mobile)
+===================================================== */
+function openChatDrawer(){
+    chatOpen=true;
+    document.getElementById("chatDrawer").classList.add("open");
+    document.getElementById("chatBackdrop").classList.add("open");
+    unreadCount=0;
+    updateChatBadge();
+}
+function closeChatDrawer(){
+    chatOpen=false;
+    document.getElementById("chatDrawer").classList.remove("open");
+    document.getElementById("chatBackdrop").classList.remove("open");
+}
+function updateChatBadge(){
+    const badge=document.getElementById("chatBadge");
+    if(unreadCount>0){ badge.textContent=unreadCount>9?"9+":unreadCount; badge.classList.remove("hidden"); }
+    else{ badge.classList.add("hidden"); }
+}
+function isDesktop(){ return window.matchMedia("(min-width:900px)").matches; }
 
 /* =====================================================
    UTILITAIRES
@@ -399,9 +459,7 @@ function getYouTubeId(value){
     return null;
 }
 
-function isYouTubeUrl(value){
-    return !!getYouTubeId(value);
-}
+function isYouTubeUrl(value){ return !!getYouTubeId(value); }
 
 function isGifUrl(value){
     try{
@@ -410,6 +468,13 @@ function isGifUrl(value){
         if(GIF_PATTERN.test(url.pathname)) return true;
         return GIF_HOSTS.includes(url.hostname);
     }catch(e){ return false; }
+}
+
+function colorForId(id){
+    let hash=0;
+    const str=String(id||"x");
+    for(let i=0;i<str.length;i++){ hash=(hash*31+str.charCodeAt(i))>>>0; }
+    return AVATAR_COLORS[hash%AVATAR_COLORS.length];
 }
 
 /* =====================================================
@@ -502,6 +567,8 @@ function openRoom(){
     document.getElementById("roomCode").textContent=roomId;
     document.getElementById("roomChip").classList.remove("hidden");
     document.getElementById("shareBtn").classList.remove("hidden");
+
+    if(!isDesktop()){ document.getElementById("chatFab").classList.remove("hidden"); }
 
     if(isHost){
         document.getElementById("editVideoBtn").classList.remove("hidden");
@@ -680,9 +747,7 @@ function handleHostMessage(conn,data){
     if(data.type==="requestState"){ sendRoomState(conn); return; }
     if(data.type==="requestChangeVideo"){
         const id=getYouTubeId(String(data.videoId||""))||String(data.videoId||"");
-        if(/^[A-Za-z0-9_-]{6,}$/.test(id)){
-            changeVideoById(id, data.name||"Un invité");
-        }
+        if(/^[A-Za-z0-9_-]{6,}$/.test(id)){ changeVideoById(id,data.name||"Un invité"); }
         return;
     }
     if(data.type==="chat"){
@@ -693,7 +758,7 @@ function handleHostMessage(conn,data){
             sender:data.sender||conn.peer
         };
         broadcast(message);
-        addMessage(message.name,message.message,message.isGif,false,false,message.isVideoLink,message.videoId);
+        addMessage(message.name,message.message,message.isGif,false,false,message.isVideoLink,message.videoId,message.sender);
     }
 }
 
@@ -717,7 +782,7 @@ function handleClientMessage(data){
     }
     if(data.type==="chat"){
         if(data.isSystem){ addMessage(null,data.message,false,false,true); return; }
-        addMessage(data.name,data.message,data.isGif,data.sender===myId,false,data.isVideoLink,data.videoId);
+        addMessage(data.name,data.message,data.isGif,data.sender===myId,false,data.isVideoLink,data.videoId,data.sender);
     }
 }
 
@@ -737,6 +802,7 @@ function updateUsers(){
     Object.entries(users).forEach(function([id,user]){
         const div=document.createElement("div");
         div.className="avatar"+(user.host?" host":"");
+        div.style.background=colorForId(id);
         div.title=(user.name||"Invité")+(id===myId?" (toi)":"")+(user.host?" — hôte":"");
         div.textContent=(user.name||"?").trim().charAt(0).toUpperCase();
         fragment.appendChild(div);
@@ -745,7 +811,8 @@ function updateUsers(){
     avatars.innerHTML="";
     avatars.appendChild(fragment);
 
-    document.getElementById("peopleCount").textContent=Object.keys(users).length;
+    const count=Object.keys(users).length;
+    document.getElementById("peopleCount").textContent=count+(count>1?" personnes":" personne");
 }
 
 /* =====================================================
@@ -761,15 +828,13 @@ function changeVideo(){
     const id=getYouTubeId(input.value);
     if(!id){ toast("Lien YouTube invalide."); return; }
 
-    changeVideoById(id, myName);
+    changeVideoById(id,myName);
 
     input.value="";
     document.getElementById("editVideoRow").classList.remove("open");
 }
 
-/* Applique un changement de vidéo côté hôte, quelle que soit son origine
-   (champ "changer de vidéo", ou lien YouTube posté par un participant dans le chat) */
-function changeVideoById(id, requesterName){
+function changeVideoById(id,requesterName){
     if(!isHost) return;
 
     currentVideoId=id;
@@ -790,15 +855,10 @@ function changeVideoById(id, requesterName){
     broadcast({type:"chat",isSystem:true,message:label});
 }
 
-/* Appelé quand quelqu'un clique sur "Lire pour tout le monde" sur un lien
-   YouTube posté dans le chat — fonctionne pour l'hôte comme pour un invité. */
-function requestPlayVideo(id, buttonEl){
+function requestPlayVideo(id,buttonEl){
     if(buttonEl){ buttonEl.disabled=true; }
 
-    if(isHost){
-        changeVideoById(id, myName);
-        return;
-    }
+    if(isHost){ changeVideoById(id,myName); return; }
 
     if(hostConnection&&hostConnection.open){
         hostConnection.send({type:"requestChangeVideo",videoId:id,name:myName});
@@ -834,12 +894,9 @@ function sendChat(){
     const videoId=!asGif?getYouTubeId(raw):null;
     const isVideoLink=!!videoId;
 
-    const data={
-        type:"chat",name:myName,message:raw.substring(0,300),
-        isGif:asGif,isVideoLink:isVideoLink,videoId:videoId,sender:myId
-    };
+    const data={type:"chat",name:myName,message:raw.substring(0,300),isGif:asGif,isVideoLink:isVideoLink,videoId:videoId,sender:myId};
 
-    addMessage(myName,data.message,asGif,true,false,isVideoLink,videoId);
+    addMessage(myName,data.message,asGif,true,false,isVideoLink,videoId,myId);
 
     if(isHost){ broadcast(data); }
     else if(hostConnection&&hostConnection.open){ hostConnection.send(data); }
@@ -848,7 +905,7 @@ function sendChat(){
     if(gifMode){ toggleGifMode(); }
 }
 
-function addMessage(name,message,isGif,isMe,isSystem,isVideoLink,videoId){
+function addMessage(name,message,isGif,isMe,isSystem,isVideoLink,videoId,senderId){
     const chat=document.getElementById("chat");
 
     if(isSystem){
@@ -857,6 +914,7 @@ function addMessage(name,message,isGif,isMe,isSystem,isVideoLink,videoId){
         sys.textContent=message;
         chat.appendChild(sys);
         chat.scrollTop=chat.scrollHeight;
+        notifyIfClosed(isMe);
         return;
     }
 
@@ -866,38 +924,33 @@ function addMessage(name,message,isGif,isMe,isSystem,isVideoLink,videoId){
     const nameEl=document.createElement("div");
     nameEl.className="name";
     nameEl.textContent=name;
+    nameEl.style.color=colorForId(senderId||name);
 
     const bubble=document.createElement("div");
 
     if(isGif&&isGifUrl(message)){
         bubble.className="bubble gif-bubble";
         const img=document.createElement("img");
-        img.src=message;
-        img.loading="lazy";
-        img.alt="GIF";
-        img.referrerPolicy="no-referrer";
+        img.src=message; img.loading="lazy"; img.alt="GIF"; img.referrerPolicy="no-referrer";
         bubble.appendChild(img);
     }else if(isVideoLink&&videoId){
         bubble.className="bubble link-card";
-
         const info=document.createElement("div");
         info.className="link-info";
-        const label=document.createElement("div");
-        label.className="link-label";
-        label.textContent="Lien YouTube";
+        const labelEl=document.createElement("div");
+        labelEl.className="link-label";
+        labelEl.textContent="Lien YouTube";
         const urlEl=document.createElement("div");
         urlEl.className="link-url";
         urlEl.textContent=message;
-        info.appendChild(label);
-        info.appendChild(urlEl);
+        info.appendChild(labelEl); info.appendChild(urlEl);
 
         const playBtn=document.createElement("button");
         playBtn.innerHTML='<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Lire</span>';
         playBtn.title="Lancer cette vidéo pour tout le monde";
         playBtn.addEventListener("click",function(){ requestPlayVideo(videoId,playBtn); });
 
-        bubble.appendChild(info);
-        bubble.appendChild(playBtn);
+        bubble.appendChild(info); bubble.appendChild(playBtn);
     }else{
         bubble.className="bubble";
         bubble.textContent=message;
@@ -907,6 +960,14 @@ function addMessage(name,message,isGif,isMe,isSystem,isVideoLink,videoId){
     wrap.appendChild(bubble);
     chat.appendChild(wrap);
     chat.scrollTop=chat.scrollHeight;
+
+    notifyIfClosed(isMe);
+}
+
+function notifyIfClosed(isMe){
+    if(isMe||isDesktop()||chatOpen) return;
+    unreadCount++;
+    updateChatBadge();
 }
 
 document.getElementById("chatInput").addEventListener("keydown",function(e){
@@ -914,7 +975,7 @@ document.getElementById("chatInput").addEventListener("keydown",function(e){
 });
 
 /* =====================================================
-   SAUVEGARDE PSEUDO (avec debounce)
+   SAUVEGARDE PSEUDO
 ===================================================== */
 let nameSaveTimeout;
 document.getElementById("hostName").addEventListener("input",function(){
